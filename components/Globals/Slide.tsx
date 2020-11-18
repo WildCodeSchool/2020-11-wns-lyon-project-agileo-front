@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch } from 'components';
 
+// @ts-ignore
 const Slide = ({ setIsOpen2, isOpen2 }) => {
 	return (
 		<>

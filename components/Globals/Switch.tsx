@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Switch } from '@headlessui/react';
 
+// @ts-ignore
 const SwitchGroup = ({ label }) => {
 	const [switchValue, setSwitchValue] = useState(false);
 
