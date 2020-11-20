@@ -33,7 +33,10 @@ yarn-error.log*
 # vercel
 .vercel
 
-#graphql
+# npm
+package-lock.json
+
+# graphql
 .graphqlconfig
 schema.graphql
 

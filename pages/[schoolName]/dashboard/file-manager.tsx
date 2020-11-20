@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 const FileManager = () => {
-	return <>File Manager Page</>;
-};
+  return <>File Manager Page</>
+}
 
-export default FileManager;
+export default FileManager

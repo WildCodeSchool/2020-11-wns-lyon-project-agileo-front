@@ -1,7 +1,7 @@
 /* INJECT_EXPORT */
-export { default as HeaderMyProfile } from './Globals/HeaderMyProfile';
-export { default as Profile } from './Globals/Profile';
-export { default as Header } from './Globals/Header';
-export { default as HeaderDashboard } from './Globals/HeaderDashboard';
-export { default as Slide } from './Globals/Slide';
-export { default as Switch } from './Globals/Switch';
+export { default as HeaderMyProfile } from './shared/HeaderMyProfile'
+export { default as Profile } from './shared/Profile'
+export { default as Header } from './shared/Header'
+export { default as HeaderDashboard } from './shared/HeaderDashboard'
+export { default as Slide } from './shared/Slide'
+export { default as Switch } from './shared/Switch'

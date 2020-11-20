@@ -3,14 +3,8 @@
     "target": "es5",
     "module": "esnext",
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext",
-      "es2017"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext", "es2017"],
     "baseUrl": ".",
-    "outDir": "./dist",
     "moduleResolution": "node",
     "declaration": true,
     "strict": true,
@@ -28,21 +22,9 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "paths": {
-      "components/*": [
-        "./components/*"
-      ]
+      "components/*": ["./components/*"]
     }
   },
-  "exclude": [
-    "dist",
-    ".next",
-    "out",
-    "next.config.js",
-    "./node_modules"
-  ],
-  "include": [
-    "index.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "exclude": ["node_modules", ".next", "out"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
