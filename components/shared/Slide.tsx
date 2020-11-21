@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react'
 import { Switch } from 'components'
 
 export interface SlideProps {
-  setIsOpen2: any
+  setIsOpen2: Function
   isOpen2: boolean
 }
 

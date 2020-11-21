@@ -18,13 +18,12 @@ const HeaderDashboard = () => {
     { id: 5, href: '/schoolName/dashboard/chat', label: 'Chat' },
     { id: 6, href: '/schoolName/dashboard/calendar', label: 'Calendar' },
     { id: 7, href: '/schoolName/dashboard/meet', label: 'Meet' },
-    { id: 8, href: '/schoolName/dashboard/faq', label: 'FAQ' },
   ]
 
   const links2 = [
     { id: 1, href: '/schoolName/dashboard/my-profile', label: 'Your Profile' },
     { id: 2, href: '', label: 'Settings' },
-    { id: 3, href: '/schoolName', label: 'Sign out' },
+    { id: 3, href: '/sign-in', label: 'Sign out' },
   ]
   const [isOpen, setIsOpen] = useState(false)
   const [isOpen2, setIsOpen2] = useState(false)
@@ -36,12 +35,12 @@ const HeaderDashboard = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
-                <Link href="/">
+                <Link href="/schoolName/dashboard">
                   <a className="flex-shrink-0">
                     <img
-                      className="h-8 w-8"
-                      src="/images/logo.svg"
-                      alt="Workflow logo"
+                      className="hidden lg:block h-8 w-auto"
+                      src="https://ext.boulgour.com/lifl/beaufils/logos/logo-inria.svg"
+                      alt="School Logo"
                     />
                   </a>
                 </Link>
@@ -223,7 +222,12 @@ const HeaderDashboard = () => {
         <header className="bg-white shadow">
           <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold leading-tight text-gray-900">
-              Dashboard
+              {links.map(
+                (link) => useRouter().asPath === link.href && link.label
+              )}
+              {links2.map(
+                (link) => useRouter().asPath === link.href && link.label
+              )}
             </h1>
           </div>
         </header>

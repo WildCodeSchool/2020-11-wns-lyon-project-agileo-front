@@ -4,9 +4,9 @@ import Link from 'next/link'
 const Header = () => {
   const links = [
     { id: 1, href: '/', label: 'Home' },
-    { id: 2, href: '/features', label: 'Features' },
-    { id: 3, href: '/pricing', label: 'Pricing' },
-    { id: 4, href: '/contact-us', label: 'Contact Us' },
+    { id: 2, href: '/', label: 'Features' },
+    { id: 3, href: '/', label: 'Pricing' },
+    { id: 4, href: '/', label: 'Contact Us' },
   ]
 
   return (
@@ -54,7 +54,7 @@ const Header = () => {
       </nav>
       <div className="hidden md:flex items-center justify-end space-x-8 md:flex-1 lg:w-0">
         <span className="inline-flex rounded-md shadow-sm">
-          <Link href="/school-name">
+          <Link href="/sign-in">
             <a className="whitespace-no-wrap inline-flex items-center justify-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
               Sign in
             </a>

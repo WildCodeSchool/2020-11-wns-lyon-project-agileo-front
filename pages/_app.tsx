@@ -7,7 +7,7 @@ import { Header, HeaderDashboard } from 'components/index'
 import Head from 'next/head'
 
 const client = new ApolloClient({
-  uri: 'http://localhost:5000/graphql',
+  uri: 'http://localhost:5000/api',
   cache: new InMemoryCache(),
 })
 
