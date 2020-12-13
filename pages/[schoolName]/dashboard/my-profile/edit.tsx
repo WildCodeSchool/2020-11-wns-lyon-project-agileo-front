@@ -1,5 +1,5 @@
 import React from 'react'
-import { HeaderMyProfile } from 'components'
+import { HeaderMyProfile } from 'src/components'
 
 const Edit = () => {
   return (
@@ -13,10 +13,7 @@ const Edit = () => {
                 <div className="px-4 py-5 bg-white sm:p-6">
                   <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="first_name"
-                        className="block text-sm font-medium leading-5 text-gray-700"
-                      >
+                      <label htmlFor="first_name" className="block text-sm font-medium leading-5 text-gray-700">
                         First name
                       </label>
                       <input
@@ -26,10 +23,7 @@ const Edit = () => {
                     </div>
 
                     <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="last_name"
-                        className="block text-sm font-medium leading-5 text-gray-700"
-                      >
+                      <label htmlFor="last_name" className="block text-sm font-medium leading-5 text-gray-700">
                         Last name
                       </label>
                       <input
@@ -39,10 +33,7 @@ const Edit = () => {
                     </div>
 
                     <div className="col-span-6 sm:col-span-4">
-                      <label
-                        htmlFor="email_address"
-                        className="block text-sm font-medium leading-5 text-gray-700"
-                      >
+                      <label htmlFor="email_address" className="block text-sm font-medium leading-5 text-gray-700">
                         Email address
                       </label>
                       <input
@@ -52,10 +43,7 @@ const Edit = () => {
                     </div>
 
                     <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="country"
-                        className="block text-sm font-medium leading-5 text-gray-700"
-                      >
+                      <label htmlFor="country" className="block text-sm font-medium leading-5 text-gray-700">
                         Country / Region
                       </label>
                       <select
@@ -69,10 +57,7 @@ const Edit = () => {
                     </div>
 
                     <div className="col-span-6">
-                      <label
-                        htmlFor="street_address"
-                        className="block text-sm font-medium leading-5 text-gray-700"
-                      >
+                      <label htmlFor="street_address" className="block text-sm font-medium leading-5 text-gray-700">
                         Street address
                       </label>
                       <input
@@ -82,10 +67,7 @@ const Edit = () => {
                     </div>
 
                     <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                      <label
-                        htmlFor="city"
-                        className="block text-sm font-medium leading-5 text-gray-700"
-                      >
+                      <label htmlFor="city" className="block text-sm font-medium leading-5 text-gray-700">
                         City
                       </label>
                       <input
@@ -95,10 +77,7 @@ const Edit = () => {
                     </div>
 
                     <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                      <label
-                        htmlFor="state"
-                        className="block text-sm font-medium leading-5 text-gray-700"
-                      >
+                      <label htmlFor="state" className="block text-sm font-medium leading-5 text-gray-700">
                         State / Province
                       </label>
                       <input
@@ -108,10 +87,7 @@ const Edit = () => {
                     </div>
 
                     <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                      <label
-                        htmlFor="postal_code"
-                        className="block text-sm font-medium leading-5 text-gray-700"
-                      >
+                      <label htmlFor="postal_code" className="block text-sm font-medium leading-5 text-gray-700">
                         ZIP / Postal
                       </label>
                       <input

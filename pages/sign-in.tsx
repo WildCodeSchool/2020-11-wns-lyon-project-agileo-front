@@ -6,14 +6,8 @@ const SignIn = () => {
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
         <div>
-          <img
-            className="mx-auto h-16 w-auto"
-            src="/images/logo.svg"
-            alt="Workflow"
-          />
-          <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
+          <img className="mx-auto h-16 w-auto" src="/images/logo.svg" alt="Workflow" />
+          <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">Sign in to your account</h2>
         </div>
         <form className="mt-8" action="#" method="POST">
           <input type="hidden" name="remember" value="true" />
@@ -47,10 +41,7 @@ const SignIn = () => {
                 type="checkbox"
                 className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
               />
-              <label
-                htmlFor="remember_me"
-                className="ml-2 block text-sm leading-5 text-gray-900"
-              >
+              <label htmlFor="remember_me" className="ml-2 block text-sm leading-5 text-gray-900">
                 Remember me
               </label>
             </div>
