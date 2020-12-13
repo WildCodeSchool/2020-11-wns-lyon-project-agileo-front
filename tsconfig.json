@@ -22,9 +22,15 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "paths": {
-      "components/*": ["./components/*"]
+      "components/*": ["./src/components/*"],
+      "core/*": ["./src/core/*"],
+      "domain/*": ["./src/domain/*"],
+      "lib/*": ["./src/lib/*"],
+      "utils/*": ["./src/utils/*"],
+      "errors/*": ["./src/errors/*"],
+      "helpers/*": ["./src/helpers/*"]
     }
   },
-  "exclude": ["node_modules", ".next", "out"],
+  "exclude": ["node_modules", "next.config.js", ".next", "out"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

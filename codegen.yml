@@ -1,0 +1,5 @@
+schema: http://localhost:5000/api
+generates:
+  ./src/domain/types.d.ts:
+    plugins:
+      - typescript
