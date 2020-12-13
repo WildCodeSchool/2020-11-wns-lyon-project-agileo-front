@@ -1,0 +1,23 @@
+import * as types from './types'
+import { CustomAction } from 'domain/CustomAction'
+import { {{pascalCase name}}State } from './domain'
+
+const initial{{pascalCase name}}State: {{pascalCase name}}State = {}
+
+
+const {{camelCase name}}Reducer = (
+  state: {{pascalCase name}}State = initial{{pascalCase name}}State,
+  action: CustomAction<{{pascalCase name}}State>
+) => {
+  switch (action.type) {
+    case types.:
+      return {
+        ...state,
+
+      }
+    default:
+      return state
+  }
+}
+
+export default {{camelCase name}}Reducer
