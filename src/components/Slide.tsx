@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { Switch } from 'components'
+import { Switch } from 'components/index'
 
 export interface SlideProps {
   setIsOpen2: Function
@@ -28,20 +28,13 @@ const Slide: FunctionComponent<SlideProps> = ({ setIsOpen2, isOpen2 }) => {
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
               <div className="h-full flex flex-col space-y-6 py-6 bg-white shadow-xl overflow-y-scroll">
                 <header className="px-4 sm:px-6">
-                  <h2 className="text-lg leading-7 font-medium text-gray-900">
-                    Panel title
-                  </h2>
+                  <h2 className="text-lg leading-7 font-medium text-gray-900">Panel title</h2>
                 </header>
                 <div className="relative flex-1 px-4 sm:px-6">
                   <Switch label={'Enable Notifications'} />

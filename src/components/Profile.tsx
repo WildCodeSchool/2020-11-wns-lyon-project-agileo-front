@@ -13,19 +13,13 @@ const Profile = () => {
             />
           </div>
           <div className="ml-4">
-            <div className="text-sm leading-5 font-medium text-gray-900">
-              Jane Cooper
-            </div>
-            <div className="text-sm leading-5 text-gray-500">
-              jane.cooper@example.com
-            </div>
+            <div className="text-sm leading-5 font-medium text-gray-900">Jane Cooper</div>
+            <div className="text-sm leading-5 text-gray-500">jane.cooper@example.com</div>
           </div>
         </div>
       </td>
       <td className="px-6 py-4 whitespace-no-wrap">
-        <div className="text-sm leading-5 text-gray-900">
-          Regional Paradigm Technician
-        </div>
+        <div className="text-sm leading-5 text-gray-900">Regional Paradigm Technician</div>
         <div className="text-sm leading-5 text-gray-500">Optimization</div>
       </td>
       <td className="px-6 py-4 whitespace-no-wrap">
@@ -33,9 +27,7 @@ const Profile = () => {
           Active
         </span>
       </td>
-      <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-        Student
-      </td>
+      <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">Student</td>
       <td className="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
         <a href="#" className="text-indigo-600 hover:text-indigo-900">
           Edit

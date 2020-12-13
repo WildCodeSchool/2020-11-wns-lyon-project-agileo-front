@@ -1,0 +1,11 @@
+/* INJECT_EXPORT */
+export { default as HeaderMyProfile } from './HeaderMyProfile'
+export { default as Profile } from './Profile'
+export { default as Header } from './Header'
+export { default as HeaderDashboard } from './HeaderDashboard'
+export { default as Slide } from './Slide'
+export { default as Switch } from './Switch'
+export { default as Counter } from './Counter'
+export { default as Clock } from './Clock'
+export { default as Layout } from './Layout'
+export { default as Home } from './Home'

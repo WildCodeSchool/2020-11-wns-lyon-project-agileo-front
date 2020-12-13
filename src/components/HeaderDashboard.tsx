@@ -3,27 +3,23 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import cx from 'classnames'
 import { Transition } from '@headlessui/react'
-import { Slide } from 'components'
+import { Slide } from 'components/index'
 
 const HeaderDashboard = () => {
   const links = [
-    { id: 1, href: '/schoolName/dashboard', label: 'Dashboard' },
-    { id: 2, href: '/schoolName/dashboard/team', label: 'Team' },
-    { id: 3, href: '/schoolName/dashboard/courses', label: 'Courses' },
-    {
-      id: 4,
-      href: '/schoolName/dashboard/file-manager',
-      label: 'File Manager',
-    },
-    { id: 5, href: '/schoolName/dashboard/chat', label: 'Chat' },
-    { id: 6, href: '/schoolName/dashboard/calendar', label: 'Calendar' },
-    { id: 7, href: '/schoolName/dashboard/meet', label: 'Meet' },
+    { href: '/schoolName/dashboard', label: 'Dashboard' },
+    { href: '/schoolName/dashboard/team', label: 'Team' },
+    { href: '/schoolName/dashboard/courses', label: 'Courses' },
+    { href: '/schoolName/dashboard/file-manager', label: 'File Manager' },
+    { href: '/schoolName/dashboard/chat', label: 'Chat' },
+    { href: '/schoolName/dashboard/calendar', label: 'Calendar' },
+    { href: '/schoolName/dashboard/meet', label: 'Meet' },
   ]
 
   const links2 = [
-    { id: 1, href: '/schoolName/dashboard/my-profile', label: 'Your Profile' },
-    { id: 2, href: '', label: 'Settings' },
-    { id: 3, href: '/sign-in', label: 'Sign out' },
+    { href: '/schoolName/dashboard/my-profile', label: 'Your Profile' },
+    { href: '', label: 'Settings' },
+    { href: '/sign-in', label: 'Sign out' },
   ]
   const [isOpen, setIsOpen] = useState(false)
   const [isOpen2, setIsOpen2] = useState(false)
@@ -46,8 +42,8 @@ const HeaderDashboard = () => {
                 </Link>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
-                    {links.map(({ id, href, label }) => (
-                      <Link key={id} href={href}>
+                    {links.map(({ href, label }, key) => (
+                      <Link key={key} href={href}>
                         <a
                           className={cx(
                             'px-3 py-2 rounded-md text-sm font-medium focus:outline-none focus:text-white focus:bg-gray-700',
@@ -98,10 +94,10 @@ const HeaderDashboard = () => {
                           aria-orientation="vertical"
                           aria-labelledby="user-menu"
                         >
-                          {links2.map(({ href, label }) => (
+                          {links2.map(({ href, label }, key) => (
                             <>
                               {href ? (
-                                <Link href={href}>
+                                <Link key={key} href={href}>
                                   <a
                                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     role="menuitem"
@@ -129,31 +125,11 @@ const HeaderDashboard = () => {
               </div>
               <div className="-mr-2 flex md:hidden">
                 <button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white">
-                  <svg
-                    className="block h-6 w-6"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
+                  <svg className="block h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
-                  <svg
-                    className="hidden h-6 w-6"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
+                  <svg className="hidden h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
@@ -162,8 +138,8 @@ const HeaderDashboard = () => {
 
           <div className="hidden md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {links.map(({ id, href, label }) => (
-                <Link key={id} href={href}>
+              {links.map(({ href, label }, key) => (
+                <Link key={key} href={href}>
                   <a
                     className={cx(
                       'block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:text-white focus:bg-gray-700',
@@ -187,17 +163,13 @@ const HeaderDashboard = () => {
                   />
                 </div>
                 <div className="space-y-1">
-                  <div className="text-base font-medium leading-none text-white">
-                    Tom Cook
-                  </div>
-                  <div className="text-sm font-medium leading-none text-gray-400">
-                    tom@example.com
-                  </div>
+                  <div className="text-base font-medium leading-none text-white">Tom Cook</div>
+                  <div className="text-sm font-medium leading-none text-gray-400">tom@example.com</div>
                 </div>
               </div>
               <div className="mt-3 px-2 space-y-1">
-                {links2.map(({ id, href, label }) => (
-                  <Link key={id} href={href}>
+                {links2.map(({ href, label }, key) => (
+                  <Link key={key} href={href}>
                     <a className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
                       {label}
                     </a>
@@ -222,12 +194,8 @@ const HeaderDashboard = () => {
         <header className="bg-white shadow">
           <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold leading-tight text-gray-900">
-              {links.map(
-                (link) => useRouter().asPath === link.href && link.label
-              )}
-              {links2.map(
-                (link) => useRouter().asPath === link.href && link.label
-              )}
+              {links.map((link) => useRouter().asPath === link.href && link.label)}
+              {links2.map((link) => useRouter().asPath === link.href && link.label)}
             </h1>
           </div>
         </header>
