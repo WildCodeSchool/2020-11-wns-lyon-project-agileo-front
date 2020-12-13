@@ -7,7 +7,7 @@ const formatTime = (time: string | number | Date) => {
 }
 
 const Clock = () => {
-  const clock = useSelector((state: RootState) => state.clock.value)
+  const clock = useSelector((state: RootState) => state.clock)
 
   return (
     <div className={clock.light ? 'light' : ''}>

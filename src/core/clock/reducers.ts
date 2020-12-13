@@ -3,10 +3,8 @@ import { CustomAction } from 'domain/CustomAction'
 import { ClockState } from './domain'
 
 const initialClockState: ClockState = {
-  value: {
-    lastUpdate: 0,
-    light: false,
-  },
+  lastUpdate: 0,
+  light: false,
 }
 
 const timerReducer = (state: ClockState = initialClockState, action: CustomAction<ClockState>) => {
@@ -14,7 +12,8 @@ const timerReducer = (state: ClockState = initialClockState, action: CustomActio
     case types.TICK:
       return {
         ...state,
-        value: action.payload,
+        lastUpdate: action.payload.lastUpdate,
+        light: action.payload.light,
       }
     default:
       return state

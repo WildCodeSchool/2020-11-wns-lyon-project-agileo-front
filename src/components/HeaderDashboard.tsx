@@ -19,7 +19,7 @@ const HeaderDashboard = () => {
   const links2 = [
     { href: '/schoolName/dashboard/my-profile', label: 'Your Profile' },
     { href: '', label: 'Settings' },
-    { href: '/sign-in', label: 'Sign out' },
+    { href: '/login', label: 'Sign out' },
   ]
   const [isOpen, setIsOpen] = useState(false)
   const [isOpen2, setIsOpen2] = useState(false)
