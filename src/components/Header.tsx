@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 const Header = () => {
   return (
-    <div className="flex justify-between bg-indigo-600 h-16">
+    <div className="flex justify-between bg-blue-450 h-16">
       <div className="mr-8">
         <Image src="/images/logo.svg" alt="Logo" width={50} height={50} />
       </div>

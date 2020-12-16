@@ -10,8 +10,15 @@ module.exports = {
         'accent-1': '#333',
         yellow: {
           450: '#FCC116',
+          550: '#FFF1C8'
+        },
+        blue: {
+          450: '#2AB1BF',
         },
       },
+    },
+    height: {
+      middleHeight: '550px',
     },
   },
   variants: {},
