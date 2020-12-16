@@ -13,9 +13,12 @@ const Header = () => {
           <img src="" alt="logo title" />
         </Link>
       </div>
-      <div className="bg-yellow-450 h-5 mt-3 p-5 rounded">
+      <div>
         <Link href="/login">
-          <button className="text-center" type="button">
+          <button
+            className="border border-yellow-500 bg-yellow-450 text-black rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-400 focus:outline-none focus:shadow-outline"
+            type="button"
+          >
             Login
           </button>
         </Link>

@@ -9,7 +9,7 @@ module.exports = {
       colors: {
         'accent-1': '#333',
         yellow: {
-          '450': '#FCC116',
+          450: '#FCC116',
         },
       },
     },

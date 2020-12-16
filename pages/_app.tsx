@@ -16,12 +16,21 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <ApolloProvider client={apolloClient}>
-        {isDashboard ? <HeaderDashboard /> : <Header />}
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <div className="px-4 py-6 sm:px-0">
+        {isDashboard ? (
+          <>
+            <HeaderDashboard />
+            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+              <div className="px-4 py-6 sm:px-0">
+                <Component {...pageProps} />
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <Header />
             <Component {...pageProps} />
-          </div>
-        </div>
+          </>
+        )}
       </ApolloProvider>
     </Provider>
   )
