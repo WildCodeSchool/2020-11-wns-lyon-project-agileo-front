@@ -1,9 +1,6 @@
 module.exports = {
-  future: {
-    removeDeprecatedGapUtilities: true,
-    purgeLayersByDefault: true,
-  },
-  purge: ['./src/components/**/*.tsx', './pages/**/*.tsx'],
+  purge: ['./src/components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'media', // 'media' or 'class'
   theme: {
     extend: {
       colors: {
@@ -11,10 +8,8 @@ module.exports = {
       },
     },
   },
-  variants: {},
-  plugins: [
-    require('@tailwindcss/ui')({
-      layout: 'sidebar',
-    }),
-  ],
+  variants: {
+    extend: {},
+  },
+  plugins: [],
 }
