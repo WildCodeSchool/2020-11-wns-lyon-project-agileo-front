@@ -1,0 +1,20 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #fcc116;
+}
+
+p {
+  word-break: break-all;
+}
+
+input {
+  border: none;
+  background-color: white;
+  margin-top: 10px;
+  height: 60px;
+  padding-left: 10px;
+}

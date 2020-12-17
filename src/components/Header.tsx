@@ -10,13 +10,15 @@ const Header = () => {
       </div>
       <div>
         <Link href="/">
-          <img src="" alt="logo title" />
+          <a className="text-yellow-450 text-4xl" title="Agileo">
+            AGILEO
+          </a>
         </Link>
       </div>
       <div>
         <Link href="/login">
           <button
-            className="border border-yellow-500 bg-yellow-450 text-black rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-400 focus:outline-none focus:shadow-outline"
+            className="rounded-md bg-yellow-450 text-black px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-blue-450 focus:outline-none focus:shadow-outline"
             type="button"
           >
             Login

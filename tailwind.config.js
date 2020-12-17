@@ -10,15 +10,25 @@ module.exports = {
         'accent-1': '#333',
         yellow: {
           450: '#FCC116',
-          550: '#FFF1C8'
+          550: '#FFF1C8',
         },
         blue: {
           450: '#2AB1BF',
         },
+        orange: {
+          450: '#FA6424',
+        },
+      },
+      width: {
+        550: '550px',
       },
     },
     height: {
-      middleHeight: '550px',
+      450: '450px',
+      190: '190px',
+    },
+    borderRadius: {
+      50: '50%',
     },
   },
   variants: {},

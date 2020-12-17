@@ -7,6 +7,7 @@ import { useStore } from 'lib/store'
 import { useApollo } from 'lib/apollo'
 import { Header, HeaderDashboard } from 'src/components'
 import { useRouter } from 'next/router'
+import 'general.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const store = useStore(pageProps.initialReduxState)
