@@ -4,8 +4,36 @@ import { useRouter } from 'next/router'
 import cx from 'classnames'
 import { Transition } from '@headlessui/react'
 import { Slide } from 'components/index'
+import { gql, useMutation, useQuery } from '@apollo/client'
+
+const UNAUTHENTICATE = gql`
+  mutation {
+    unauthenticateUser {
+      success
+    }
+  }
+`
+
+const AUTHENTICATED_USER = gql`
+  query authenticatedUser {
+    authenticatedUser {
+      id
+    }
+  }
+`
 
 const HeaderDashboard = () => {
+  const { data: { authenticatedUser } = {} } = useQuery(AUTHENTICATED_USER)
+  const [unauthenticate] = useMutation(UNAUTHENTICATE, {
+    refetchQueries: ['authenticatedUser'],
+  })
+
+  const router = useRouter()
+
+  if (!authenticatedUser) {
+    router.push('/login')
+  }
+
   const links = [
     { href: '/schoolName/dashboard', label: 'Dashboard' },
     { href: '/schoolName/dashboard/team', label: 'Team' },
@@ -21,6 +49,7 @@ const HeaderDashboard = () => {
     { href: '', label: 'Settings' },
     { href: '/login', label: 'Sign out' },
   ]
+
   const [isOpen, setIsOpen] = useState(false)
   const [isOpen2, setIsOpen2] = useState(false)
 
@@ -94,29 +123,26 @@ const HeaderDashboard = () => {
                           aria-orientation="vertical"
                           aria-labelledby="user-menu"
                         >
-                          {links2.map(({ href, label }, key) => (
-                            <>
-                              {href ? (
-                                <Link key={key} href={href}>
-                                  <a
-                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    role="menuitem"
-                                  >
-                                    {label}
-                                  </a>
-                                </Link>
-                              ) : (
-                                <a
-                                  type="button"
-                                  onClick={() => setIsOpen2(!isOpen2)}
-                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                  role="menuitem"
-                                >
-                                  {label}
-                                </a>
-                              )}
-                            </>
-                          ))}
+                          <Link href="/schoolName/dashboard/my-profile">
+                            <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                              Your Profile
+                            </a>
+                          </Link>
+                          <a
+                            type="button"
+                            onClick={() => setIsOpen2(!isOpen2)}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            role="menuitem"
+                          >
+                            Settings
+                          </a>
+                          <a
+                            onClick={() => unauthenticate()}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            role="menuitem"
+                          >
+                            Sign out
+                          </a>
                         </div>
                       </div>
                     </Transition>
