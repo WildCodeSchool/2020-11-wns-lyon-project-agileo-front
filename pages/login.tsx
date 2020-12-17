@@ -1,11 +1,11 @@
-import React, { useState,useCallback } from 'react'
+import React, { FormEvent, useState } from 'react'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
-import MuiAlert from '@material-ui/lab/Alert';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Snackbar from "@material-ui/core/Snackbar"
-//import Alert from 'src/components/Alert'
+import isServer from 'helpers/isServer'
+import MuiAlert from '@material-ui/lab/Alert'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import Snackbar from '@material-ui/core/Snackbar'
 
 const AUTHENTICATE = gql`
   mutation authenticate($email: String!, $password: String!) {
@@ -16,6 +16,7 @@ const AUTHENTICATE = gql`
     }
   }
 `
+
 const AUTHENTICATED_USER = gql`
   query authenticatedUser {
     authenticatedUser {
@@ -24,32 +25,38 @@ const AUTHENTICATED_USER = gql`
   }
 `
 
-
-
-function Alert(props:any) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />
-}
-    
-const SignIn = (props:any) => {
-const intialstate =({email:'',password:''})
+const Login = () => {
+  const intialstate = { email: '', password: '' }
   const [form, setForm] = useState(intialstate)
   const router = useRouter()
   const { data: { authenticatedUser } = {}, loading, error } = useQuery(AUTHENTICATED_USER)
-  const [authenticate, { loading: signingIn, error: signinError }] = useMutation(AUTHENTICATE, {refetchQueries: ['authenticatedUser']})
-  const handleCloseSnackbar = (event:any, reason:any) => {if (reason === "clickaway") {return}setSnackbarStatus({ open: false, message: "" })}
-  const [snackbarStatus, setSnackbarStatus] = React.useState({ open: true, message: "Mot de pass ou email incorrect" })
+  const [authenticate, { loading: signingIn, error: signinError }] = useMutation(AUTHENTICATE, {
+    refetchQueries: ['authenticatedUser'],
+  })
 
-  const handleClick = async (e:React.FormEvent) => {
+  const Alert = (props: any) => {
+    return <MuiAlert elevation={6} variant="filled" {...props} />
+  }
+
+  const handleCloseSnackbar = (event: any, reason: string) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setSnackbarStatus({ open: false, message: '' })
+  }
+  const [snackbarStatus, setSnackbarStatus] = useState({ open: true, message: 'Mot de pass ou email incorrect' })
+
+  const handleClick = async (e: FormEvent) => {
     e.preventDefault()
-    try{
-      await authenticate({variables: {email:form.email,password:form.password},
-    })
-    }catch(err){
-      console.log(err)
+    try {
+      await authenticate({ variables: { email: form.email, password: form.password } })
+    } catch (err) {
+      return err
     }
     setForm(intialstate)
   }
-  if (authenticatedUser) {
+
+  if (!isServer() && authenticatedUser) {
     router.push('/schoolName/dashboard')
   }
 
@@ -60,28 +67,25 @@ const intialstate =({email:'',password:''})
           <img className="mx-auto h-16 w-auto" src="/images/logo.svg" alt="Workflow" />
           <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">Sign in to your account</h2>
         </div>
-        {loading || signingIn && (
-          <p>loading...</p>
-        )}
+        {loading || (signingIn && <p>loading...</p>)}
         <>
-          {(error || signinError)  &&( 
-              <Grid item xs={3} >
-
-                  <Paper style={{ borderRadius: "0px", borderColor: "#000", border: '1px' }}>
-                      <Snackbar
-                          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                          open={snackbarStatus.open}
-                          onClose={handleCloseSnackbar}
-                          autoHideDuration={1000}
-                      >
-                          <Alert onClose={handleCloseSnackbar} severity="warning">
-                              {snackbarStatus.message}
-                          </Alert>
-                      </Snackbar>
-                  </Paper>
-                </Grid>
+          {(error || signinError) && (
+            <Grid item xs={3}>
+              <Paper style={{ borderRadius: '0px', borderColor: '#000', border: '1px' }}>
+                <Snackbar
+                  anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                  open={snackbarStatus.open}
+                  onClose={handleCloseSnackbar}
+                  autoHideDuration={1000}
+                >
+                  <Alert onClose={handleCloseSnackbar} severity="warning">
+                    {snackbarStatus.message}
+                  </Alert>
+                </Snackbar>
+              </Paper>
+            </Grid>
           )}
-  
+
           <form className="mt-8" action="#" onSubmit={handleClick}>
             <input type="hidden" name="remember" value="true" />
             <div className="rounded-md shadow-sm">
@@ -95,7 +99,7 @@ const intialstate =({email:'',password:''})
                   placeholder="Email address"
                   value={form.email}
                   onChange={(event) => {
-                    setForm({...form,email:event.target.value})
+                    setForm({ ...form, email: event.target.value })
                   }}
                 />
               </div>
@@ -109,7 +113,7 @@ const intialstate =({email:'',password:''})
                   placeholder="Password"
                   value={form.password}
                   onChange={(event) => {
-                    setForm({...form,password:event.target.value})
+                    setForm({ ...form, password: event.target.value })
                   }}
                 />
               </div>
@@ -159,10 +163,10 @@ const intialstate =({email:'',password:''})
               </button>
             </div>
           </form>
-          </> 
+        </>
       </div>
     </div>
   )
 }
 
-export default SignIn
+export default Login
