@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import cx from 'classnames'
-import { Transition } from '@headlessui/react'
-import { Slide } from 'components/index'
 import { gql, useMutation, useQuery } from '@apollo/client'
+import isServer from 'helpers/isServer'
 
 const UNAUTHENTICATE = gql`
   mutation {
@@ -23,13 +22,11 @@ const AUTHENTICATED_USER = gql`
 `
 
 const HeaderDashboard = () => {
+  const [show, setShow] = useState(false)
+  const router = useRouter()
   const { data: { authenticatedUser } = {} } = useQuery(AUTHENTICATED_USER)
-  const [unauthenticate] = useMutation(UNAUTHENTICATE, {
-    refetchQueries: ['authenticatedUser'],
-  })
-
-  const router = useRouter();
-  if (!authenticatedUser) {
+  const [unauthenticate] = useMutation(UNAUTHENTICATE, { refetchQueries: ['authenticatedUser'] })
+  if (!isServer() && !authenticatedUser) {
     router.push('/login')
   }
 
@@ -45,12 +42,8 @@ const HeaderDashboard = () => {
 
   const links2 = [
     { href: '/schoolName/dashboard/my-profile', label: 'Your Profile' },
-    { href: '', label: 'Settings' },
     { href: '/login', label: 'Sign out' },
   ]
-
-  const [isOpen, setIsOpen] = useState(false)
-  const [isOpen2, setIsOpen2] = useState(false)
 
   return (
     <>
@@ -93,7 +86,7 @@ const HeaderDashboard = () => {
                     <div>
                       <button
                         type="button"
-                        onClick={() => setIsOpen(!isOpen)}
+                        onClick={() => setShow(!show)}
                         className="max-w-xs flex items-center text-sm rounded-full text-white focus:outline-none focus:shadow-solid"
                         id="user-menu"
                         aria-label="User menu"
@@ -106,45 +99,23 @@ const HeaderDashboard = () => {
                         />
                       </button>
                     </div>
-                    <Transition
-                      show={isOpen}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-100 scale-100"
-                    >
-                      <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
-                        <div
-                          className="py-1 rounded-md bg-white shadow-xs"
-                          role="menu"
-                          aria-orientation="vertical"
-                          aria-labelledby="user-menu"
-                        >
+                    <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
+                      {show && (
+                        <ul className="visible transition duration-300 opacity-100 bg-white shadow rounded mt-2 w-48 py-1 absolute">
                           <Link href="/schoolName/dashboard/my-profile">
-                            <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-3 hover:bg-gray-100 px-3 font-normal">
                               Your Profile
-                            </a>
+                            </li>
                           </Link>
-                          <a
-                            type="button"
-                            onClick={() => setIsOpen2(!isOpen2)}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            role="menuitem"
-                          >
-                            Settings
-                          </a>
-                          <a
+                          <li
                             onClick={() => unauthenticate()}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            role="menuitem"
+                            className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-3 hover:bg-gray-100 px-3 font-normal"
                           >
-                            Sign out
-                          </a>
-                        </div>
-                      </div>
-                    </Transition>
+                            Sign Out
+                          </li>
+                        </ul>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -204,17 +175,6 @@ const HeaderDashboard = () => {
             </div>
           </div>
         </nav>
-        <Transition
-          show={isOpen2}
-          enter="transition ease-out duration-100"
-          enterFrom="transform opacity-0 scale-95"
-          enterTo="transform opacity-100 scale-100"
-          leave="transition ease-in duration-75"
-          leaveFrom="transform opacity-100 scale-100"
-          leaveTo="transform opacity-100 scale-100"
-        >
-          <Slide setIsOpen2={setIsOpen2} isOpen2={isOpen2} />
-        </Transition>
 
         <header className="bg-white shadow">
           <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
