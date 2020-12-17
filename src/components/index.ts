@@ -1,4 +1,5 @@
 /* INJECT_EXPORT */
+export { default as Footer } from './Footer'
 export { default as HeaderMyProfile } from './HeaderMyProfile'
 export { default as Profile } from './Profile'
 export { default as Header } from './Header'

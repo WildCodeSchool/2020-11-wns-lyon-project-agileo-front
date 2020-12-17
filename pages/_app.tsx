@@ -5,7 +5,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { useStore } from 'lib/store'
 import { useApollo } from 'lib/apollo'
-import { Header, HeaderDashboard } from 'src/components'
+import { Header, HeaderDashboard, Footer } from 'src/components'
 import { useRouter } from 'next/router'
 import 'general.css'
 
@@ -30,6 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <>
             <Header />
             <Component {...pageProps} />
+            <Footer />
           </>
         )}
       </ApolloProvider>

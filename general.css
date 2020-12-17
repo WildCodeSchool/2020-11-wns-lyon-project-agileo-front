@@ -9,6 +9,7 @@ h6 {
 
 p {
   word-break: break-all;
+  text-align: justify;
 }
 
 input {

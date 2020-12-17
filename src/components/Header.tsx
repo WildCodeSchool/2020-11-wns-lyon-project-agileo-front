@@ -4,9 +4,9 @@ import Image from 'next/image'
 
 const Header = () => {
   return (
-    <div className="flex justify-between bg-blue-450 h-16">
+    <div className="flex justify-between bg-blue-450 pt-2 pl-3 pr-3 h-seventeen">
       <div className="mr-8">
-        <Image src="/images/logo.svg" alt="Logo" width={50} height={50} />
+        <Image src="/images/logo.svg" alt="Logo" width={60} height={60} />
       </div>
       <div>
         <Link href="/">
