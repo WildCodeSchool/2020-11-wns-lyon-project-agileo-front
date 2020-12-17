@@ -21,6 +21,7 @@ export const initializeStore = (preloadedState: any) => {
     _store = initStore({ ...store.getState(), ...preloadedState })
     store = undefined
   }
+  
   if (typeof window === 'undefined') return _store
   if (!store) store = _store
   return _store

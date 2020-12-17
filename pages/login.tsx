@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 import { gql, useMutation, useQuery } from '@apollo/client'
 
 const AUTHENTICATE = gql`
@@ -22,7 +23,7 @@ const AUTHENTICATED_USER = gql`
 const SignIn = () => {
   const [email, setEmail] = useState('admin')
   const [password, setPassword] = useState('adminadmin')
-
+const history = useRouter();
   const { data: { authenticatedUser } = {}, loading, error } = useQuery(AUTHENTICATED_USER, {
     fetchPolicy: 'network-only',
   })
@@ -30,7 +31,17 @@ const SignIn = () => {
     refetchQueries: ['authenticatedUser'],
   })
 
-  console.log(authenticatedUser)
+
+  const handelsubmit=  (e: React.FormEvent)=>{
+    e.preventDefault();
+    authenticate({
+      variables: {
+        email,
+        password,                 
+      },
+    }),
+    history.push('/schoolName/dashboard')
+  }
 
   return (
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -50,15 +61,7 @@ const SignIn = () => {
           <form
             className="mt-8"
             action="#"
-            onSubmit={(e) => {
-              e.preventDefault()
-              authenticate({
-                variables: {
-                  email,
-                  password,
-                },
-              })
-            }}
+            onSubmit={handelsubmit}
           >
             <input type="hidden" name="remember" value="true" />
             <div className="rounded-md shadow-sm">
