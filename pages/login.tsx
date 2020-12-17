@@ -1,6 +1,11 @@
-import React, { useState } from 'react'
-import { useRouter } from 'next/router'
+import React, { useState,useCallback } from 'react'
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useRouter } from 'next/router'
+import MuiAlert from '@material-ui/lab/Alert';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Snackbar from "@material-ui/core/Snackbar"
+//import Alert from 'src/components/Alert'
 
 const AUTHENTICATE = gql`
   mutation authenticate($email: String!, $password: String!) {
@@ -11,7 +16,6 @@ const AUTHENTICATE = gql`
     }
   }
 `
-
 const AUTHENTICATED_USER = gql`
   query authenticatedUser {
     authenticatedUser {
@@ -20,27 +24,33 @@ const AUTHENTICATED_USER = gql`
   }
 `
 
-const SignIn = () => {
-  const [email, setEmail] = useState('admin')
-  const [password, setPassword] = useState('adminadmin')
-const history = useRouter();
-  const { data: { authenticatedUser } = {}, loading, error } = useQuery(AUTHENTICATED_USER, {
-    fetchPolicy: 'network-only',
-  })
-  const [authenticate, { loading: signingIn, error: signinError }] = useMutation(AUTHENTICATE, {
-    refetchQueries: ['authenticatedUser'],
-  })
 
 
-  const handelsubmit=  (e: React.FormEvent)=>{
-    e.preventDefault();
-    authenticate({
-      variables: {
-        email,
-        password,                 
-      },
-    }),
-    history.push('/schoolName/dashboard')
+function Alert(props:any) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />
+}
+    
+const SignIn = (props:any) => {
+const intialstate =({email:'',password:''})
+  const [form, setForm] = useState(intialstate)
+  const router = useRouter()
+  const { data: { authenticatedUser } = {}, loading, error } = useQuery(AUTHENTICATED_USER)
+  const [authenticate, { loading: signingIn, error: signinError }] = useMutation(AUTHENTICATE, {refetchQueries: ['authenticatedUser']})
+  const handleCloseSnackbar = (event:any, reason:any) => {if (reason === "clickaway") {return}setSnackbarStatus({ open: false, message: "" })}
+  const [snackbarStatus, setSnackbarStatus] = React.useState({ open: true, message: "Mot de pass ou email incorrect" })
+
+  const handleClick = async (e:React.FormEvent) => {
+    e.preventDefault()
+    try{
+      await authenticate({variables: {email:form.email,password:form.password},
+    })
+    }catch(err){
+      console.log(err)
+    }
+    setForm(intialstate)
+  }
+  if (authenticatedUser) {
+    router.push('/schoolName/dashboard')
   }
 
   return (
@@ -50,19 +60,29 @@ const history = useRouter();
           <img className="mx-auto h-16 w-auto" src="/images/logo.svg" alt="Workflow" />
           <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">Sign in to your account</h2>
         </div>
-
-        {loading || signingIn ? (
+        {loading || signingIn && (
           <p>loading...</p>
-        ) : error || signinError ? (
-          <p>Error!</p>
-        ) : authenticatedUser ? (
-          <p>✅ Signed In</p>
-        ) : (
-          <form
-            className="mt-8"
-            action="#"
-            onSubmit={handelsubmit}
-          >
+        )}
+        <>
+          {(error || signinError)  &&( 
+              <Grid item xs={3} >
+
+                  <Paper style={{ borderRadius: "0px", borderColor: "#000", border: '1px' }}>
+                      <Snackbar
+                          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                          open={snackbarStatus.open}
+                          onClose={handleCloseSnackbar}
+                          autoHideDuration={1000}
+                      >
+                          <Alert onClose={handleCloseSnackbar} severity="warning">
+                              {snackbarStatus.message}
+                          </Alert>
+                      </Snackbar>
+                  </Paper>
+                </Grid>
+          )}
+  
+          <form className="mt-8" action="#" onSubmit={handleClick}>
             <input type="hidden" name="remember" value="true" />
             <div className="rounded-md shadow-sm">
               <div>
@@ -73,9 +93,9 @@ const history = useRouter();
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
                   placeholder="Email address"
-                  value={email}
+                  value={form.email}
                   onChange={(event) => {
-                    setEmail(event.target.value)
+                    setForm({...form,email:event.target.value})
                   }}
                 />
               </div>
@@ -87,9 +107,9 @@ const history = useRouter();
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
                   placeholder="Password"
-                  value={password}
+                  value={form.password}
                   onChange={(event) => {
-                    setPassword(event.target.value)
+                    setForm({...form,password:event.target.value})
                   }}
                 />
               </div>
@@ -139,7 +159,7 @@ const history = useRouter();
               </button>
             </div>
           </form>
-        )}
+          </> 
       </div>
     </div>
   )
