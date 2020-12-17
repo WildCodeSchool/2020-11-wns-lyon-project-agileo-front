@@ -4,6 +4,7 @@ import * as reducers from 'src/core'
 import thunk, { ThunkMiddleware } from 'redux-thunk'
 import { useMemo } from 'react'
 import RootState from 'domain/RootState'
+import isServer from 'helpers/isServer'
 
 let store: any
 
@@ -21,7 +22,7 @@ export const initializeStore = (preloadedState: any) => {
     _store = initStore({ ...store.getState(), ...preloadedState })
     store = undefined
   }
-  if (typeof window === 'undefined') return _store
+  if (isServer()) return _store
   if (!store) store = _store
   return _store
 }
