@@ -6,7 +6,7 @@ const SignIn = () => {
     <div className="min-h-full bg-yellow-550 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
         <div>
-          <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold">Me connecter</h2>
+          <h2 className="mt-6 text-center text-3xl text-orange-450 leading-9 font-extrabold">Me connecter</h2>
         </div>
         <form className="mt-8" action="#" method="POST">
           <input type="hidden" name="remember" value="true" />
@@ -59,7 +59,7 @@ const SignIn = () => {
             <Link href="/schoolName/dashboard">
               <button
                 type="submit"
-                className="group text-yellow-450 bg-orange-450 rounded-md relative w-full flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md hover:bg-blue-450 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+                className="group text-white mb-13 bg-orange-450 rounded-md relative w-full flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md hover:bg-blue-450 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                   <svg
