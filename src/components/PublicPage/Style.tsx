@@ -62,6 +62,9 @@ const Style = () => {
       .rounded-50 {
         border-radius: 50%;
       }
+      .fix-footer {
+        height: 85vh;
+      }
     `}</style>
   )
 }

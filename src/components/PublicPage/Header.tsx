@@ -8,7 +8,7 @@ const Header = () => {
       <div className="mr-8">
         <Image src="/images/PublicPage/logo.svg" alt="Logo" width={60} height={60} />
       </div>
-      <div>
+      <div className="pt-2">
         <Link href="/">
           <a className="text-yellow-450 text-4xl" title="Agileo">
             AGILEO

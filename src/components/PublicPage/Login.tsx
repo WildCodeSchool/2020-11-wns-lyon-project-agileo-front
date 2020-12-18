@@ -66,7 +66,7 @@ const Login = () => {
   return (
     <>
       <Header />
-      <div className="min-h-full bg-yellow-550 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-full bg-yellow-550 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 fix-footer">
         <div className="max-w-md w-full">
           <div>
             <h2 className="mt-6 text-center text-3xl text-orange-450 leading-9 font-extrabold">Me connecter</h2>
