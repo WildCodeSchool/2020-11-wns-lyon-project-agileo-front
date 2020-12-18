@@ -2,7 +2,7 @@ import React from 'react'
 
 const Style = () => {
   return (
-    <style jsx>{`
+    <style>{`
       h1,
       h2,
       h3,
