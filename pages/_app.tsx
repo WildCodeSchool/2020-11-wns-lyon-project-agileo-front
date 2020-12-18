@@ -5,7 +5,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { useStore } from 'lib/store'
 import { useApollo } from 'lib/apollo'
-import { Header, HeaderDashboard } from 'src/components'
+import { HeaderDashboard } from 'src/components'
 import { useRouter } from 'next/router'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -16,12 +16,20 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <ApolloProvider client={apolloClient}>
-        {isDashboard ? <HeaderDashboard /> : <Header />}
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <div className="px-4 py-6 sm:px-0">
+        {isDashboard ? (
+          <>
+            <HeaderDashboard />
+            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+              <div className="px-4 py-6 sm:px-0">
+                <Component {...pageProps} />
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
             <Component {...pageProps} />
-          </div>
-        </div>
+          </>
+        )}
       </ApolloProvider>
     </Provider>
   )
