@@ -3,20 +3,18 @@ import { ApolloProvider } from '@apollo/client'
 import { AppProps } from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { useStore } from 'lib/store'
-import { useApollo } from 'lib/apollo'
-import { HeaderDashboard } from 'src/components'
-import { useRouter } from 'next/router'
+import { useStore } from 'src/shared/lib/store'
+import { useApollo } from 'src/shared/lib/apollo'
+import HeaderDashboard from 'src/shared/HeaderDashboard'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps, router }: AppProps) {
   const store = useStore(pageProps.initialReduxState)
   const apolloClient = useApollo(pageProps.initialApolloState)
-  const isDashboard: boolean = useRouter().asPath.includes('dashboard')
 
   return (
     <Provider store={store}>
       <ApolloProvider client={apolloClient}>
-        {isDashboard ? (
+        {router.query.schoolName ? (
           <>
             <HeaderDashboard />
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -26,9 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             </div>
           </>
         ) : (
-          <>
-            <Component {...pageProps} />
-          </>
+          <Component {...pageProps} />
         )}
       </ApolloProvider>
     </Provider>
