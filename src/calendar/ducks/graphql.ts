@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const GET_EVENTS = gql`
   query getEvents {
-    Event {
+    allEvents {
       title
       allDay
       start
