@@ -1,10 +1,12 @@
 import { gql } from '@apollo/client'
 
-export const EXAMPLE = gql`
-  query example {
-    example {
-      id
-      name
+export const GET_EVENTS = gql`
+  query getEvents {
+    Event {
+      title
+      allDay
+      start
+      end
     }
   }
 `
