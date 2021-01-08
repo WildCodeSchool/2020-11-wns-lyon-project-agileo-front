@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { useStore } from 'src/shared/lib/store'
 import { useApollo } from 'src/shared/lib/apollo'
 import HeaderDashboard from 'src/shared/HeaderDashboard'
+import Head from 'next/head'
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const store = useStore(pageProps.initialReduxState)
@@ -13,6 +14,10 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
   return (
     <Provider store={store}>
+      <Head>
+        <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Overpass&display=swap" rel="stylesheet" />
+      </Head>
       <ApolloProvider client={apolloClient}>
         {router.query.schoolName ? (
           <>
