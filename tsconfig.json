@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "esnext",
+    "module": "commonjs",
     "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext", "es2017"],
     "baseUrl": ".",
@@ -21,6 +21,9 @@
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
     "paths": {
       "src/*": ["./src/*"],
       "domain/*": ["./src/shared/domain/*"],
