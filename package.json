@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently -c 'green,blue' \"yarn dev-api\" \"yarn dev-front\"",
-    "dev-front": "next dev",
-    "dev-api": "nodemon api/index.ts",
+    "dev": "nodemon server/index.ts",
     "build": "next build && next export",
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write \"{src,pages,api}/**/*.{ts,tsx}\"",
@@ -53,7 +51,7 @@
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
     "autoprefixer": "10.0.2",
-    "concurrently": "^5.3.0",
+    "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-react": "^7.19.0",
@@ -65,8 +63,7 @@
     "redux-devtools-extension": "^2.13.8",
     "tailwindcss": "^2.0.1",
     "ts-node": "^9.1.1",
-    "typescript": "^4.0.5",
-    "dotenv": "^8.2.0"
+    "typescript": "^4.0.5"
   },
   "husky": {
     "hooks": {

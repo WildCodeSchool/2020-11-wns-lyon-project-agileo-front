@@ -3,13 +3,13 @@ import { apiRouter } from './routes'
 import * as fs from 'fs'
 
 App.initialize().then(async () => {
-  const models = fs.readdirSync('./api/models')
+  const models = fs.readdirSync('./server/models')
 
   for (const model of models.filter((m) => m.endsWith('.ts'))) {
     await import(`./models/${model}`)
   }
 
-  App.app.use(apiRouter)
+  App.server.use(apiRouter)
   App.start()
 })
 

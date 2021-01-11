@@ -11,7 +11,7 @@ function createApolloClient() {
   return new ApolloClient({
     ssrMode: isServer(),
     link: new HttpLink({
-      uri: 'http://localhost:5000/api',
+      uri: '/admin/api',
       credentials: 'include',
     }),
     cache: new InMemoryCache({

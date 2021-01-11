@@ -4,10 +4,14 @@ import { PasswordAuthStrategy } from '@keystonejs/auth-password'
 import { GraphQLApp } from '@keystonejs/app-graphql'
 import { AdminUIApp } from '@keystonejs/app-admin-ui'
 import { MongooseAdapter } from '@keystonejs/adapter-mongoose'
-import express from 'express'
+const dev = process.env.NODE_ENV !== 'production'
+const express = require('express')
+const next = require('next')
+const port = 3000
 
 export class App {
   public static keystone
+  public static server
   public static app
 
   public static async initialize() {
@@ -16,8 +20,9 @@ export class App {
       cookieSecret: 'supersecret',
     })
 
-    this.app = express()
+    this.server = express()
     this.keystone = keystone
+    this.app = next({ dev })
   }
 
   public static async start() {
@@ -26,25 +31,16 @@ export class App {
       list: 'User',
     })
 
-    const adminUiApp = new AdminUIApp({
-      authStrategy: process.env.DISABLE_AUTH === 'true' ? undefined : authStrategy,
-      apiPath: '/api',
-    })
-
-    const graphQlApp = new GraphQLApp({
-      authStrategy: [authStrategy],
-      apiPath: '/api',
-      graphiqlPath: '/admin/graphiql',
-    })
-
     const { middlewares } = await this.keystone.prepare({
-      apps: [graphQlApp, adminUiApp],
-      dev: process.env.NODE_ENV !== 'production',
+      apps: [new GraphQLApp(), new AdminUIApp(!dev && authStrategy)],
+      dev: dev,
     })
 
     await this.keystone.connect()
-    this.app.use(middlewares)
-    this.app.listen(5000)
-    console.info('\x1b[36m%s\x1b[0m', 'ready', `- started server on http://localhost:5000`)
+    await this.app.prepare()
+    this.server.use(middlewares)
+    this.server.all('*', (req, res) => this.app.getRequestHandler()(req, res))
+    this.server.listen(port)
+    console.info('\x1b[36m%s\x1b[0m', 'ready', `- started server on http://localhost:${port}`)
   }
 }
