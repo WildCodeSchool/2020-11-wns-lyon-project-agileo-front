@@ -7,7 +7,6 @@ import { MongooseAdapter } from '@keystonejs/adapter-mongoose'
 const dev = process.env.NODE_ENV !== 'production'
 const express = require('express')
 const next = require('next')
-const port = 3000
 
 export class App {
   public static keystone
@@ -16,7 +15,7 @@ export class App {
 
   public static async initialize() {
     const keystone = new Keystone({
-      adapter: new MongooseAdapter({ mongoUri: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/agileo' }),
+      adapter: new MongooseAdapter({ mongoUri: process.env.MONGO_URI }),
       cookieSecret: 'supersecret',
     })
 
@@ -32,7 +31,7 @@ export class App {
     })
 
     const { middlewares } = await this.keystone.prepare({
-      apps: [new GraphQLApp(), new AdminUIApp(!dev && authStrategy)],
+      apps: [new GraphQLApp(), new AdminUIApp({ authStrategy })],
       dev: dev,
     })
 
@@ -40,7 +39,7 @@ export class App {
     await this.app.prepare()
     this.server.use(middlewares)
     this.server.all('*', (req, res) => this.app.getRequestHandler()(req, res))
-    this.server.listen(port)
-    console.info('\x1b[36m%s\x1b[0m', 'ready', `- started server on http://localhost:${port}`)
+    this.server.listen(3000)
+    console.info('\x1b[36m%s\x1b[0m', 'ready', `- started server on http://localhost:3000`)
   }
 }

@@ -1,0 +1,35 @@
+.textarea {
+  width: 550px;
+  @apply mr-5 pl-3 pt-3 h-48;
+}
+.solution {
+  height: 450px;
+  background-color: #2ab1bf;
+  @apply w-3/5 m-auto  p-10;
+}
+.header {
+  background-color: #2ab1bf;
+  height: 70px;
+  @apply flex justify-between pt-2 pl-20 pr-20;
+}
+.footer {
+  background-color: #2ab1bf;
+  @apply h-16;
+}
+.title {
+  background-color: #2ab1bf;
+  @apply sm:text-center  lg:text-center min-h-screen;
+}
+
+.title2 {
+  background-color: #2ab1bf;
+  @apply p-16 pt-8 max-w-2xl;
+}
+.title3 {
+  background-color: #2ab1bf;
+  @apply p-24  rounded-full m-auto mt-24 h-2/4 w-2/4;
+}
+.login {
+  height: 85vh;
+  @apply bg-yellow-100 flex items-center justify-center;
+}
