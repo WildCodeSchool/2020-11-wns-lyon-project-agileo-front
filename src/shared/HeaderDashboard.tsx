@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import cx from 'classnames'
 import { useMutation, useQuery } from '@apollo/client'
 import isServer from 'helpers/isServer'
 import { UNAUTHENTICATE, AUTHENTICATED_USER } from 'src/login/ducks/graphql'
@@ -49,14 +48,7 @@ const HeaderDashboard = () => {
                   <div className="ml-10 flex items-baseline space-x-4">
                     {links.map(({ href, label }, key) => (
                       <Link key={key} href={href}>
-                        <a
-                          className={cx(
-                            'px-3 py-2 rounded-md text-sm font-medium focus:outline-none focus:text-white focus:bg-gray-700',
-                            router.asPath === href
-                              ? 'text-white bg-gray-900'
-                              : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                          )}
-                        >
+                        <a className="px-3 py-2 rounded-md text-sm font-medium focus:outline-none focus:text-white focus:bg-gray-700 text-gray-300 hover:text-white hover:bg-gray-700">
                           {label}
                         </a>
                       </Link>
@@ -120,14 +112,7 @@ const HeaderDashboard = () => {
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
               {links.map(({ href, label }, key) => (
                 <Link key={key} href={href}>
-                  <a
-                    className={cx(
-                      'block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:text-white focus:bg-gray-700',
-                      router.asPath === href
-                        ? 'text-white bg-gray-900'
-                        : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                    )}
-                  >
+                  <a className="block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:text-white focus:bg-gray-700 text-gray-300 hover:text-white hover:bg-gray-700">
                     {label}
                   </a>
                 </Link>
