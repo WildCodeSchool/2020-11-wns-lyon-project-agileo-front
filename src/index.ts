@@ -1,6 +1,7 @@
 export { default as chat } from './chat/ducks'
 export { default as teams } from './teams/ducks'
 export { default as profile } from './profile/ducks'
+export { default as meet } from './meet/ducks'
 export { default as login } from './login/ducks'
 export { default as drive } from './drive/ducks'
 export { default as dashboard } from './dashboard/ducks'

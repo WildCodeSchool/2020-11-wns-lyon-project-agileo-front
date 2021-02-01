@@ -1,12 +1,12 @@
 import * as types from './types'
 import { CustomAction } from 'domain/CustomAction'
-import { DashboardState } from './domain'
+import { MeetState } from './domain'
 
-const initialDashboardState: DashboardState = {
+const initialMeetState: MeetState = {
   example: '',
 }
 
-const reducer = (state: DashboardState = initialDashboardState, action: CustomAction<DashboardState>) => {
+const reducer = (state: MeetState = initialMeetState, action: CustomAction<MeetState>) => {
   switch (action.type) {
     case types.EXAMPLE:
       return {

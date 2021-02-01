@@ -1,19 +1,22 @@
 import { gql } from '@apollo/client'
 
-export const EXAMPLE = gql`
-  query example {
-    example {
-      id
-      name
+export const GET_EVENTS = gql`
+  query getEvents {
+    allEvents {
+      title
+      allDay
+      start
+      end
     }
   }
 `
 
-export const EXAMPLE1 = gql`
-  mutation example {
-    example {
+export const UPDATE_DRAG_EVENT = gql`
+  mutation updateEvent($id: ID!, $data: EventUpdateInput) {
+    updateEvent(id: $id, data: $data) {
       id
-      name
+      start
+      end
     }
   }
 `

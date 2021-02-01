@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.2.5",
+    "@devexpress/dx-react-core": "^2.7.4",
+    "@devexpress/dx-react-scheduler": "^2.7.4",
+    "@devexpress/dx-react-scheduler-material-ui": "^2.7.4",
     "@keystonejs/adapter-mongoose": "^10.1.1",
     "@keystonejs/app-admin-ui": "^7.3.12",
     "@keystonejs/app-graphql": "^6.2.0",
@@ -33,6 +36,7 @@
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "next": "10.0.1",
+    "nookies": "^2.5.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-intl": "^5.10.6",
@@ -82,14 +86,21 @@
     "printWidth": 120
   },
   "postcss": {
-    "plugins": ["tailwindcss", "autoprefixer"]
+    "plugins": [
+      "tailwindcss",
+      "autoprefixer"
+    ]
   },
   "babel": {
-    "presets": ["next/babel"]
+    "presets": [
+      "next/babel"
+    ]
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint"],
+    "plugins": [
+      "@typescript-eslint"
+    ],
     "extends": [
       "eslint:recommended",
       "plugin:react/recommended",
@@ -114,8 +125,22 @@
       "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/no-var-requires": 0,
       "@typescript-eslint/no-use-before-define": 0,
-      "@typescript-eslint/no-unused-vars": [2, {"argsIgnorePattern": "^_"}],
-      "no-console": [2, {"allow": ["warn", "error", "info"]}]
+      "@typescript-eslint/no-unused-vars": [
+        2,
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ],
+      "no-console": [
+        2,
+        {
+          "allow": [
+            "warn",
+            "error",
+            "info"
+          ]
+        }
+      ]
     }
   }
 }
