@@ -1,0 +1,257 @@
+
+    .contact {
+        padding: 1em;
+        background: #e17c41;
+        width: auto;
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    /* Contact image */
+    .avatar {
+        border-radius: 50%;
+        margin-right: 1em;
+        width: 48px;
+        height: 48px;
+    }
+    
+    /* Name */
+    .name {
+        margin: 0 0 0.25rem;
+        color: #eee;
+    }
+    
+    /* Status text */
+    .status .status-text {
+        color: #999;
+        margin: 0;
+        display: inline-block;
+    }
+    
+    /* Status (rounded&colored indicator) */
+    .status .status_online,
+    .status .status_offline {
+        display: inline-block;
+        border-radius: 50%;
+        width: 8px;
+        height: 8px;
+        margin-right: 6px;
+    }
+    
+    .status .status-online {
+        background: #aed581;
+    }
+    
+    .status .status-offline {
+        background: #f4511e;
+    }
+    
+.user_welcome {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.user_heading {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 17px;
+    font-size: 20px
+}
+
+.select_user {
+    background-color: #ffffff;
+    color: white;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+
+
+.personal_chat {
+    width: 100%;
+    background-color: ghostwhite;
+}
+
+.chats_header {
+    height: 50px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    background-color: #e17c41;
+    top: 0;
+}
+.online {
+    height: 15px;
+    width: 15px;
+    border-radius: 10px;
+    background-color: rgb(0, 255, 42);
+    float: right;
+    margin-top: 0.5vh;
+}
+
+.offline {
+    height: 15px;
+    width: 15px;
+    border-radius: 10px;
+    background-color: rgb(255, 0, 0);
+    float: right;
+    margin-top: 0.5vh;
+}
+
+.back_button {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bar1, .bar2, .bar3 {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 3px;
+}
+
+.all_messages {
+    min-height: calc(80vh - 60px);
+    margin-top: 55px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.sender, .receiver {
+    font-family: "Montserrat", sans-serif;
+    border: 2px solid #dedede;
+    border-radius: 4px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    padding: 10px;
+    min-width: 40%;
+    max-width: 60%;
+    box-shadow: 0px 2px 4px 0px rgba(100, 100, 100, 0.3);
+}
+
+.sender {
+    align-items: flex-end;
+    margin-left: auto;
+}
+
+.receiver {
+    align-items: flex-start;
+    margin-right: auto;
+}
+
+.users {
+    cursor: pointer;
+    margin: 10px 5px;
+    padding: 10px;
+    border-bottom: 1px solid rgba(248, 245, 245, 0.5);
+    display: flex;
+    
+}
+
+.users:hover {
+    background-color: rgb(240, 240, 223);
+    color: black;
+}
+/*   button:active {
+    background-color: rgb(33, 131, 153);
+    color: rgb(163, 52, 52);
+}
+    */
+.select_message {
+    text-align: center;
+    font-weight: bold;
+}
+
+.chat_box {
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.MuiOutlinedInput-root-41 {
+    border: 1px solid gray;
+}
+
+.MuiFormControl-fullWidth-40 {
+    background-color: white;
+}
+
+.sender_name {
+    font-weight: bold;
+    font-family: "Open Sans";
+    padding-bottom: 5px;
+}
+
+.paper {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.text_area {
+    border: 10px;
+}
+
+.leave {
+    cursor: pointer;
+}
+
+.time {
+    font-style: italic;
+    font-size: 0.8em;
+    color: rgba(24, 75, 216, 0.9);
+    padding-top: 3px;
+}
+
+.user_typing  {
+    width: 50%;
+    padding: 10px;
+    color: white;
+}
+
+@media (min-width: 768px) {
+
+    .chat_page {
+    display: flex;
+    flex-flow: row nowrap
+    }
+    .user_welcome {
+    display: block !important;
+    
+    width: 30%;
+    border-right: 1px solid skyblue;
+    overflow-y: auto;
+    }
+    .personal_chat {
+    display: block !important;
+    width: 70%;
+    float: right;
+    }
+    .back_button {
+    display: none !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .user_welcome {
+    width: 25%
+    }
+    .personal_chat {
+    width: 75%
+    }
+} 

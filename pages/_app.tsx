@@ -1,4 +1,5 @@
 import 'tailwindcss/tailwind.css'
+
 import { ApolloProvider } from '@apollo/client'
 import { AppProps } from 'next/app'
 import React from 'react'
