@@ -80,17 +80,17 @@ const Message = props => {
 
     const sendMessage = (e) => {
         const message = e.target.value
-            /* sendAndUpdateMessages({
-                fromUserId: userId,
-                message: (message).trim(),
-                toUserId: newSelectedUser.id,
-            }); */
-            setMessages(messages => [...messages,{  message: message }]);
-            socket.emit("add-message", messages);
+        /* sendAndUpdateMessages({
+            fromUserId: userId,
+            message: (message).trim(),
+            toUserId: newSelectedUser.id,
+        }); */
+        setMessages(messages => [...messages, { message: message }]);
+        socket.emit("add-message", messages);
     }
 
     const sendAndUpdateMessages = (message) => {
-        
+
         try {
             ChatSocketServer.sendMessage(message);
             setMessages({
@@ -102,16 +102,16 @@ const Message = props => {
         }
     }
 
-    
+
 
     const handleChange = async e => {
         setMessages([
-        {
-            message: e.target.value,
-            fromUserId: props.email,
-            toUserId: "String",
-            timestamp: moment().format()
-        }
+            {
+                message: e.target.value,
+                fromUserId: props.email,
+                toUserId: "String",
+                timestamp: moment().format()
+            }
         ]);
     };
 
