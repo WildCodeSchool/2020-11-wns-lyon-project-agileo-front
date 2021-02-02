@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useMutation, useQuery } from '@apollo/client'
-import { UNAUTHENTICATE, AUTHENTICATED_USER } from 'src/login/ducks/graphql'
+import { useMutation } from '@apollo/client'
+import { UNAUTHENTICATE } from 'src/login/ducks/graphql'
 
 const HeaderDashboard = () => {
   const [show, setShow] = useState(false)

@@ -45,7 +45,7 @@ export class App {
     const server = http.Server(this.Appexpress)
     const io = require('socket.io')(server, { cors: { origin: '*', } });
     server.listen(port)
-    io.on('connection', (socket) => { console.log(`🧦)  Socket is running on port ${port}`)});
+    io.on('connection', () => { console.log(`🧦)  Socket is running on port ${port}`)});
     console.log(`🚀 Server is running on port ${port}`)
     console.log(`🤖 API available on http://localhost:${port}/api`)
     console.log(`📈 Admin client http://localhost:${port}/admin`)
