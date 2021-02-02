@@ -2,13 +2,11 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useMutation, useQuery } from '@apollo/client'
-import isServer from 'helpers/isServer'
 import { UNAUTHENTICATE, AUTHENTICATED_USER } from 'src/login/ducks/graphql'
 
 const HeaderDashboard = () => {
   const [show, setShow] = useState(false)
   const router = useRouter()
-  const { data: { authenticatedUser } = {} } = useQuery(AUTHENTICATED_USER)
   const [unauthenticate] = useMutation(UNAUTHENTICATE, { refetchQueries: ['authenticatedUser'] })
 
 
