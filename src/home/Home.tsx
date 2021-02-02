@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import style from './Home.module.css'
 
@@ -29,7 +28,7 @@ const Home = () => {
           <div className={style.solution}>
             <div className="flex justify-center pt-4">
               <h4 className="mr-6 text-5xl text-yellow-400">Notre solution</h4>
-              <Image src="/home/036-kitty-14.svg" alt="Logo" width={100} height={100} />
+              <img src="/home/036-kitty-14.svg" alt="Logo" width={100} height={100} />
             </div>
             <p className="pt-8">
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
@@ -46,7 +45,7 @@ const Home = () => {
             <h4 className="pb-16 text-5xl text-yellow-400">Title</h4>
             <div className="flex justify-around items-center">
               <div>
-                <Image src="/home/038-success.svg" alt="learn 1" width={200} height={200} />
+                <img src="/home/038-success.svg" alt="learn 1" width={200} height={200} />
                 <h6 className="text-white font-medium text-2xl mb-4 mt-8">Title</h6>
                 <p className="w-4/5 m-auto">
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
@@ -58,7 +57,7 @@ const Home = () => {
                 </p>
               </div>
               <div>
-                <Image src="/home/041-timetable.svg" alt="learn 2" width={200} height={200} />
+                <img src="/home/041-timetable.svg" alt="learn 2" width={200} height={200} />
                 <h6 className="text-white font-medium text-2xl mb-4 mt-8">Title</h6>
                 <p className="w-4/5 m-auto">
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
@@ -70,7 +69,7 @@ const Home = () => {
                 </p>
               </div>
               <div>
-                <Image src="/home/042-video lesson.svg" alt="learn 3" width={200} height={200} />
+                <img src="/home/042-video lesson.svg" alt="learn 3" width={200} height={200} />
                 <h6 className="text-white font-medium text-2xl mb-4 mt-8">Title</h6>
                 <p className="w-4/5 m-auto">
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
@@ -98,7 +97,7 @@ const Home = () => {
               </p>
             </div>
             <div>
-              <Image src="/home/042-video lesson.svg" alt="Logo" width={200} height={200} />
+              <img src="/home/042-video lesson.svg" alt="Logo" width={200} height={200} />
             </div>
           </div>
           <div className={style.title3}>
@@ -112,7 +111,7 @@ const Home = () => {
                 Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
                 Aldus PageMaker including versions of Lorem Ipsum.
               </p>
-              <Image src="/home/016-kitty-33.svg" alt="Logo" width={150} height={150} />
+              <img src="/home/016-kitty-33.svg" alt="Logo" width={150} height={150} />
             </div>
           </div>
           <form onSubmit={sub} className="m-auto mt-14 max-w-7xl pb-16">

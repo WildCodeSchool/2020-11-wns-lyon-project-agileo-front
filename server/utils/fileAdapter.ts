@@ -1,6 +1,6 @@
 import { S3Adapter } from '@keystonejs/file-adapters'
 
-export const fileAdapter = new S3Adapter({
+export const Adapter = new S3Adapter({
   bucket: process.env.BUCKET,
   folder: process.env.FOLDER,
   publicUrl: ({ filename, _meta }) =>

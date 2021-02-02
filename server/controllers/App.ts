@@ -35,18 +35,6 @@ export class App {
       list: 'User',
     })
 
-    const adminUiApp = new AdminUIApp({
-      name: 'Agileo',
-      authStrategy: process.env.DISABLE_AUTH === 'true' ? undefined : authStrategy,
-      apiPath: '/api',
-    })
-
-    const graphQlApp = new GraphQLApp({
-      authStrategy: [authStrategy],
-      apiPath: '/api',
-      graphiqlPath: '/admin/graphiql',
-    })
-
     const { middlewares } = await this.keystone.prepare({
       apps: [new GraphQLApp(), new AdminUIApp({ authStrategy })],
       dev,
@@ -60,7 +48,6 @@ export class App {
     const port = process.env.PORT || 3000
     const server = http.Server(this.Appexpress)
     const io = require('socket.io')(server, { cors: { origin: '*', } });
-    const url = 'mongodb://127.0.0.1:27017/agileo';
 
    server.listen(port)
     io.on('connection', (socket) => {
