@@ -5,6 +5,7 @@ App.keystone.createList('User', {
   labelField: 'name',
   fields: {
     name: { type: Text, isRequired: true },
+    avatar: { type: Text, isRequired: true },
     email: {
       type: Text,
       isUnique: true,

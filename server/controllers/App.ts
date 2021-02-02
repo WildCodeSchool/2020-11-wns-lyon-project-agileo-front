@@ -1,27 +1,32 @@
-require('dotenv').config()
 import { Keystone } from '@keystonejs/keystone'
 import { PasswordAuthStrategy } from '@keystonejs/auth-password'
 import { GraphQLApp } from '@keystonejs/app-graphql'
 import { AdminUIApp } from '@keystonejs/app-admin-ui'
 import { MongooseAdapter } from '@keystonejs/adapter-mongoose'
+const express = require('express');
+const http = require('http');
 const dev = process.env.NODE_ENV !== 'production'
-const express = require('express')
 const next = require('next')
+
+
 
 export class App {
   public static keystone
-  public static server
-  public static app
+  public static Appexpress
+  public static next
 
   public static async initialize() {
     const keystone = new Keystone({
-      adapter: new MongooseAdapter({ mongoUri: process.env.MONGO_URI }),
+      name: 'Agileo',
+      adapter: new MongooseAdapter({
+        mongoUri: 'mongodb://127.0.0.1:27017/agileo',
+      }),
       cookieSecret: 'supersecret',
     })
 
-    this.server = express()
+    this.Appexpress = express()
     this.keystone = keystone
-    this.app = next({ dev })
+    this.next = next({ dev })
   }
 
   public static async start() {
@@ -30,16 +35,40 @@ export class App {
       list: 'User',
     })
 
-    const { middlewares } = await this.keystone.prepare({
-      apps: [new GraphQLApp(), new AdminUIApp({ authStrategy })],
-      dev: dev,
+    const adminUiApp = new AdminUIApp({
+      name: 'Agileo',
+      authStrategy: process.env.DISABLE_AUTH === 'true' ? undefined : authStrategy,
+      apiPath: '/api',
     })
 
+    const graphQlApp = new GraphQLApp({
+      authStrategy: [authStrategy],
+      apiPath: '/api',
+      graphiqlPath: '/admin/graphiql',
+    })
+
+    const { middlewares } = await this.keystone.prepare({
+      apps: [new GraphQLApp(), new AdminUIApp({ authStrategy })],
+      dev,
+    })
+
+
     await this.keystone.connect()
-    await this.app.prepare()
-    this.server.use(middlewares)
-    this.server.all('*', (req, res) => this.app.getRequestHandler()(req, res))
-    this.server.listen(3000)
-    console.info('\x1b[36m%s\x1b[0m', 'ready', `- started server on http://localhost:3000`)
+    await this.next.prepare()
+    this.Appexpress.use(middlewares)
+    this.Appexpress.all('*', (req, res) => this.next.getRequestHandler()(req, res))
+    const port = process.env.PORT || 3000
+    const server = http.Server(this.Appexpress)
+    const io = require('socket.io')(server, { cors: { origin: '*', } });
+    const url = 'mongodb://127.0.0.1:27017/agileo';
+
+   server.listen(port)
+    io.on('connection', (socket) => {
+      console.log(`🧦;)  Socket is running on port ${port}`)
+    });
+ 
+    console.log(`🚀 Server is running on port ${port}`)
+    console.log(`🤖 API available on http://localhost:${port}/api`)
+    console.log(`📈 Admin client http://localhost:${port}/admin`)
   }
 }

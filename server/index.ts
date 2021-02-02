@@ -9,7 +9,7 @@ App.initialize().then(async () => {
     await import(`./models/${model}`)
   }
 
-  App.server.use(apiRouter)
+  App.Appexpress.use(apiRouter)
   App.start()
 })
 

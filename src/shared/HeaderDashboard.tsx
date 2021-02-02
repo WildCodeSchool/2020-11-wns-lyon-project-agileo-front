@@ -11,9 +11,7 @@ const HeaderDashboard = () => {
   const router = useRouter()
   const { data: { authenticatedUser } = {} } = useQuery(AUTHENTICATED_USER)
   const [unauthenticate] = useMutation(UNAUTHENTICATE, { refetchQueries: ['authenticatedUser'] })
-  if (!isServer() && !authenticatedUser) {
-    router.push('/login')
-  }
+
 
   const links = [
     { href: '/schoolName/dashboard', label: 'Dashboard' },
