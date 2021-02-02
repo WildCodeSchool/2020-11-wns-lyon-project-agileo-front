@@ -1,8 +1,11 @@
 import React from 'react'
-import Chat from 'src/chat'
 
-const ChatPage = () => {
-  return <Chat />
+const Chat = () => {
+  return (
+    <>
+      <div className="text-center text-5xl">chat</div>
+    </>
+  )
 }
 
-export default ChatPage
+export default Chat

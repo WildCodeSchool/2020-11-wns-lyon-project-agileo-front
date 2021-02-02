@@ -1,4 +1,3 @@
-require('dotenv').config()
 import { Keystone } from '@keystonejs/keystone'
 import { PasswordAuthStrategy } from '@keystonejs/auth-password'
 import { GraphQLApp } from '@keystonejs/app-graphql'
@@ -6,12 +5,13 @@ import { AdminUIApp } from '@keystonejs/app-admin-ui'
 import { MongooseAdapter } from '@keystonejs/adapter-mongoose'
 const dev = process.env.NODE_ENV !== 'production'
 const express = require('express')
+const http = require('http')
 const next = require('next')
 
 export class App {
   public static keystone
-  public static server
-  public static app
+  public static express
+  public static next
 
   public static async initialize() {
     const keystone = new Keystone({
@@ -19,9 +19,9 @@ export class App {
       cookieSecret: 'supersecret',
     })
 
-    this.server = express()
+    this.express = express()
     this.keystone = keystone
-    this.app = next({ dev })
+    this.next = next({ dev })
   }
 
   public static async start() {
@@ -36,10 +36,15 @@ export class App {
     })
 
     await this.keystone.connect()
-    await this.app.prepare()
-    this.server.use(middlewares)
-    this.server.all('*', (req, res) => this.app.getRequestHandler()(req, res))
-    this.server.listen(3000)
-    console.info('\x1b[36m%s\x1b[0m', 'ready', `- started server on http://localhost:3000`)
+    await this.next.prepare()
+    this.express.use(middlewares)
+    this.express.all('*', (req, res) => this.next.getRequestHandler()(req, res))
+    const server = http.Server(this.express)
+    const io = require('socket.io')(server, { cors: { origin: '*' } })
+    server.listen(3000)
+    io.on('connection', () => {
+      console.log('🧦 Socket is running on port 3000')
+    })
+    console.log('🚀 Server is running on port 3000')
   }
 }
