@@ -43,8 +43,8 @@ export class App {
     const io = require('socket.io')(server, { cors: { origin: '*' } })
     server.listen(3000)
     io.on('connection', () => {
-      console.info('🧦 Socket is running on port 3000')
+      console.log('🧦 Socket is running on port 3000')
     })
-    console.info('🚀 Server is running on port 3000')
+    console.log('🚀 Server is running on port 3000')
   }
 }

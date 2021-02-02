@@ -1,8 +1,11 @@
 import React from 'react'
-import Drive from 'src/drive'
 
-const DrivePage = () => {
-  return <Drive />
+const Drive = () => {
+  return (
+    <>
+      <div className="text-center text-5xl">file manager</div>
+    </>
+  )
 }
 
-export default DrivePage
+export default Drive

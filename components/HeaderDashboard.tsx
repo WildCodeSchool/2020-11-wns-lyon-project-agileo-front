@@ -1,8 +1,15 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useMutation } from '@apollo/client'
-import { UNAUTHENTICATE } from 'src/login/ducks/graphql'
+import { gql, useMutation } from '@apollo/client'
+
+const UNAUTHENTICATE = gql`
+  mutation {
+    unauthenticateUser {
+      success
+    }
+  }
+`
 
 const HeaderDashboard = () => {
   const [show, setShow] = useState(false)
@@ -79,7 +86,7 @@ const HeaderDashboard = () => {
                             </li>
                           </Link>
                           <li
-                            onClick={() => unauthenticate()}
+                            onClick={() => unauthenticate() && router.push('/login')}
                             className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-3 hover:bg-gray-100 px-3 font-normal"
                           >
                             Sign Out

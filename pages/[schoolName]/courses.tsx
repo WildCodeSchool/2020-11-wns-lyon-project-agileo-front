@@ -1,8 +1,11 @@
 import React from 'react'
-import Courses from 'src/courses'
 
-const CoursesPage = () => {
-  return <Courses />
+const Courses = () => {
+  return (
+    <>
+      <div className="text-center text-5xl">courses</div>
+    </>
+  )
 }
 
-export default CoursesPage
+export default Courses

@@ -6,8 +6,8 @@
     "dev": "nodemon server/index.ts",
     "build": "next build && next export",
     "type-check": "tsc --pretty --noEmit",
-    "format": "prettier --write \"{src,pages,server}/**/*.{ts,tsx}\"",
-    "lint": "eslint --ext ts --ext tsx --ext js \"{src,pages,server}/**/*.{ts,tsx}\""
+    "format": "prettier --write \"{components,config,pages,server}/**/*.{ts,tsx}\"",
+    "lint": "eslint --ext ts --ext tsx --ext js \"{components,config,pages,server}/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",
@@ -30,7 +30,8 @@
     "react-dom": "17.0.1",
     "react-redux": "^7.1.0",
     "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "socket.io": "^3.1.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.11",
@@ -106,8 +107,7 @@
       "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/no-var-requires": 0,
       "@typescript-eslint/no-use-before-define": 0,
-      "@typescript-eslint/no-unused-vars": [2, {"argsIgnorePattern": "^_"}],
-      "no-console": [2, {"allow": ["warn", "error", "info"]}]
+      "@typescript-eslint/no-unused-vars": [2, {"argsIgnorePattern": "^_"}]
     }
   }
 }
