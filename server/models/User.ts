@@ -8,7 +8,6 @@ App.keystone.createList('User', {
     isValidated: { type: Checkbox },
     isOnline: { type: Checkbox },
     isProf: { type: Checkbox },
-    avatar: { type: Text, isRequired: true },
     subject: { type: Text },
     lastName: { type: Text },
     firstName: { type: Text, isRequired: true },

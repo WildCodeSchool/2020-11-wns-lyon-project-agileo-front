@@ -9,7 +9,6 @@ const HeaderDashboard = () => {
   const router = useRouter()
   const [unauthenticate] = useMutation(UNAUTHENTICATE, { refetchQueries: ['authenticatedUser'] })
 
-
   const links = [
     { href: '/schoolName/dashboard', label: 'Dashboard' },
     { href: '/schoolName/teams', label: 'Teams' },
