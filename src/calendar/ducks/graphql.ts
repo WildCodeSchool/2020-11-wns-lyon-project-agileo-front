@@ -4,19 +4,33 @@ export const GET_EVENTS = gql`
   query getEvents {
     allEvents {
       title
-      allDay
       start
       end
+      id
+      rRules
+      localtion
+      type
     }
   }
 `
 
-export const UPDATE_DRAG_EVENT = gql`
+export const UPDATE_EVENT = gql`
   mutation updateEvent($id: ID!, $data: EventUpdateInput) {
     updateEvent(id: $id, data: $data) {
-      id
+      title
       start
       end
+      rRules
+      localtion
+      type
+    }
+  }
+`
+
+export const DELETE_EVENT = gql`
+  mutation DeleteEvent($id: ID!, $data: EventDeleteInput) {
+    DeleteEvent(id: $id, data: $data) {
+      id
     }
   }
 `

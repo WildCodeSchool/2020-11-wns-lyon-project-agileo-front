@@ -10,15 +10,16 @@ import {
   DateNavigator,
   TodayButton,
   AppointmentTooltip,
+  AppointmentForm,
   DragDropProvider,
   EditRecurrenceMenu,
 } from '@devexpress/dx-react-scheduler-material-ui'
-//import { GET_EVENTS, UPDATE_DRAG_EVENT } from './ducks/graphql';
+//import { GET_EVENTS, UPDATE_EVENT, DELETE_EVENT } from './ducks/graphql';
 //import { useMutation, useQuery } from '@apollo/client';
 
 const CalendarComponent: React.SFC = () => {
-  //const [dragEventUpdate] = useMutation(UPDATE_DRAG_EVENT)
-  //dragEventUpdate({ variables: { id: idx, data: {start: updatedEvent.start, end: updatedEvent.end}}})
+  //const [EventUpdate] = useMutation(UPDATE_EVENT)
+  //EventUpdate({ variables: { id: idx, data: {start: updatedEvent.start, end: updatedEvent.end}}})
   const [currentDate, setCurrentDate] = useState<SchedulerDateTime>(new Date())
   const [appointments, setAppointments] = useState<any[]>([])
   const [refreshTable, setRefreshTable] = useState<boolean>(true)
@@ -73,7 +74,11 @@ const CalendarComponent: React.SFC = () => {
     setCurrentDate(currentDate)
   }
 
-  const commitChanges = ({ added, changed, deleted }) => {
+  const commitChanges = ({ added, changed, deleted }: AppointmentModel) => {
+    // console.log(':o')
+    // console.log('%cCalendarComponent.tsx line:79 added', 'color: white; background-color: #007acc;', added);
+    // console.log('%cCalendarComponent.tsx line:80 changed', 'color: white; background-color: #007acc;', changed);
+    // console.log('%cCalendarComponent.tsx line:81 deleted', 'color: white; background-color: #007acc;', deleted);
     let data = appointments
     if (added) {
       const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0
@@ -104,8 +109,9 @@ const CalendarComponent: React.SFC = () => {
         <EditRecurrenceMenu />
         <Appointments />
         <AppointmentTooltip showOpenButton />
+        <AppointmentForm />
         <DragDropProvider />
-        <Resources data={resources} />
+        <Resources data={resources} mainResourceName="type" />
       </Scheduler>
     </Paper>
   )

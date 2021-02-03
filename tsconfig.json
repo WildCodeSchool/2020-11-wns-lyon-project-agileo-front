@@ -32,5 +32,5 @@
     }
   },
   "exclude": ["node_modules", "next.config.js", ".next", "out"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/calendar/index.tsx"]
 }
