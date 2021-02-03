@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import cx from 'classnames'
-import { useMutation, useQuery } from '@apollo/client'
-import isServer from 'helpers/isServer'
-import { UNAUTHENTICATE, AUTHENTICATED_USER } from 'src/login/ducks/graphql'
+import { gql, useMutation } from '@apollo/client'
+
+const UNAUTHENTICATE = gql`
+  mutation {
+    unauthenticateUser {
+      success
+    }
+  }
+`
 
 const HeaderDashboard = () => {
   const [show, setShow] = useState(false)
   const router = useRouter()
-  const { data: { authenticatedUser } = {} } = useQuery(AUTHENTICATED_USER)
   const [unauthenticate] = useMutation(UNAUTHENTICATE, { refetchQueries: ['authenticatedUser'] })
-  if (!isServer() && !authenticatedUser) {
-    router.push('/login')
-  }
 
   const links = [
     { href: '/schoolName/dashboard', label: 'Dashboard' },
@@ -49,14 +50,7 @@ const HeaderDashboard = () => {
                   <div className="ml-10 flex items-baseline space-x-4">
                     {links.map(({ href, label }, key) => (
                       <Link key={key} href={href}>
-                        <a
-                          className={cx(
-                            'px-3 py-2 rounded-md text-sm font-medium focus:outline-none focus:text-white focus:bg-gray-700',
-                            router.asPath === href
-                              ? 'text-white bg-gray-900'
-                              : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                          )}
-                        >
+                        <a className="px-3 py-2 rounded-md text-sm font-medium focus:outline-none focus:text-white focus:bg-gray-700 text-gray-300 hover:text-white hover:bg-gray-700">
                           {label}
                         </a>
                       </Link>
@@ -92,7 +86,7 @@ const HeaderDashboard = () => {
                             </li>
                           </Link>
                           <li
-                            onClick={() => unauthenticate()}
+                            onClick={() => unauthenticate() && router.push('/login')}
                             className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-3 hover:bg-gray-100 px-3 font-normal"
                           >
                             Sign Out
@@ -120,14 +114,7 @@ const HeaderDashboard = () => {
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
               {links.map(({ href, label }, key) => (
                 <Link key={key} href={href}>
-                  <a
-                    className={cx(
-                      'block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:text-white focus:bg-gray-700',
-                      router.asPath === href
-                        ? 'text-white bg-gray-900'
-                        : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                    )}
-                  >
+                  <a className="block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:text-white focus:bg-gray-700 text-gray-300 hover:text-white hover:bg-gray-700">
                     {label}
                   </a>
                 </Link>
