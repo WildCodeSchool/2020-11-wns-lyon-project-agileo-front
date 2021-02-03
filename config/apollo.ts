@@ -3,13 +3,12 @@ import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from '@a
 import { concatPagination } from '@apollo/client/utilities'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
-import isServer from 'src/shared/helpers/isServer'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
 function createApolloClient() {
   return new ApolloClient({
-    ssrMode: isServer(),
+    ssrMode: typeof window === 'undefined',
     link: new HttpLink({
       uri: '/admin/api',
       credentials: 'include',
@@ -38,7 +37,7 @@ export function initializeApollo(initialState: any = null) {
     })
     _apolloClient.cache.restore(data)
   }
-  if (isServer()) return _apolloClient
+  if (typeof window === 'undefined') return _apolloClient
   if (!apolloClient) apolloClient = _apolloClient
   return _apolloClient
 }

@@ -3,9 +3,9 @@ import { ApolloProvider } from '@apollo/client'
 import { AppProps } from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { useStore } from 'src/shared/lib/store'
-import { useApollo } from 'src/shared/lib/apollo'
-import HeaderDashboard from 'src/shared/HeaderDashboard'
+import { useStore } from 'config/store'
+import { useApollo } from 'config/apollo'
+import HeaderDashboard from 'components/HeaderDashboard'
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const store = useStore(pageProps.initialReduxState)

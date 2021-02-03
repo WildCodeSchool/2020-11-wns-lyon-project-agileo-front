@@ -1,6 +1,6 @@
 import { App } from '../controllers/App'
 import { Checkbox, File, Password, Text, Select, Relationship } from '@keystonejs/fields'
-import { Adapter } from '../utils/fileAdapter'
+import { Adapter } from '../../config/adapter'
 
 App.keystone.createList('User', {
   labelField: 'firstName',

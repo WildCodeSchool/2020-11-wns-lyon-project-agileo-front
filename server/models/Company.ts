@@ -1,6 +1,6 @@
 import { App } from '../controllers/App'
 import { Text, File } from '@keystonejs/fields'
-import { Adapter } from '../utils/fileAdapter'
+import { Adapter } from '../../config/adapter'
 
 App.keystone.createList('Company', {
   fields: {

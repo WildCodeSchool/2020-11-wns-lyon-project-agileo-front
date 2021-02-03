@@ -25,10 +25,8 @@
     "strictNullChecks": true,
     "experimentalDecorators": true,
     "paths": {
-      "src/*": ["./src/*"],
-      "domain/*": ["./src/shared/domain/*"],
-      "helpers/*": ["./src/shared/helpers/*"],
-      "lib/*": ["./src/shared/lib/*"]
+      "components/*": ["./components/*"],
+      "config/*": ["./config/*"]
     }
   },
   "exclude": ["node_modules", "next.config.js", ".next", "out"],

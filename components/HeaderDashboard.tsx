@@ -1,14 +1,29 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+<<<<<<< HEAD:src/shared/HeaderDashboard.tsx
 import { useMutation } from '@apollo/client'
 import { UNAUTHENTICATE } from 'src/login/ducks/graphql'
+=======
+import { gql, useMutation } from '@apollo/client'
+
+const UNAUTHENTICATE = gql`
+  mutation {
+    unauthenticateUser {
+      success
+    }
+  }
+`
+>>>>>>> 5e33c160f661294d977b03c8a9b60ac6c42fe677:components/HeaderDashboard.tsx
 
 const HeaderDashboard = () => {
   const [show, setShow] = useState(false)
   const router = useRouter()
   const [unauthenticate] = useMutation(UNAUTHENTICATE, { refetchQueries: ['authenticatedUser'] })
+<<<<<<< HEAD:src/shared/HeaderDashboard.tsx
 
+=======
+>>>>>>> 5e33c160f661294d977b03c8a9b60ac6c42fe677:components/HeaderDashboard.tsx
 
   const links = [
     { href: '/schoolName/dashboard', label: 'Dashboard' },
@@ -80,7 +95,7 @@ const HeaderDashboard = () => {
                             </li>
                           </Link>
                           <li
-                            onClick={() => unauthenticate()}
+                            onClick={() => unauthenticate() && router.push('/login')}
                             className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-3 hover:bg-gray-100 px-3 font-normal"
                           >
                             Sign Out

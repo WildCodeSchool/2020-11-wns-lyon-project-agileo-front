@@ -10,7 +10,7 @@ const next = require('next')
 
 export class App {
   public static keystone
-  public static Appexpress
+  public static express
   public static next
 
   public static async initialize() {
@@ -22,7 +22,7 @@ export class App {
       cookieSecret: 'supersecret',
     })
 
-    this.Appexpress = express()
+    this.express = express()
     this.keystone = keystone
     this.next = next({ dev })
   }
@@ -39,15 +39,14 @@ export class App {
     })
     await this.keystone.connect()
     await this.next.prepare()
-    this.Appexpress.use(middlewares)
-    this.Appexpress.all('*', (req, res) => this.next.getRequestHandler()(req, res))
-    const port = process.env.PORT || 3000
-    const server = http.Server(this.Appexpress)
-    const io = require('socket.io')(server, { cors: { origin: '*', } });
-    server.listen(port)
-    io.on('connection', () => { console.log(`🧦)  Socket is running on port ${port}`)});
-    console.log(`🚀 Server is running on port ${port}`)
-    console.log(`🤖 API available on http://localhost:${port}/api`)
-    console.log(`📈 Admin client http://localhost:${port}/admin`)
+    this.express.use(middlewares)
+    this.express.all('*', (req, res) => this.next.getRequestHandler()(req, res))
+    const server = http.Server(this.express)
+    const io = require('socket.io')(server, { cors: { origin: '*' } })
+    server.listen(3000)
+    io.on('connection', () => {
+      console.log('🧦 Socket is running on port 3000')
+    })
+    console.log('🚀 Server is running on port 3000')
   }
 }
