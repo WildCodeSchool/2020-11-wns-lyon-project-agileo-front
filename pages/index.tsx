@@ -1,8 +1,8 @@
 import React from 'react'
 import style from '../styles/home.module.css'
-import NavBar from "components/NavBar";
-import {createStyles, makeStyles} from "@material-ui/core/styles";
-import {Box, Container} from "@material-ui/core";
+import NavBar from 'components/NavBar'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
+import { Box, Container, Grid, Typography } from '@material-ui/core'
 
 const func = () => {
   return ''
@@ -14,74 +14,91 @@ const sub = (e: React.FormEvent) => {
 }
 
 const useStyles = makeStyles(() =>
-    createStyles({
-      solution: {
-        height: 'calc(100vh - 84px)',
-        marginTop: '84px'
-      },
-    }),
-);
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    firstContent: {
+      height: 'calc(100vh - 84px)',
+      marginTop: '84px',
+      backgroundColor: 'white',
+    },
+    container: {
+      height: 'calc(100vh - 84px)',
+      backgroundColor: '#2AB1BF',
+      padding: '1.2rem',
+    },
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
+  })
+)
 
 const Home = () => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
-    <>
+    <Box className="bg-light-grey">
       <NavBar />
       <Container>
-          <Box className={classes.solution}>
-              <h4>Notre solution</h4>
-            <p>
+        <Grid container direction="column" justify="center" alignItems="center" className={classes.firstContent}>
+          <Grid item md={8} className={classes.content}>
+            <Typography variant="h4" align="center" className="color-yellow">
+              Notre solution
+            </Typography>
+            <Typography align="justify" variant="body1">
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
               standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
               to make a type specimen book. It has survived not only five centuries, but also the leap into electronic
               typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
               sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
               PageMaker including versions of Lorem Ipsum.
-            </p>
-          </Box>
-        <section className={style.title}>
-          <div className="h-middleHeight pt-10">
-            <h4 className="pb-16 text-5xl text-yellow-400">Title</h4>
-            <div className="flex justify-around items-center">
-              <div>
-                <img src="/038-success.svg" alt="learn 1" width={200} height={200} />
-                <h6 className="text-white font-medium text-2xl mb-4 mt-8">Title</h6>
-                <p className="w-4/5 m-auto">
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container alignItems="center" className={classes.container}>
+          <Grid item xs={12}>
+            <Typography variant="h4" align="center" className="color-yellow">
+              Des possibilités infinies
+            </Typography>
+            <Grid container direction="row" justify="center" spacing={5}>
+              <Grid item md={4} className="flex column align-center">
+                <img src="img/038-success.svg" alt="learn 1" width={200} height={200} />
+                <Typography variant="h5" className="color-light-yellow">
+                  Title
+                </Typography>
+                <Typography align="justify" variant="body1" className="color-white">
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
                   standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled
-                  it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                  electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-                  release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                  software like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-              </div>
-              <div>
-                <img src="/041-timetable.svg" alt="learn 2" width={200} height={200} />
-                <h6 className="text-white font-medium text-2xl mb-4 mt-8">Title</h6>
-                <p className="w-4/5 m-auto">
+                  it to make a type specimen book.
+                </Typography>
+              </Grid>
+              <Grid item md={4} className="flex column align-center">
+                <img src="img/038-success.svg" alt="learn 1" width={200} height={200} />
+                <Typography variant="h5" className="color-light-yellow">
+                  Title
+                </Typography>
+                <Typography align="justify" variant="body1" className="color-white">
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
                   standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled
-                  it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                  electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-                  release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                  software like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-              </div>
-              <div>
-                <img src="/042-video lesson.svg" alt="learn 3" width={200} height={200} />
-                <h6 className="text-white font-medium text-2xl mb-4 mt-8">Title</h6>
-                <p className="w-4/5 m-auto">
+                  it to make a type specimen book.
+                </Typography>
+              </Grid>
+              <Grid item md={4} className="flex column align-center">
+                <img src="img/038-success.svg" alt="learn 1" width={200} height={200} />
+                <Typography variant="h5" className="color-light-yellow">
+                  Title
+                </Typography>
+                <Typography align="justify" variant="body1" className="color-white">
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
                   standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled
-                  it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                  electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-                  release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                  software like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+                  it to make a type specimen book.
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
         <section className="sm:text-center bg-yellow-100 lg:text-center min-h-screen">
           <div className="flex justify-around pt-24">
             <div className={style.title2}>
@@ -151,7 +168,7 @@ const Home = () => {
       <footer className={style.footer}>
         <div className="text-center pt-6 text-yellow-100">© 2020 Agileo</div>
       </footer>
-    </>
+    </Box>
   )
 }
 

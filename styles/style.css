@@ -32,6 +32,9 @@ a {
 .bg-yellow {
     background-color: #FCC116;
 }
+.bg-light-yellow {
+    background-color: #FFF1C8;
+}
 .bg-orange {
     background-color: #FA6424;
 }
@@ -47,6 +50,22 @@ a {
 .bg-grey {
     background-color: #64838A;
 }
-.bg-light-yellow {
-    background-color: #FFF1C8;
+.bg-light-grey {
+    background-color: #f2f6f6;
+}
+.bg-image {
+    background-image: url("../public/img/logo.svg");
+}
+
+.flex {
+    display: flex;
+}
+.column {
+    flex-direction: column;
+}
+.justify-center {
+    justify-content: center;
+}
+.align-center {
+    align-items: center;
 }
