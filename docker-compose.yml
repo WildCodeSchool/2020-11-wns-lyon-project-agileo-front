@@ -1,0 +1,6 @@
+# docker-compose.yml
+services:
+    app:
+        build: .
+    mongodb:
+        image: mongo

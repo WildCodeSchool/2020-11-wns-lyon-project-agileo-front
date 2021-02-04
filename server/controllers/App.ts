@@ -1,27 +1,31 @@
-require('dotenv').config()
 import { Keystone } from '@keystonejs/keystone'
 import { PasswordAuthStrategy } from '@keystonejs/auth-password'
 import { GraphQLApp } from '@keystonejs/app-graphql'
 import { AdminUIApp } from '@keystonejs/app-admin-ui'
 import { MongooseAdapter } from '@keystonejs/adapter-mongoose'
+const express = require('express');
+const http = require('http');
 const dev = process.env.NODE_ENV !== 'production'
-const express = require('express')
 const next = require('next')
+const socketEvents = require('../chat/socket.js/socket'); 
 
 export class App {
   public static keystone
-  public static server
-  public static app
+  public static express
+  public static next
 
   public static async initialize() {
     const keystone = new Keystone({
-      adapter: new MongooseAdapter({ mongoUri: process.env.MONGO_URI }),
+      name: 'Agileo',
+      adapter: new MongooseAdapter({
+        mongoUri: process.env.MONGO_URI,
+      }),
       cookieSecret: 'supersecret',
     })
 
-    this.server = express()
+    this.express = express()
     this.keystone = keystone
-    this.app = next({ dev })
+    this.next = next({ dev })
   }
 
   public static async start() {
@@ -32,14 +36,23 @@ export class App {
 
     const { middlewares } = await this.keystone.prepare({
       apps: [new GraphQLApp(), new AdminUIApp({ authStrategy })],
-      dev: dev,
+      dev,
     })
-
     await this.keystone.connect()
-    await this.app.prepare()
-    this.server.use(middlewares)
-    this.server.all('*', (req, res) => this.app.getRequestHandler()(req, res))
-    this.server.listen(3000)
-    console.info('\x1b[36m%s\x1b[0m', 'ready', `- started server on http://localhost:3000`)
+    await this.next.prepare()
+    this.express.use(middlewares)
+    this.express.all('*', (req, res) => this.next.getRequestHandler()(req, res))
+    const server = http.Server(this.express)
+    const io = require('socket.io')(server, { cors: { origin: '*' } })
+    server.listen(3000)
+    io.on('connection', (socket) => {
+      console.log('🧦 Socket is running on port 3000')
+
+
+      socket.on('add-message',function (message){
+        console.log(message)
+      })
+    })
+    console.log('🚀 Server is running on port 3000')
   }
 }

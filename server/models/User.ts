@@ -1,22 +1,22 @@
-import { Checkbox, Password, Text } from '@keystonejs/fields'
 import { App } from '../controllers/App'
+import { Checkbox, File, Password, Text, Select, Relationship } from '@keystonejs/fields'
+import { Adapter } from '../../config/adapter'
 
 App.keystone.createList('User', {
-  labelField: 'name',
+  labelField: 'firstName',
   fields: {
-    name: { type: Text, isRequired: true },
-    email: {
-      type: Text,
-      isUnique: true,
-      access: ({ existingItem, authentication: { item } }) => {
-        return (
-          process.env.DISABLE_AUTH === 'true' || item === undefined || !!item.isAdmin || existingItem.id === item.id
-        )
-      },
-    },
-    isAdmin: { type: Checkbox },
+    isValidated: { type: Checkbox },
+    isOnline: { type: Checkbox },
+    isProf: { type: Checkbox },
+    avatar: { type: Text, isRequired: true },
+    subject: { type: Text },
+    lastName: { type: Text },
+    firstName: { type: Text, isRequired: true },
+    email: { type: Text, isUnique: true, isRequired: true },
     password: { type: Password, isRequired: false },
+    picture: { type: File, adapter: Adapter },
+    role: { type: Select, options: 'Admin, Owner, Member' },
+    company: { type: Relationship, ref: 'Company' },
+    team: { type: Relationship, ref: 'Team' },
   },
-  plugins: [],
-  access: {},
 })

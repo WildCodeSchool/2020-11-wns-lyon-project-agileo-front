@@ -1,8 +1,11 @@
 import React from 'react'
-import Calendar from 'src/calendar'
 
-const CalendarPage = () => {
-  return <Calendar />
+const Calendar = () => {
+  return (
+    <>
+      <div className="text-center text-5xl">calendar</div>
+    </>
+  )
 }
 
-export default CalendarPage
+export default Calendar

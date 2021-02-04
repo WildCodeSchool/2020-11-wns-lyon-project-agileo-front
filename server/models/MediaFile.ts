@@ -1,10 +1,11 @@
-import { Text } from '@keystonejs/fields'
 import { App } from '../controllers/App'
+import { File, Text, Relationship } from '@keystonejs/fields'
+import { Adapter } from '../../config/adapter'
 
 App.keystone.createList('MediaFile', {
   fields: {
     name: { type: Text, isRequired: true },
+    file: { type: File, adapter: Adapter },
+    team: { type: Relationship, ref: 'Team', isRequired: true },
   },
-  plugins: [],
-  access: {},
 })

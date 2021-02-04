@@ -1,5 +1,5 @@
 import { App } from './controllers/App'
-import { apiRouter } from './routes'
+import { apiRouter } from './helpers/routes'
 import * as fs from 'fs'
 
 App.initialize().then(async () => {
@@ -9,7 +9,7 @@ App.initialize().then(async () => {
     await import(`./models/${model}`)
   }
 
-  App.server.use(apiRouter)
+  App.express.use(apiRouter)
   App.start()
 })
 
