@@ -1,6 +1,8 @@
 import React from 'react'
-import Link from 'next/link'
 import style from '../styles/home.module.css'
+import NavBar from 'components/NavBar'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
+import { Box, Container, Grid, Typography } from '@material-ui/core'
 
 const func = () => {
   return ''
@@ -11,78 +13,92 @@ const sub = (e: React.FormEvent) => {
   return ''
 }
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    firstContent: {
+      height: 'calc(100vh - 84px)',
+      marginTop: '84px',
+      backgroundColor: 'white',
+    },
+    container: {
+      height: 'calc(100vh - 84px)',
+      backgroundColor: '#2AB1BF',
+      padding: '1.2rem',
+    },
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
+  })
+)
+
 const Home = () => {
+  const classes = useStyles()
   return (
-    <>
-      <header className={style.header}>
-        <img className="mr-8" src="/logo.svg" alt="Logo" width={60} height={60} />
-        <Link href="/">
-          <p className="pt-2 text-yellow-400 text-4xl">AGILEO</p>
-        </Link>
-        <Link href="/login">
-          <button className="rounded-md bg-yellow-400 text-black px-4 py-2 m-2">Login</button>
-        </Link>
-      </header>
-      <main className="w-full">
-        <section className="sm:text-center bg-yellow-100 lg:text-center min-h-screen flex justify-center">
-          <div className={style.solution}>
-            <div className="flex justify-center pt-4">
-              <h4 className="mr-6 text-5xl text-yellow-400">Notre solution</h4>
-              <img src="/036-kitty-14.svg" alt="Logo" width={100} height={100} />
-            </div>
-            <p className="pt-8">
+    <Box className="bg-light-grey">
+      <NavBar />
+      <Container>
+        <Grid container direction="column" justify="center" alignItems="center" className={classes.firstContent}>
+          <Grid item md={8} className={classes.content}>
+            <Typography variant="h4" align="center" className="color-yellow">
+              Notre solution
+            </Typography>
+            <Typography align="justify" variant="body1">
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
               standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
               to make a type specimen book. It has survived not only five centuries, but also the leap into electronic
               typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
               sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
               PageMaker including versions of Lorem Ipsum.
-            </p>
-          </div>
-        </section>
-        <section className={style.title}>
-          <div className="h-middleHeight pt-10">
-            <h4 className="pb-16 text-5xl text-yellow-400">Title</h4>
-            <div className="flex justify-around items-center">
-              <div>
-                <img src="/038-success.svg" alt="learn 1" width={200} height={200} />
-                <h6 className="text-white font-medium text-2xl mb-4 mt-8">Title</h6>
-                <p className="w-4/5 m-auto">
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container alignItems="center" className={classes.container}>
+          <Grid item xs={12}>
+            <Typography variant="h4" align="center" className="color-yellow">
+              Des possibilités infinies
+            </Typography>
+            <Grid container direction="row" justify="center" spacing={5}>
+              <Grid item md={4} className="flex column align-center">
+                <img src="img/038-success.svg" alt="learn 1" width={200} height={200} />
+                <Typography variant="h5" className="color-light-yellow">
+                  Title
+                </Typography>
+                <Typography align="justify" variant="body1" className="color-white">
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
                   standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled
-                  it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                  electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-                  release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                  software like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-              </div>
-              <div>
-                <img src="/041-timetable.svg" alt="learn 2" width={200} height={200} />
-                <h6 className="text-white font-medium text-2xl mb-4 mt-8">Title</h6>
-                <p className="w-4/5 m-auto">
+                  it to make a type specimen book.
+                </Typography>
+              </Grid>
+              <Grid item md={4} className="flex column align-center">
+                <img src="img/038-success.svg" alt="learn 1" width={200} height={200} />
+                <Typography variant="h5" className="color-light-yellow">
+                  Title
+                </Typography>
+                <Typography align="justify" variant="body1" className="color-white">
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
                   standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled
-                  it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                  electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-                  release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                  software like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-              </div>
-              <div>
-                <img src="/042-video lesson.svg" alt="learn 3" width={200} height={200} />
-                <h6 className="text-white font-medium text-2xl mb-4 mt-8">Title</h6>
-                <p className="w-4/5 m-auto">
+                  it to make a type specimen book.
+                </Typography>
+              </Grid>
+              <Grid item md={4} className="flex column align-center">
+                <img src="img/038-success.svg" alt="learn 1" width={200} height={200} />
+                <Typography variant="h5" className="color-light-yellow">
+                  Title
+                </Typography>
+                <Typography align="justify" variant="body1" className="color-white">
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
                   standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled
-                  it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                  electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-                  release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                  software like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+                  it to make a type specimen book.
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
         <section className="sm:text-center bg-yellow-100 lg:text-center min-h-screen">
           <div className="flex justify-around pt-24">
             <div className={style.title2}>
@@ -148,11 +164,11 @@ const Home = () => {
             </div>
           </form>
         </section>
-      </main>
+      </Container>
       <footer className={style.footer}>
         <div className="text-center pt-6 text-yellow-100">© 2020 Agileo</div>
       </footer>
-    </>
+    </Box>
   )
 }
 

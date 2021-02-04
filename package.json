@@ -77,14 +77,21 @@
     "printWidth": 120
   },
   "postcss": {
-    "plugins": ["tailwindcss", "autoprefixer"]
+    "plugins": [
+      "tailwindcss",
+      "autoprefixer"
+    ]
   },
   "babel": {
-    "presets": ["next/babel"]
+    "presets": [
+      "next/babel"
+    ]
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint"],
+    "plugins": [
+      "@typescript-eslint"
+    ],
     "extends": [
       "eslint:recommended",
       "plugin:react/recommended",
@@ -110,7 +117,12 @@
       "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/no-var-requires": 0,
       "@typescript-eslint/no-use-before-define": 0,
-      "@typescript-eslint/no-unused-vars": [2, {"argsIgnorePattern": "^_"}]
+      "@typescript-eslint/no-unused-vars": [
+        2,
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ]
     }
   }
 }
