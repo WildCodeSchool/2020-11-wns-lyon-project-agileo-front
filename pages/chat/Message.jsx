@@ -1,109 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import TextField from '@material-ui/core/TextField';
 import moment from 'moment';
 import io from 'socket.io-client';
 import styles from "./user.module.css"
-import ChatSocketServer from '../chat/ChatSocketServer';
 
 
 const Message = props => {
     const chatBox = useRef(null);
-
     const [messages, setMessages] = useState([])
-    const [messageLoading, setmessageLoading] = useState(true)
-    const [chatListUsers, setchatListUsers] = useState([])
-    const [selectedUserId, setselectedUserId] = useState(null)
-
-
-
     const socket = io.connect("http://localhost:3000");
-
-    /*  function fetchMessages(userId,toUserId) {
-         return new Promise(async (resolve, reject) => {
-             try {
-                 const response = await axios.post('http://localhost:3000/getMessages', {
-                     userId: userId,
-                     toUserId: toUserId
-                 });
-                 resolve(response.data);
-             } catch (error) {
-                 reject(error);
-             }
-         });
-     }
-      */
-
-
-
-
-    /*  useEffect(() => {
-         //ChatSocketServer.receiveMessage();
-         establishSocketConnection()
-         ChatSocketServer.eventEmitter.removeListener('add-message-response', receiveSocketMessages);
-         ChatSocketServer.eventEmitter.on('add-message-response', receiveSocketMessages);
- 
-     }, []) */
-
-    const scrollToBottom = () => {
-        chatBox.current.scrollIntoView();
-    };
-
-
-    const receiveSocketMessages = (socketResponse) => {
-        if (selectedUser !== null && selectedUser.id === socketResponse.fromUserId) {
-            setMessages({
-                messages: [...messages, socketResponse]
-            });
-            scrollToBottom();
-        }
-    }
-
-    /* fetchMessages = async () => {
-        try {
-            const { userId, newSelectedUser } = props;
-            const messageResponse = await fetchMessages(userId, newSelectedUser.id);
-            if (!messageResponse.error) {
-                setMessages({
-                    messages: [...messages, messageResponse.messages]
-                });
-                scrollToBottom();
-            } else {
-                alert('Unable to fetch messages');
-            }
-            setmessageLoading(false);
-        } catch (error) {
-            console.error(error)
-        }
-    } */
-
-
+    const scrollToBottom = () => {chatBox.current.scrollIntoView()};
 
     const sendMessage = (e) => {
-        e.preventDefault();
-        console.log(messages)
-        socket.emit("add-message", messages);
-    }
-
-    const sendAndUpdateMessages = (message) => {
-
         try {
-            ChatSocketServer.sendMessage(message);
-            setMessages({
-                messages: [...messages, message]
-            });
+            socket.emit("add-message", messages);
             scrollToBottom();
         } catch (error) {
             alert(`Can't send your message`);
         }
+        e.preventDefault();
+        setMessages('')
     }
-
-
 
     const handleChange = async e => {
         setMessages([
             {
                 message: e.target.value,
-                fromUserId: props.email,
+                fromUserId: props.firstName,
                 toUserId: "String",
                 timestamp: moment().format()
             }
@@ -138,7 +61,7 @@ const Message = props => {
                             <span className={styles.time}> {moment(item.timestamp).fromNow()}</span>
                         </div>
                     )
-                    ) : 'pas de messages'}
+                    ) : ''}
                 </div>
 
                 <div>

@@ -7,7 +7,6 @@ const express = require('express');
 const http = require('http');
 const dev = process.env.NODE_ENV !== 'production'
 const next = require('next')
-const socketEvents = require('../chat/socket.js/socket'); 
 
 export class App {
   public static keystone
