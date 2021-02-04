@@ -5,4 +5,4 @@ router.get('/hello', (req, res) => {
   res.send('Hello World !')
 })
 
-export const apiRouter = router
+export const Router = router

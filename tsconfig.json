@@ -30,5 +30,5 @@
     }
   },
   "exclude": ["node_modules", "next.config.js", ".next", "out"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/chat/index.jsx", "src/chat/UserCard.tsx", "src/chat/User.tsx", "src/chat/MessageQuery.jsx", "src/chat/Message.ysx", "src/shared/helpers/ChatSocketServer.js"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

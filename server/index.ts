@@ -1,24 +1,49 @@
-import { App } from './controllers/App'
-import { apiRouter } from './helpers/routes'
-import * as fs from 'fs'
+import { Keystone } from '@keystonejs/keystone'
+import { PasswordAuthStrategy } from '@keystonejs/auth-password'
+import { GraphQLApp } from '@keystonejs/app-graphql'
+import { AdminUIApp } from '@keystonejs/app-admin-ui'
+import { MongooseAdapter } from '@keystonejs/adapter-mongoose'
+import { Router } from './routes'
+import express from 'express'
+import next from 'next'
+import fs from 'fs'
+const http = require('http')
+
+export class App {
+  public static keystone
+  public static express
+  public static next
+
+  public static async initialize() {
+    const adapter = new MongooseAdapter({ mongoUri: process.env.MONGO_URI })
+    const keystone = new Keystone({ adapter: adapter, cookieSecret: 'secret' })
+    this.express = express()
+    this.keystone = keystone
+    this.next = next({ dev: true })
+  }
+
+  public static async start() {
+    const authStrategy = this.keystone.createAuthStrategy({ type: PasswordAuthStrategy, list: 'User' })
+    const apps = [new GraphQLApp(), new AdminUIApp({ authStrategy })]
+    const { middlewares } = await this.keystone.prepare({ apps: apps, dev: true })
+    const server = http.Server(this.express)
+    const io = require('socket.io')(server, { cors: { origin: '*' } })
+    await this.next.prepare()
+    this.keystone.connect()
+    this.express.use(middlewares)
+    this.express.all('*', (req, res) => this.next.getRequestHandler()(req, res))
+    server.listen(3000)
+    console.log('🚀 Server is running on port 3000')
+    io.on('connection', (socket) => {
+      console.log('🧦 Socket is running on port 3000')
+      socket.on('add-message', (message) => console.log(message))
+    })
+  }
+}
 
 App.initialize().then(async () => {
   const models = fs.readdirSync('./server/models')
-
-  for (const model of models.filter((m) => m.endsWith('.ts'))) {
-    await import(`./models/${model}`)
-  }
-
-  App.express.use(apiRouter)
-  App.start()
-})
-
-process.on('SIGINT', () => {
-  console.info('Caught interrupt signal')
-  process.exit()
-})
-
-process.on('SIGTERM', () => {
-  console.info('Caught interrupt signal')
-  process.exit()
+  for (const model of models.filter((m) => m.endsWith('.ts'))) await import(`./models/${model}`)
+  App.express.use(Router)
+  await App.start()
 })
