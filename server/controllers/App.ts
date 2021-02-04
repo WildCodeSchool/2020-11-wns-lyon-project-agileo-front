@@ -16,7 +16,7 @@ export class App {
 
   public static async initialize() {
     const keystone = new Keystone({
-      adapter: new MongooseAdapter({ mongoUri: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/agileo' }),
+      adapter: new MongooseAdapter({ mongoUri: process.env.MONGO_URI }),
       cookieSecret: 'supersecret',
     })
 

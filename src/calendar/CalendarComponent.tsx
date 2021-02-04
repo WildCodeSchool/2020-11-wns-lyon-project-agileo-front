@@ -14,16 +14,40 @@ import {
   DragDropProvider,
   EditRecurrenceMenu,
 } from '@devexpress/dx-react-scheduler-material-ui'
-//import { GET_EVENTS, UPDATE_EVENT, DELETE_EVENT } from './ducks/graphql';
-//import { useMutation, useQuery } from '@apollo/client';
+import { GET_EVENTS, UPDATE_EVENT, DELETE_EVENT } from './ducks/graphql'
+import { useMutation, useQuery } from '@apollo/client'
+
+interface EventModel {
+  title: string
+  notes?: string
+  startDate: Date
+  endDate: Date
+  id: number
+  rRule?: string
+  location: string
+  type: string
+}
 
 const CalendarComponent: React.SFC = () => {
-  //const [EventUpdate] = useMutation(UPDATE_EVENT)
-  //EventUpdate({ variables: { id: idx, data: {start: updatedEvent.start, end: updatedEvent.end}}})
+  const { data: { allEvents } = {} } = useQuery<EventModel[]>(GET_EVENTS)
+  const [EventUpdate] = useMutation(UPDATE_EVENT)
+  const [DeleteUpdate] = useMutation(DELETE_EVENT)
+
   const [currentDate, setCurrentDate] = useState<SchedulerDateTime>(new Date())
   const [appointments, setAppointments] = useState<any[]>([])
   const [refreshTable, setRefreshTable] = useState<boolean>(true)
 
+  useEffect(() => {
+    if (refreshTable) {
+      if (allEvents) {
+        setAppointments(allEvents)
+      }
+      //setAppointments(appointmentsRessources)
+      setRefreshTable(false)
+    }
+  }, [appointments, refreshTable])
+
+  /*
   const appointmentsRessources: Array<AppointmentModel> = [
     {
       title: 'Website Re-Design Plan',
@@ -51,24 +75,28 @@ const CalendarComponent: React.SFC = () => {
       type: 'chose',
     },
   ]
+*/
+
   const resources = [
     {
       fieldName: 'type',
       title: 'Type',
       instances: [
-        { id: 'truc', text: 'Truc', color: '#080808' },
-        { id: 'chose', text: 'Chose', color: '#7E57C2' },
-        { id: 'machin', text: 'Machin', color: '#469213' },
+        // ne pas supprimer pour le moment, à tester la prochaine semaine de projet ou celle d'après pour la gestion des couleurs.
+        // appointments ? appointments.map(({type}) =>
+
+        //   [{ id: type, text: type }]
+
+        //   ) :
+        //   []
+        { id: 'fromage', text: 'Fromage', color: '#080808' },
+        { id: 'Tacos', text: 'Tacos', color: '#7E57C2' },
+        { id: 'kebab', text: 'kebab', color: '#469213' },
+        { id: 'burger', text: 'burger' },
+        { id: 'pizza', text: 'pizza' },
       ],
     },
   ]
-
-  useEffect(() => {
-    if (refreshTable) {
-      setAppointments(appointmentsRessources)
-      setRefreshTable(false)
-    }
-  }, [appointmentsRessources, refreshTable])
 
   const currentDateChange = (currentDate) => {
     setCurrentDate(currentDate)
@@ -77,7 +105,7 @@ const CalendarComponent: React.SFC = () => {
   const commitChanges = ({ added, changed, deleted }: AppointmentModel) => {
     // console.log(':o')
     // console.log('%cCalendarComponent.tsx line:79 added', 'color: white; background-color: #007acc;', added);
-    // console.log('%cCalendarComponent.tsx line:80 changed', 'color: white; background-color: #007acc;', changed);
+    //console.log('%cCalendarComponent.tsx line:80 changed', 'color: white; background-color: #007acc;', changed);
     // console.log('%cCalendarComponent.tsx line:81 deleted', 'color: white; background-color: #007acc;', deleted);
     let data = appointments
     if (added) {
@@ -88,9 +116,25 @@ const CalendarComponent: React.SFC = () => {
       data = data.map((appointment) =>
         changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment
       )
+
+      const objectId = Object.keys(changed)[0]
+      let bodyData = data.filter((item) => item.id === objectId)
+
+      bodyData = bodyData[0]
+      const dataChange = {
+        title: bodyData.title,
+        endDate: bodyData.endDate,
+        rRule: bodyData.rRule,
+        startDate: bodyData.startDate,
+        location: bodyData.location,
+        type: bodyData.type,
+      }
+
+      EventUpdate({ variables: { id: objectId, data: dataChange } })
     }
     if (deleted !== undefined) {
       data = data.filter((appointment) => appointment.id !== deleted)
+      DeleteUpdate({ variables: { id: deleted } })
     }
     setAppointments(data)
     return data
