@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",
+    "@devexpress/dx-react-core": "^2.7.4",
+    "@devexpress/dx-react-scheduler": "^2.7.4",
+    "@devexpress/dx-react-scheduler-material-ui": "^2.7.4",
     "@keystonejs/adapter-mongoose": "^11.0.0",
     "@keystonejs/app-admin-ui": "^7.3.13",
     "@keystonejs/app-graphql": "^6.2.1",
