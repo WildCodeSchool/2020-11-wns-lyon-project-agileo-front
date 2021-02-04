@@ -42,7 +42,6 @@ const CalendarComponent: React.SFC = () => {
       if (allEvents) {
         setAppointments(allEvents)
       }
-      //setAppointments(appointmentsRessources)
       setRefreshTable(false)
     }
   }, [appointments, refreshTable])
@@ -98,7 +97,7 @@ const CalendarComponent: React.SFC = () => {
     },
   ]
 
-  const currentDateChange = (currentDate) => {
+  const currentDateChange = (currentDate: Date) => {
     setCurrentDate(currentDate)
   }
 
@@ -109,6 +108,7 @@ const CalendarComponent: React.SFC = () => {
     // console.log('%cCalendarComponent.tsx line:81 deleted', 'color: white; background-color: #007acc;', deleted);
     let data = appointments
     if (added) {
+      //A FAIRE
       const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0
       data = [...data, { id: startingAddedId, ...added }]
     }
@@ -121,7 +121,7 @@ const CalendarComponent: React.SFC = () => {
       let bodyData = data.filter((item) => item.id === objectId)
 
       bodyData = bodyData[0]
-      const dataChange = {
+      const dataChange: EventModel = {
         title: bodyData.title,
         endDate: bodyData.endDate,
         rRule: bodyData.rRule,
