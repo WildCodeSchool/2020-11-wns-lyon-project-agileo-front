@@ -28,6 +28,17 @@ interface EventModel {
   type: string
 }
 
+interface EventModelWithoutId {
+  title: string
+  notes?: string
+  startDate: Date
+  endDate: Date
+  id?: number
+  rRule?: string
+  location: string
+  type: string
+}
+
 const CalendarComponent: React.SFC = () => {
   const { data: { allEvents } = {} } = useQuery<EventModel[]>(GET_EVENTS)
   const [EventUpdate] = useMutation(UPDATE_EVENT)
@@ -119,15 +130,14 @@ const CalendarComponent: React.SFC = () => {
 
       const objectId = Object.keys(changed)[0]
       let bodyData = data.filter((item) => item.id === objectId)
-
-      bodyData = bodyData[0]
-      const dataChange: EventModel = {
-        title: bodyData.title,
-        endDate: bodyData.endDate,
-        rRule: bodyData.rRule,
-        startDate: bodyData.startDate,
-        location: bodyData.location,
-        type: bodyData.type,
+      const event = bodyData[0]
+      const dataChange: EventModelWithoutId = {
+        title: event.title,
+        endDate: event.endDate,
+        rRule: event.rRule,
+        startDate: event.startDate,
+        location: event.location,
+        type: event.type,
       }
 
       EventUpdate({ variables: { id: objectId, data: dataChange } })
