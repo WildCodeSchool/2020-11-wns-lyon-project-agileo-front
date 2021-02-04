@@ -1,4 +1,4 @@
-import { App } from '../controllers/App'
+import { App } from '../index'
 import { Text, Select, Relationship } from '@keystonejs/fields'
 
 App.keystone.createList('Course', {
@@ -7,6 +7,6 @@ App.keystone.createList('Course', {
     subject: { type: Text, isRequired: true },
     content: { type: Text, isRequired: true },
     state: { type: Select, options: 'start, continue, completed' },
-    company: { type: Relationship, ref: 'Company' },
+    school: { type: Relationship, ref: 'School' },
   },
 })

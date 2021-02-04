@@ -1,4 +1,4 @@
-import { App } from '../controllers/App'
+import { App } from '../index'
 import { Text, Checkbox, Relationship } from '@keystonejs/fields'
 
 App.keystone.createList('Event', {
@@ -8,7 +8,7 @@ App.keystone.createList('Event', {
     start: { type: Text },
     end: { type: Text },
     allDay: { type: Checkbox },
-    team: { type: Relationship, ref: 'Team' },
+    class: { type: Relationship, ref: 'Class' },
     user: { type: Relationship, ref: 'User', many: true },
   },
 })
