@@ -1,0 +1,52 @@
+h1, h2, h3, h4 {
+    font-family: 'Lobster', cursive;
+}
+
+a {
+    text-decoration: none;
+    color: #FCC116;
+}
+
+.color-yellow {
+    color: #FCC116;
+}
+.color-orange {
+    color: #FA6424;
+}
+.color-white {
+    color: #FFFFFF;
+}
+.color-light-blue {
+    color: #BEF4D4;
+}
+.color-blue {
+    color: #2AB1BF;
+}
+.color-grey {
+    color: #64838A;
+}
+.color-light-yellow {
+    color: #FFF1C8;
+}
+
+.bg-yellow {
+    background-color: #FCC116;
+}
+.bg-orange {
+    background-color: #FA6424;
+}
+.bg-white {
+    background-color: #FFFFFF;
+}
+.bg-light-blue {
+    background-color: #BEF4D4;
+}
+.bg-blue {
+    background-color: #2AB1BF;
+}
+.bg-grey {
+    background-color: #64838A;
+}
+.bg-light-yellow {
+    background-color: #FFF1C8;
+}

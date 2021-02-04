@@ -1,6 +1,8 @@
 import React from 'react'
-import Link from 'next/link'
 import style from '../styles/home.module.css'
+import NavBar from "components/NavBar";
+import {createStyles, makeStyles} from "@material-ui/core/styles";
+import {Box, Container} from "@material-ui/core";
 
 const func = () => {
   return ''
@@ -11,26 +13,24 @@ const sub = (e: React.FormEvent) => {
   return ''
 }
 
+const useStyles = makeStyles(() =>
+    createStyles({
+      solution: {
+        height: 'calc(100vh - 84px)',
+        marginTop: '84px'
+      },
+    }),
+);
+
 const Home = () => {
+  const classes = useStyles();
   return (
     <>
-      <header className={style.header}>
-        <img className="mr-8" src="/logo.svg" alt="Logo" width={60} height={60} />
-        <Link href="/">
-          <p className="pt-2 text-yellow-400 text-4xl">AGILEO</p>
-        </Link>
-        <Link href="/login">
-          <button className="rounded-md bg-yellow-400 text-black px-4 py-2 m-2">Login</button>
-        </Link>
-      </header>
-      <main className="w-full">
-        <section className="sm:text-center bg-yellow-100 lg:text-center min-h-screen flex justify-center">
-          <div className={style.solution}>
-            <div className="flex justify-center pt-4">
-              <h4 className="mr-6 text-5xl text-yellow-400">Notre solution</h4>
-              <img src="/036-kitty-14.svg" alt="Logo" width={100} height={100} />
-            </div>
-            <p className="pt-8">
+      <NavBar />
+      <Container>
+          <Box className={classes.solution}>
+              <h4>Notre solution</h4>
+            <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
               standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
               to make a type specimen book. It has survived not only five centuries, but also the leap into electronic
@@ -38,8 +38,7 @@ const Home = () => {
               sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
               PageMaker including versions of Lorem Ipsum.
             </p>
-          </div>
-        </section>
+          </Box>
         <section className={style.title}>
           <div className="h-middleHeight pt-10">
             <h4 className="pb-16 text-5xl text-yellow-400">Title</h4>
@@ -148,7 +147,7 @@ const Home = () => {
             </div>
           </form>
         </section>
-      </main>
+      </Container>
       <footer className={style.footer}>
         <div className="text-center pt-6 text-yellow-100">© 2020 Agileo</div>
       </footer>
