@@ -4,8 +4,8 @@ import { Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import overlay from '../scripts/overlay';
-import CoursesCurrentCourse from "../components/CoursesCurrentCourse";
-import CoursesAllCourses from "../components/CoursesAllCourses";
+import CoursesCurrentCourse from "../components/courses/CoursesCurrentCourse";
+import CoursesAllCourses from "../components/courses/CoursesAllCourses";
 
 const initialLayout = { width: Dimensions.get('window').width };
 

@@ -26,9 +26,9 @@ const DrawerContent = (props) => {
       >
         <View style={styles.userInfoSection}>
           <Avatar.Image
-            source={require("./../assets/lucas.jpeg")}
             size={50}
-          />
+            source={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrmfbI1rQtzAgFe7h7G3vjSDyvZuGRsp-DxxtPd1cw_n0EP3Qd4koC_rUccNM_2O55ZYU&usqp=CAU"} />
+
           <Title style={styles.title}>Lucas Charnay</Title>
           <Caption style={styles.caption}>@lcharnay</Caption>
           <View style={styles.row}>
@@ -56,28 +56,28 @@ const DrawerContent = (props) => {
               />
             )}
             label="Profil"
-            onPress={() => {props.navigation.navigate('Profile')}}
+            onPress={() => { props.navigation.navigate('Profile') }}
           />
           <DrawerItem
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="rocket-launch" color={color} size={size} />
             )}
             label="Parcours"
-            onPress={() => {props.navigation.navigate('Course')}}
+            onPress={() => { props.navigation.navigate('Course') }}
           />
           <DrawerItem
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="calendar" color={color} size={size} />
             )}
             label="Calendrier"
-            onPress={() => {props.navigation.navigate('Calendar')}}
+            onPress={() => { props.navigation.navigate('Calendar') }}
           />
           <DrawerItem
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="tune" color={color} size={size} />
             )}
             label="Paramètres"
-            onPress={() => {props.navigation.navigate('Parameters')}}
+            onPress={() => { props.navigation.navigate('Parameters') }}
           />
           <DrawerItem
             icon={({ color, size }) => (
@@ -88,11 +88,11 @@ const DrawerContent = (props) => {
               />
             )}
             label="Favoris"
-            onPress={() => {}}
+            onPress={() => { }}
           />
         </Drawer.Section>
         <Drawer.Section title="Préférences">
-          <TouchableRipple onPress={() => {}}>
+          <TouchableRipple onPress={() => { }}>
             <View style={styles.preference}>
               <Text>Thème Sombre</Text>
               <View pointerEvents="none">
@@ -100,7 +100,7 @@ const DrawerContent = (props) => {
               </View>
             </View>
           </TouchableRipple>
-          <TouchableRipple onPress={() => {}}>
+          <TouchableRipple onPress={() => { }}>
             <View style={styles.preference}>
               <Text>RTL</Text>
               <View pointerEvents="none">

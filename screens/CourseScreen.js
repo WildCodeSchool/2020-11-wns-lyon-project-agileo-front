@@ -1,9 +1,9 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
-import UserProfileCurrentCourse from "./../components/user/UserProfileCurrentCourse";
-import UserCourseProgression from "./../components/user/UserCourseProgression";
-import UserCourseLastResults from "./../components/user/UserCourseLastResults";
+import UserProfileCurrentCourse from "../components/user/UserProfileCurrentCourse";
+import UserCourseProgression from "../components/user/UserCourseProgression";
+import UserCourseLastResults from "../components/user/UserCourseLastResults";
 
 const CourseScreen = () => {
   const {

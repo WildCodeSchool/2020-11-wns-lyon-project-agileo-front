@@ -6,9 +6,10 @@ import { DefaultTheme, DarkTheme, Provider as PaperProvider } from "react-native
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import DrawerContent from "./components/DrawerContent";
 import Navigation from './components/Navigation';
+import Login from './components/Login';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/admin/api',
+  uri: 'http://192.168.1.11:4000/admin/api',
   cache: new InMemoryCache(),
 })
 
@@ -23,16 +24,23 @@ const theme = {
   },
 };
 const navigationTheme = theme.dark ? DarkTheme : theme;
-
+const ko = true
 export default function App() {
   return (
     <ApolloProvider client={client}>
       <PaperProvider theme={navigationTheme}>
+
+      <div >
+      {ko ?
+        <Login />
+        :
         <NavigationContainer>
           <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
             <Drawer.Screen name="Home" component={Navigation} />
           </Drawer.Navigator>
         </NavigationContainer>
+      }
+      </div>
       </PaperProvider>
     </ApolloProvider>
   )

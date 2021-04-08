@@ -1,5 +1,8 @@
 import color from 'color';
-import { Animated } from 'react-native';
+import Animated, {
+  Easing as OldEasing,
+  EasingNode,
+} from 'react-native-reanimated';
 import { DarkTheme } from 'react-native-paper';
 
 export default function overlay(

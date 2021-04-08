@@ -9,7 +9,6 @@ import {
   Title,
   List,
 } from "react-native-paper";
-import tailwind from "tailwind-rn";
 
 const UserCourseProgression = () => {
   const [progress, setProgress] = React.useState(0.68);
@@ -59,17 +58,17 @@ const UserCourseProgression = () => {
             <List.Icon
               icon="run-fast"
               color="white"
-              style={tailwind("bg-green-400 rounded-full")}
+              style={"bg-green-400 rounded-full"}
             />
             <List.Icon
               icon="anchor"
               color="white"
-              style={tailwind("bg-blue-600 rounded-full")}
+              style={"bg-blue-600 rounded-full"}
             />
             <List.Icon
               icon="asterisk"
               color="white"
-              style={tailwind("bg-yellow-400 rounded-full")}
+              style={"bg-yellow-400 rounded-full"}
             />
           </List.Section>
         </View>
