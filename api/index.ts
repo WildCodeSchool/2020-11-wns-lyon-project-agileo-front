@@ -20,6 +20,7 @@ export class App {
     this.keystone = keystone
   }
 
+
   public static async start() {
     const authStrategy = this.keystone.createAuthStrategy({ type: PasswordAuthStrategy, list: 'User' })
     const apps = [new GraphQLApp(), new AdminUIApp({ authStrategy })]

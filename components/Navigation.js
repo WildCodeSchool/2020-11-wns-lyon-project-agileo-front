@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import color from 'color';
 import { useTheme } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,6 +14,16 @@ import ProfileScreen from '../screens/UserScreen';
 import CourseScreen from '../screens/CourseScreen';
 import CalendarScreen from '../screens/CalendarScreen';
 import ParametersScreen from '../screens/ParametersScreen';
+import { gql, useMutation, useQuery } from '@apollo/client'
+import Login from '../components/Login';
+
+const AUTHENTICATED_USER = gql`
+  query authenticatedUser {
+    authenticatedUser {
+      id 
+    }
+  }
+`
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -24,6 +34,7 @@ const BottomTabs = () => {
     ? (overlay(6, theme.colors.surface))
     : theme.colors.surface;
 
+    
 
 
   return (
@@ -68,19 +79,37 @@ const BottomTabs = () => {
 const Stack = createStackNavigator();
 
 const Navigation = () => {
+ 
+  
+  const {data} = useQuery(AUTHENTICATED_USER)
+
+  useEffect(() => {
+    console.log(data)
+    
+  }, [data])
 
   return (
 
-    
-        <Stack.Navigator
-          initialRouteName="FeedList"
-          headerMode="screen"
-          screenOptions={{
-            header: ({ scene, previous, navigation }) => (
-              <Header scene={scene} previous={previous} navigation={navigation} />
-            ),
-          }}
-        >
+    <Stack.Navigator
+      initialRouteName="FeedList"
+      headerMode="screen"
+      screenOptions={{ 
+        header: ({ scene, previous, navigation }) => (
+            <Header scene={scene} previous={previous} navigation={navigation} /> 
+        ) 
+      }}
+    >
+    {(data === undefined || data.authenticatedUser === null )  ? <Stack.Screen
+      name="Login"
+      component={Login}
+      options={({ route }) => {
+        const routeName = getFocusedRouteNameFromRoute(route) ?? 'Login';
+        return { headerTitle: routeName };
+      }}
+    />
+:
+
+          <>
           <Stack.Screen
             name="FeedList"
             component={BottomTabs}
@@ -101,6 +130,7 @@ const Navigation = () => {
             component={CourseScreen}
             options={{ headerTitle: 'Parcours' }}
           />
+
           <Stack.Screen
             name="Calendar"
             component={CalendarScreen}
@@ -111,13 +141,10 @@ const Navigation = () => {
             component={ParametersScreen}
             options={{ headerTitle: 'Préférences' }}
           />
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ headerTitle: 'Login' }}
-          />
-        </Stack.Navigator>
-      
+          </>
+        }
+    </Stack.Navigator>
+
   );
 };
 

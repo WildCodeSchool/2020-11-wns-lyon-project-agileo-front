@@ -6,14 +6,6 @@ const HomeScreen = () => {
   return (
     <ScrollView>
       <HomePost />
-      <HomePost />
-      <HomePost />
-      <HomePost />
-      <HomePost />
-      <HomePost />
-      <HomePost />
-      <HomePost />
-      <HomePost />
     </ScrollView>
   );
 };

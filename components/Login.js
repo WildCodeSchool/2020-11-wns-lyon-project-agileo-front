@@ -17,12 +17,11 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-
   const handleSubmit = async () => {
     try {
       await authenticate({ variables: { email: email, password: password } })
       Alert.alert('Login Success !')
-      window.location.href = 'details.html'
+      
     } catch (error) {
       Alert.alert('Please check your email and password then try again.')
       setEmail('')
@@ -73,7 +72,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#003f5c',
     justifyContent: 'center',
-    height:'110vh'
+    height:500
   },
   logo: {
     fontWeight: 'bold',
