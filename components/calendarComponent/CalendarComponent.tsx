@@ -63,22 +63,22 @@ export default function CalendarComponent() {
                 enableSwipeMonths={true}
 
                 markedDates={{
-                    '2021-04-16': { startingDay: true, color: '#b3fab9' },
-                    '2021-04-17': { color: '#b3fab9' },
-                    '2021-04-18': { color: '#b3fab9' },
-                    '2021-04-19': { selected: true, endingDay: true, color: '#b3fab9', textColor: 'gray' },
+                    '2021-04-16': { startingDay: true, color: '#0CADA6' },
+                    '2021-04-17': { color: '#9BDDDB' },
+                    '2021-04-18': { color: '#9BDDDB' },
+                    '2021-04-19': { selected: true, endingDay: true, color: '#0CADA6', textColor: 'gray' },
                     '2021-04-24': { marked: true, dotColor: 'blue' },
                     '2021-04-25': { marked: true, dotColor: 'green' },
 
-                    '2021-05-16': { startingDay: true, color: '#b3fab9' },
-                    '2021-05-17': { color: '#b3fab9' },
-                    '2021-05-18': { color: '#b3fab9' },
-                    '2021-05-19': { selected: true, endingDay: true, color: '#b3fab9', textColor: 'gray' },
+                    '2021-05-16': { startingDay: true, color: '#0CADA6' },
+                    '2021-05-17': { color: '#9BDDDB' },
+                    '2021-05-18': { color: '#9BDDDB' },
+                    '2021-05-19': { selected: true, endingDay: true, color: '#0CADA6', textColor: 'gray' },
 
-                    '2021-02-16': { startingDay: true, color: '#b3fab9' },
-                    '2021-02-17': { color: '#b3fab9' },
-                    '2021-02-18': { color: '#b3fab9' },
-                    '2021-02-19': { selected: true, endingDay: true, color: '#b3fab9', textColor: 'gray' },
+                    '2021-02-16': { startingDay: true, color: '#0CADA6' },
+                    '2021-02-17': { color: '#9BDDDB' },
+                    '2021-02-18': { color: '#9BDDDB' },
+                    '2021-02-19': { selected: true, endingDay: true, color: '#0CADA6', textColor: 'gray' },
 
                     '2021-05-24': { marked: true, dotColor: 'blue' },
                     '2021-05-25': { marked: true, dotColor: 'green' },
@@ -96,7 +96,7 @@ export default function CalendarComponent() {
 
                 style={{
                     boxShadow: "1px 1px 4px #969696",
-                    borderRadius: 10,
+                    borderRadius: 1,
                     height: 400,
                     width: "90%",
                     paddingTop: 20,
@@ -105,7 +105,7 @@ export default function CalendarComponent() {
 
                 theme={{
                     backgroundColor: '#b64141',
-                    calendarBackground: '#d4d4d4',
+                    calendarBackground: '#eeeeee',
                     textSectionTitleColor: '#1d4977',
                     textSectionTitleDisabledColor: '#014581',
                     selectedDayBackgroundColor: '#00ff22',
@@ -115,7 +115,7 @@ export default function CalendarComponent() {
                     textDisabledColor: '#d85e5e',
                     dotColor: '#00adf5',
                     selectedDotColor: '#fc0404',
-                    arrowColor: 'green',
+                    arrowColor: '#0CADA6',
                     monthTextColor: '#242222',
                     indicatorColor: 'blue',
                     textDayFontFamily: 'monospace',
@@ -131,7 +131,7 @@ export default function CalendarComponent() {
 
             />
             {selected ?
-                <View style={{ backgroundColor: '#ffffff', padding: 20, marginTop: 15 }}>
+                <View style={{ padding: 20, marginTop: 15 }}>
                     <Text style={styles.displayDate}>{`Le ${selected.day} ${monthNames[month.getMonth()]} ${selected.year} `}</Text>
                     <Text style={styles.displayInfos}>{`il fait bon le ${selected.day}`}</Text>
                     <Text onPress={() => setSelected(null)} style={styles.delete}>Déséléctionner</Text>
