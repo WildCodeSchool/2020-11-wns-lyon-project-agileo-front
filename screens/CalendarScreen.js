@@ -1,11 +1,15 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { ScrollView } from "react-native";
+import CalendarComponent from "../components/calendarComponent/CalendarComponent";
 
 const CalendarRoute = () => {
   return (
-    <View>
-      <Text>Calendrier</Text>
-    </View>
+    <ScrollView
+      // style={{ backgroundColor }}
+      // contentContainerStyle={[styles.scrollViewContent, { backgroundColor }]}
+    >
+      <CalendarComponent />
+    </ScrollView>
   );
 };
 
