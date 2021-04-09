@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import color from 'color';
 import { useTheme } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -24,7 +24,7 @@ const AUTHENTICATED_USER = gql`
       id 
     }
   }
-`
+`;
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -33,7 +33,6 @@ const BottomTabs = () => {
   const tabBarColor = theme.dark
     ? (overlay(6, theme.colors.surface))
     : theme.colors.surface;
-
 
   return (
     <Tab.Navigator
@@ -77,38 +76,33 @@ const BottomTabs = () => {
 const Stack = createStackNavigator();
 
 const Navigation = () => {
- 
-  const auth = useAuth();
-  const {data} = useQuery(AUTHENTICATED_USER)
- 
+  const {token} =useAuth();
   useEffect(() => {
-    console.log(data)
-    console.log(auth)
-    
-  }, [data])
- 
-  return (
+  }, [token])
 
+  return (
     <Stack.Navigator
       initialRouteName="FeedList"
       headerMode="screen"
-      screenOptions={{ 
-        header: ({ scene, previous, navigation }) => (data === undefined || data.authenticatedUser === null ) ? null : (
-            <Header scene={scene} previous={previous} navigation={navigation} /> 
-        ) 
+      screenOptions={{
+        header: ({ scene, previous, navigation }) => (token === undefined || token === null) ? null : (
+          <Header scene={scene} previous={previous} navigation={navigation} />
+        )
       }}
     >
-    {(data === undefined || data.authenticatedUser === null )  ? <Stack.Screen
-      name="Login"
-      component={Login}
-      options={({ route }) => {
-        const routeName = getFocusedRouteNameFromRoute(route) ?? 'Login';
-        return { headerTitle: routeName };
-      }}
-    />
-:
-
-          <>
+      {(token === undefined || token === null)
+        ?
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={({ route }) => {
+            const routeName = getFocusedRouteNameFromRoute(route) ?? 'Login';
+            return { headerTitle: routeName };
+          }}
+        />
+        :
+        
+        <>
           <Stack.Screen
             name="FeedList"
             component={BottomTabs}
@@ -117,19 +111,16 @@ const Navigation = () => {
               return { headerTitle: routeName };
             }}
           />
-
           <Stack.Screen
             name="Profile"
             component={ProfileScreen}
             options={{ headerTitle: 'Profil' }}
           />
-
           <Stack.Screen
             name="Course"
             component={CourseScreen}
             options={{ headerTitle: 'Parcours' }}
           />
-
           <Stack.Screen
             name="Calendar"
             component={CalendarScreen}
@@ -140,10 +131,9 @@ const Navigation = () => {
             component={ParametersScreen}
             options={{ headerTitle: 'Préférences' }}
           />
-          </>
-        }
+        </>
+      }
     </Stack.Navigator>
-
   );
 };
 
