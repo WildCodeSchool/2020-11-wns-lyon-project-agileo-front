@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { gql, useMutation } from '@apollo/client'
+import { useAuth } from "../contexts/AuthContext";
 
 const AUTHENTICATE = gql`
   mutation authenticate($email: String!, $password: String!) {
@@ -8,22 +9,29 @@ const AUTHENTICATE = gql`
       item {
         id
       }
+        token
     }
   }
 `
 
 const Login = () => {
-  const [authenticate, { loading }] = useMutation(AUTHENTICATE, { refetchQueries: ['authenticatedUser'] })
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [authenticate, { loading,data }] = useMutation(AUTHENTICATE, { refetchQueries: ['authenticatedUser'] })
+  const [email, setEmail] = useState('abdel@agileo.com')
+  const [password, setPassword] = useState('123456789')
+  const auth = useAuth();
+  
 
   const handleSubmit = async () => {
     try {
       await authenticate({ variables: { email: email, password: password } })
-      Alert.alert('Login Success !')
+      const response = await data && data.authenticateUserWithPassword
+      if(response)
+      auth.signin(response, () => {
+      });
+      alert('Login Success !')
       
     } catch (error) {
-      Alert.alert('Please check your email and password then try again.')
+      alert('Please check your email and password then try again.')
       setEmail('')
       setPassword('')
     }

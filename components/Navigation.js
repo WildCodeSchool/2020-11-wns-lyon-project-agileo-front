@@ -6,7 +6,6 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import overlay from '../scripts/overlay';
 import Header from '../components/Header';
-
 import HomeScreen from '../screens/HomeScreen';
 import CoursesScreen from '../screens/CoursesScreen';
 import MessageScreen from '../screens/MessagesScreen';
@@ -14,8 +13,10 @@ import ProfileScreen from '../screens/UserScreen';
 import CourseScreen from '../screens/CourseScreen';
 import CalendarScreen from '../screens/CalendarScreen';
 import ParametersScreen from '../screens/ParametersScreen';
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 import Login from '../components/Login';
+import { useAuth } from "../contexts/AuthContext";
+
 
 const AUTHENTICATED_USER = gql`
   query authenticatedUser {
@@ -27,14 +28,11 @@ const AUTHENTICATED_USER = gql`
 
 const Tab = createMaterialBottomTabNavigator();
 
-
 const BottomTabs = () => {
   const theme = useTheme();
   const tabBarColor = theme.dark
     ? (overlay(6, theme.colors.surface))
     : theme.colors.surface;
-
-    
 
 
   return (
@@ -80,21 +78,22 @@ const Stack = createStackNavigator();
 
 const Navigation = () => {
  
-  
+  const auth = useAuth();
   const {data} = useQuery(AUTHENTICATED_USER)
-
+ 
   useEffect(() => {
     console.log(data)
+    console.log(auth)
     
   }, [data])
-
+ 
   return (
 
     <Stack.Navigator
       initialRouteName="FeedList"
       headerMode="screen"
       screenOptions={{ 
-        header: ({ scene, previous, navigation }) => (
+        header: ({ scene, previous, navigation }) => (data === undefined || data.authenticatedUser === null ) ? null : (
             <Header scene={scene} previous={previous} navigation={navigation} /> 
         ) 
       }}

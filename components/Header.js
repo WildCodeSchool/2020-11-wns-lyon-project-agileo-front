@@ -3,6 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import { Appbar, Avatar, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+
 const Header = ({ scene, previous, navigation }) => {
   const theme = useTheme();
   const { options } = scene.descriptor;

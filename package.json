@@ -48,6 +48,7 @@
     "react-native-web": "~0.13.12",
     "react-navigation": "^4.4.4",
     "react-navigation-material-bottom-tabs": "^2.3.4",
+    "react-router": "^5.2.0",
     "socket.io": "^3.1.2",
     "tailwind-rn": "^3.0.1",
     "ts-node": "^9.1.1"
