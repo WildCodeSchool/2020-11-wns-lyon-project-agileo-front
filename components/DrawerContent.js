@@ -15,9 +15,10 @@ import {
   Switch,
 } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import PreferencesContext from './../contexts/PreferencesContext';
 
 const DrawerContent = (props) => {
-  const [showDarkMode, setShowDarkMode] = React.useState(false);
+  const { theme, toggleTheme } = React.useContext(PreferencesContext);
 
   return (
     <DrawerContentScrollView {...props}>
@@ -87,11 +88,11 @@ const DrawerContent = (props) => {
           />
         </Drawer.Section>
         <Drawer.Section title="Préférences">
-          <TouchableRipple onPress={() => {setShowDarkMode(!showDarkMode)}}>
+          <TouchableRipple onPress={() => {toggleTheme}}>
             <View style={styles.preference}>
               <Text>Thème Sombre</Text>
               <View pointerEvents="none">
-                <Switch value={showDarkMode} />
+                <Switch value={theme === 'dark'} />
               </View>
             </View>
           </TouchableRipple>
