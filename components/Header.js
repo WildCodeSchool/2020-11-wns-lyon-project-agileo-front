@@ -32,13 +32,13 @@ const Header = ({ scene, previous, navigation }) => {
       >
         <Avatar.Image
           size={40}
-          source={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrmfbI1rQtzAgFe7h7G3vjSDyvZuGRsp-DxxtPd1cw_n0EP3Qd4koC_rUccNM_2O55ZYU&usqp=CAU"}
+          source={require("./../assets/lucas.jpeg")}
         />
       </TouchableOpacity>
     )}
     <Appbar.Content
       title={
-        title === 'Accueil' ? (
+        title === 'Dashboard' ? (
           <MaterialCommunityIcons
             style={{ marginRight: 10 }}
             name="bell"

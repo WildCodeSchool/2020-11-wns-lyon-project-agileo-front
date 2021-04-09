@@ -4,31 +4,31 @@ import { Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import overlay from '../scripts/overlay';
-import CoursesCurrentCourse from "../components/courses/CoursesCurrentCourse";
+import CoursesStartedCourses from "../components/courses/CoursesStartedCourses";
 import CoursesAllCourses from "../components/courses/CoursesAllCourses";
 
 const initialLayout = { width: Dimensions.get('window').width };
 
+const Started = () => <CoursesStartedCourses />;
 const All = () => <CoursesAllCourses />;
-const Current = () => <CoursesCurrentCourse />;
 
 const CoursesScreen = () => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
+    { key: "started", title: "Commencés" },
     { key: "all", title: "Tous" },
-    { key: "current", title: "En cours" },
   ]);
+
+  const renderScene = SceneMap({
+    started: Started,
+    all: All,
+  });
 
   const theme = useTheme();
 
-  const renderScene = SceneMap({
-    all: All,
-    current: Current,
-  });
-
   const tabBarColor = theme.dark
     ? (overlay(4, theme.colors.surface))
-    : theme.colors.surface;
+    : theme.colors.primary;
 
   const rippleColor = theme.dark
     ? color(tabBarColor).lighten(0.5)
@@ -45,7 +45,6 @@ const CoursesScreen = () => {
   );
 
   return (
-    <React.Fragment>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
@@ -53,7 +52,6 @@ const CoursesScreen = () => {
         initialLayout={initialLayout}
         renderTabBar={renderTabBar}
       />
-    </React.Fragment>
   );
 };
 

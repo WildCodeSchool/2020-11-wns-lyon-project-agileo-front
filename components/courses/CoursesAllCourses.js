@@ -6,30 +6,13 @@ import {
   Button,
   Paragraph,
   Title,
-  ProgressBar,
-  TouchableRipple,
-  IconButton,
   useTheme,
 } from "react-native-paper";
 
 const CoursesAllCourses = () => {
-  const [progress, setProgress] = React.useState(0.07);
-  const [displayParcours, setDisplayParcours] = React.useState("none");
-  const [chevronParcours, setChevronParcours] = React.useState("chevron-down");
-
   const {
     colors: { background },
   } = useTheme();
-
-  const handlePressParcours = () => {
-    if (displayParcours == "none") {
-      setDisplayParcours("flex");
-      setChevronParcours("chevron-up");
-    } else if (displayParcours == "flex") {
-      setDisplayParcours("none");
-      setChevronParcours("chevron-down");
-    }
-  };
 
   return (
     <ScrollView
@@ -37,38 +20,66 @@ const CoursesAllCourses = () => {
       contentContainerStyle={styles.content}
     >
       <Card style={styles.card}>
-        <TouchableRipple
-          onPress={handlePressParcours}
-          rippleColor="rgba(0, 0, 0, .32)"
-        >
           <Card.Title
-            title="Tous les cours"
-            left={(props) => <Avatar.Icon {...props} icon="file-multiple" />}
-            right={(props) => <IconButton {...props} icon={chevronParcours} />}
+            title="Mon Parcours"
+            left={(props) => <Avatar.Icon {...props} icon="rocket-launch" />}
           />
-        </TouchableRipple>
-        <Card.Content style={{ display: displayParcours }}>
+        <Card.Content>
           <Card style={styles.card}>
             <Card.Cover
               source={{
                 uri:
-                  "https://i2.wp.com/ysnweb.net/wp-content/uploads/2020/06/photoshop.jpg?fit=960%2C640&ssl=1&resize=1280%2C720",
+                  "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimconseilservice.fr%2Fimages%2FAPI_REST.png&f=1&nofb=1",
               }}
             />
             <Card.Content>
-              <Title>Photoshop basiques</Title>
+              <Title>Créer une API Rest</Title>
               <Paragraph>
-                Appréhender la retouche d'image en manipulant les outils
-                Photoshop.
+                Comprendre le principe des API et créer sa propre API Rest.
               </Paragraph>
-              <View style={styles.row}>
-                <Paragraph>En cours (7%)</Paragraph>
-                <ProgressBar progress={progress} />
-              </View>
+            </Card.Content>
+          </Card>
+          <Card style={styles.card}>
+            <Card.Cover
+              source={{
+                uri:
+                  "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.programarya.com%2Fimg%2FCursos%2FJava%2FJava-header.png&f=1&nofb=1",
+              }}
+            />
+            <Card.Content>
+              <Title>Utiliser Java J2EE pour le web</Title>
+              <Paragraph>
+                Créer un site web dynamique avec Java J2EE.
+              </Paragraph>
             </Card.Content>
           </Card>
         </Card.Content>
-        <Card.Actions style={{ display: displayParcours }}>
+        <Card.Actions>
+          <Button onPress={() => {}}>Voir plus</Button>
+        </Card.Actions>
+      </Card>
+      <Card style={styles.card}>
+          <Card.Title
+            title="Autres"
+            left={(props) => <Avatar.Icon {...props} icon="file-multiple" />}
+          />
+        <Card.Content>
+          <Card style={styles.card}>
+            <Card.Cover
+              source={{
+                uri:
+                  "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Flapizgrafico.com%2Fwp-content%2Fuploads%2F2018%2F09%2Findesign-logo.jpg&f=1&nofb=1",
+              }}
+            />
+            <Card.Content>
+              <Title>InDesign basiques</Title>
+              <Paragraph>
+                Appréhender la création de contenu avec InDesign.
+              </Paragraph>
+            </Card.Content>
+          </Card>
+        </Card.Content>
+        <Card.Actions>
           <Button onPress={() => {}}>Voir plus</Button>
         </Card.Actions>
       </Card>

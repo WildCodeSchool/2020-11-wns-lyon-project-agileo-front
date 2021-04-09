@@ -4,16 +4,17 @@ import { useTheme } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { gql, useQuery } from '@apollo/client';
 import overlay from '../scripts/overlay';
-import Header from '../components/Header';
-import HomeScreen from '../screens/HomeScreen';
+
+import DashboardScreen from '../screens/DashboardScreen';
 import CoursesScreen from '../screens/CoursesScreen';
 import MessageScreen from '../screens/MessagesScreen';
 import ProfileScreen from '../screens/UserScreen';
 import CourseScreen from '../screens/CourseScreen';
 import CalendarScreen from '../screens/CalendarScreen';
 import ParametersScreen from '../screens/ParametersScreen';
-import { gql, useQuery } from '@apollo/client'
+import Header from '../components/Header';
 import Login from '../components/Login';
 import { useAuth } from "../contexts/AuthContext";
 
@@ -35,8 +36,8 @@ const BottomTabs = () => {
     : theme.colors.surface;
 
   return (
-    <Tab.Navigator
-      initialRouteName="Feed"
+    <Tab.Navigator 
+      initialRouteName="Dashboard"
       backBehavior="initialRoute"
       shifting={true}
       activeColor={theme.colors.primary}
@@ -45,13 +46,13 @@ const BottomTabs = () => {
         .rgb()
         .string()}
     >
-      <Tab.Screen
-        name="Accueil"
-        component={HomeScreen}
+      <Tab.Screen 
+        name="Dashboard" 
+        component={DashboardScreen} 
         options={{
-          tabBarIcon: 'home-account',
+          tabBarIcon: 'view-dashboard',
           tabBarColor,
-        }}
+        }} 
       />
       <Tab.Screen
         name="Cours"
@@ -69,6 +70,14 @@ const BottomTabs = () => {
           tabBarColor,
         }}
       />
+      <Tab.Screen 
+        name="Calendrier" 
+        component={CalendarScreen} 
+        options={{
+          tabBarIcon: 'calendar',
+          tabBarColor,
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -76,13 +85,12 @@ const BottomTabs = () => {
 const Stack = createStackNavigator();
 
 const Navigation = () => {
-  const {token} =useAuth();
-  useEffect(() => {
-  }, [token])
+  const {token} = useAuth();
+
 
   return (
     <Stack.Navigator
-      initialRouteName="FeedList"
+      initialRouteName="Dashboard"
       headerMode="screen"
       screenOptions={{
         header: ({ scene, previous, navigation }) => (token === undefined || token === null) ? null : (
@@ -101,7 +109,6 @@ const Navigation = () => {
           }}
         />
         :
-        
         <>
           <Stack.Screen
             name="FeedList"
