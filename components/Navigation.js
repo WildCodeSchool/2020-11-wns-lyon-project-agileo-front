@@ -1,21 +1,23 @@
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import color from 'color';
 import { useTheme } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { gql, useQuery } from '@apollo/client';
 import overlay from '../scripts/overlay';
-import Header from '../components/Header';
 
-import HomeScreen from '../screens/HomeScreen';
+import DashboardScreen from '../screens/DashboardScreen';
 import CoursesScreen from '../screens/CoursesScreen';
 import MessageScreen from '../screens/MessagesScreen';
 import ProfileScreen from '../screens/UserScreen';
 import CourseScreen from '../screens/CourseScreen';
 import CalendarScreen from '../screens/CalendarScreen';
 import ParametersScreen from '../screens/ParametersScreen';
-import { gql, useQuery } from '@apollo/client'
+import Header from '../components/Header';
 import Login from '../components/Login';
+import { useAuth } from "../contexts/AuthContext";
+
 
 const AUTHENTICATED_USER = gql`
   query authenticatedUser {
@@ -34,8 +36,8 @@ const BottomTabs = () => {
     : theme.colors.surface;
 
   return (
-    <Tab.Navigator
-      initialRouteName="Feed"
+    <Tab.Navigator 
+      initialRouteName="Dashboard"
       backBehavior="initialRoute"
       shifting={true}
       activeColor={theme.colors.primary}
@@ -44,13 +46,13 @@ const BottomTabs = () => {
         .rgb()
         .string()}
     >
-      <Tab.Screen
-        name="Accueil"
-        component={HomeScreen}
+      <Tab.Screen 
+        name="Dashboard" 
+        component={DashboardScreen} 
         options={{
-          tabBarIcon: 'home-account',
+          tabBarIcon: 'view-dashboard',
           tabBarColor,
-        }}
+        }} 
       />
       <Tab.Screen
         name="Cours"
@@ -68,6 +70,14 @@ const BottomTabs = () => {
           tabBarColor,
         }}
       />
+      <Tab.Screen 
+        name="Calendrier" 
+        component={CalendarScreen} 
+        options={{
+          tabBarIcon: 'calendar',
+          tabBarColor,
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -75,59 +85,61 @@ const BottomTabs = () => {
 const Stack = createStackNavigator();
 
 const Navigation = () => {
-  const {data} = useQuery(AUTHENTICATED_USER)
-  useEffect(() => { console.log(data) }, [data])
+  const {token} = useAuth();
+
 
   return (
     <Stack.Navigator
-      initialRouteName="FeedList"
+      initialRouteName="Dashboard"
       headerMode="screen"
-      screenOptions={{ 
-        header: ({ scene, previous, navigation }) => (
-            <Header scene={scene} previous={previous} navigation={navigation} /> 
-        ) 
+      screenOptions={{
+        header: ({ scene, previous, navigation }) => (token === undefined || token === null) ? null : (
+          <Header scene={scene} previous={previous} navigation={navigation} />
+        )
       }}
     >
-    {(data === undefined || data.authenticatedUser === null )  
-    ? <Stack.Screen
-        name="Login"
-        component={Login}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? 'Login';
-          return { headerTitle: routeName };
-        }}
-      />
-    : <>
+      {(token === undefined || token === null)
+        ?
         <Stack.Screen
-          name="FeedList"
-          component={BottomTabs}
+          name="Login"
+          component={Login}
           options={({ route }) => {
-            const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+            const routeName = getFocusedRouteNameFromRoute(route) ?? 'Login';
             return { headerTitle: routeName };
           }}
         />
-        <Stack.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={{ headerTitle: 'Profil' }}
-        />
-        <Stack.Screen
-          name="Course"
-          component={CourseScreen}
-          options={{ headerTitle: 'Parcours' }}
-        />
-        <Stack.Screen
-          name="Calendar"
-          component={CalendarScreen}
-          options={{ headerTitle: 'Calendrier' }}
-        />
-        <Stack.Screen
-          name="Parameters"
-          component={ParametersScreen}
-          options={{ headerTitle: 'Préférences' }}
-        />
-      </>
-    }
+        :
+        <>
+          <Stack.Screen
+            name="FeedList"
+            component={BottomTabs}
+            options={({ route }) => {
+              const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+              return { headerTitle: routeName };
+            }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{ headerTitle: 'Profil' }}
+          />
+          <Stack.Screen
+            name="Course"
+            component={CourseScreen}
+            options={{ headerTitle: 'Parcours' }}
+          />
+          <Stack.Screen
+            name="Calendar"
+            component={CalendarScreen}
+            options={{ headerTitle: 'Calendrier' }}
+          />
+          <Stack.Screen
+            name="Parameters"
+            component={ParametersScreen}
+            options={{ headerTitle: 'Préférences' }}
+          />
+        </>
+      }
     </Stack.Navigator>
   );
 };

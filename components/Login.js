@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { gql, useMutation } from '@apollo/client'
+import { useAuth } from "../contexts/AuthContext";
 
 const AUTHENTICATE = gql`
   mutation authenticate($email: String!, $password: String!) {
@@ -8,22 +9,29 @@ const AUTHENTICATE = gql`
       item {
         id
       }
+        token
     }
   }
 `;
 
 const Login = () => {
-  const [authenticate, { loading }] = useMutation(AUTHENTICATE, { refetchQueries: ['authenticatedUser'] })
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [authenticate, { loading, data }] = useMutation(AUTHENTICATE, { refetchQueries: ['authenticatedUser'] })
+  const [email, setEmail] = useState('abdel@agileo.com')
+  const [password, setPassword] = useState('123456789')
+  const auth = useAuth();
+  
+
+  useEffect(() => {
+  if(data?.authenticateUserWithPassword){
+    auth.signin(data.authenticateUserWithPassword.token);
+  }
+  }, [data])
 
   const handleSubmit = async () => {
     try {
       await authenticate({ variables: { email: email, password: password } })
-      Alert.alert('Connexion réussie !')
-      
     } catch (error) {
-      Alert.alert("Vérifiez l'adresse email et le mot de passe puis réessayez.")
+      Alert.alert('Please check your email and password then try again.')
       setEmail('')
       setPassword('')
     }
@@ -51,12 +59,14 @@ const Login = () => {
           value={password}
         />
       </View>
+
       <TouchableOpacity>
         <Text style={styles.forgot}>Mot de passe oublié ?</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.loginBtn} onPress={handleSubmit} >
+      <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmit()} >
         <Text style={styles.loginText}>{loading ? 'CHARGEMENT...' : 'SE CONNECTER'}</Text>
       </TouchableOpacity>
+      
       <TouchableOpacity>
         <Text style={styles.loginText}>S'inscrire</Text>
       </TouchableOpacity>
@@ -72,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#0cada6',
     justifyContent: 'center',
-    height:500
+    height: 500
   },
   logo: {
     fontWeight: 'bold',
@@ -90,8 +100,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   inputText: {
-    height: 50,
-    color: 'white',
+    height: 50
   },
   forgot: {
     color: 'white',
