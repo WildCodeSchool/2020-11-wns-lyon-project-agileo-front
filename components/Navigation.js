@@ -18,15 +18,6 @@ import Header from '../components/Header';
 import Login from '../components/Login';
 import { useAuth } from "../contexts/AuthContext";
 
-
-const AUTHENTICATED_USER = gql`
-  query authenticatedUser {
-    authenticatedUser {
-      id 
-    }
-  }
-`;
-
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabs = () => {
@@ -86,6 +77,10 @@ const Stack = createStackNavigator();
 
 const Navigation = () => {
   const {token} = useAuth();
+  useEffect(() => {
+
+  }, [token])
+
 
 
   return (
@@ -93,12 +88,13 @@ const Navigation = () => {
       initialRouteName="Dashboard"
       headerMode="screen"
       screenOptions={{
-        header: ({ scene, previous, navigation }) => (token === undefined || token === null) ? null : (
+        header: ({ scene, previous, navigation }) => (token === undefined || token === null || token === "" ) ? null : (
           <Header scene={scene} previous={previous} navigation={navigation} />
         )
       }}
     >
-      {(token === undefined || token === null)
+
+      {(token === undefined || token === null || token === "")
         ?
         <Stack.Screen
           name="Login"
@@ -109,6 +105,7 @@ const Navigation = () => {
           }}
         />
         :
+        
         <>
           <Stack.Screen
             name="FeedList"

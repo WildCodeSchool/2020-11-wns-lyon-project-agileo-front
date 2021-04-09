@@ -58,7 +58,5 @@ export default function App() {
             </PaperProvider>
         </ProvideAuth>
     </ApolloProvider>
-
-    
   )
 }

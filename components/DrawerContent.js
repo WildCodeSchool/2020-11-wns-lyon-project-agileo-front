@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
   DrawerItem,
@@ -15,9 +15,19 @@ import {
   Switch,
 } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAuth } from "../contexts/AuthContext";
+
 
 const DrawerContent = (props) => {
   const [showDarkMode, setShowDarkMode] = React.useState(false);
+  const { signout } = useAuth();
+
+  const onLogout = async () => {
+    await signout();
+    props.navigation.navigate("Login")
+  }
+
+
 
   return (
     <DrawerContentScrollView {...props}>
@@ -87,7 +97,7 @@ const DrawerContent = (props) => {
           />
         </Drawer.Section>
         <Drawer.Section title="Préférences">
-          <TouchableRipple onPress={() => {setShowDarkMode(!showDarkMode)}}>
+          <TouchableRipple onPress={() => { setShowDarkMode(!showDarkMode) }}>
             <View style={styles.preference}>
               <Text>Thème Sombre</Text>
               <View pointerEvents="none">
@@ -106,9 +116,9 @@ const DrawerContent = (props) => {
               />
             )}
             label="Se déconnecter"
-            onPress={() => {}}
+            onPress={onLogout}
           />
-          </Drawer.Section>
+        </Drawer.Section>
       </View>
     </DrawerContentScrollView>
   );
