@@ -14,7 +14,7 @@ import ProfileScreen from '../screens/UserScreen';
 import CourseScreen from '../screens/CourseScreen';
 import CalendarScreen from '../screens/CalendarScreen';
 import ParametersScreen from '../screens/ParametersScreen';
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 import Login from '../components/Login';
 
 const AUTHENTICATED_USER = gql`
@@ -23,19 +23,15 @@ const AUTHENTICATED_USER = gql`
       id 
     }
   }
-`
+`;
 
 const Tab = createMaterialBottomTabNavigator();
-
 
 const BottomTabs = () => {
   const theme = useTheme();
   const tabBarColor = theme.dark
     ? (overlay(6, theme.colors.surface))
     : theme.colors.surface;
-
-    
-
 
   return (
     <Tab.Navigator
@@ -79,17 +75,10 @@ const BottomTabs = () => {
 const Stack = createStackNavigator();
 
 const Navigation = () => {
- 
-  
   const {data} = useQuery(AUTHENTICATED_USER)
-
-  useEffect(() => {
-    console.log(data)
-    
-  }, [data])
+  useEffect(() => { console.log(data) }, [data])
 
   return (
-
     <Stack.Navigator
       initialRouteName="FeedList"
       headerMode="screen"
@@ -99,52 +88,47 @@ const Navigation = () => {
         ) 
       }}
     >
-    {(data === undefined || data.authenticatedUser === null )  ? <Stack.Screen
-      name="Login"
-      component={Login}
-      options={({ route }) => {
-        const routeName = getFocusedRouteNameFromRoute(route) ?? 'Login';
-        return { headerTitle: routeName };
-      }}
-    />
-:
-
-          <>
-          <Stack.Screen
-            name="FeedList"
-            component={BottomTabs}
-            options={({ route }) => {
-              const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
-              return { headerTitle: routeName };
-            }}
-          />
-
-          <Stack.Screen
-            name="Profile"
-            component={ProfileScreen}
-            options={{ headerTitle: 'Profil' }}
-          />
-
-          <Stack.Screen
-            name="Course"
-            component={CourseScreen}
-            options={{ headerTitle: 'Parcours' }}
-          />
-
-          <Stack.Screen
-            name="Calendar"
-            component={CalendarScreen}
-            options={{ headerTitle: 'Calendrier' }}
-          />
-          <Stack.Screen
-            name="Parameters"
-            component={ParametersScreen}
-            options={{ headerTitle: 'Préférences' }}
-          />
-          </>
-        }
+    {(data === undefined || data.authenticatedUser === null )  
+    ? <Stack.Screen
+        name="Login"
+        component={Login}
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route) ?? 'Login';
+          return { headerTitle: routeName };
+        }}
+      />
+    : <>
+        <Stack.Screen
+          name="FeedList"
+          component={BottomTabs}
+          options={({ route }) => {
+            const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+            return { headerTitle: routeName };
+          }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{ headerTitle: 'Profil' }}
+        />
+        <Stack.Screen
+          name="Course"
+          component={CourseScreen}
+          options={{ headerTitle: 'Parcours' }}
+        />
+        <Stack.Screen
+          name="Calendar"
+          component={CalendarScreen}
+          options={{ headerTitle: 'Calendrier' }}
+        />
+        <Stack.Screen
+          name="Parameters"
+          component={ParametersScreen}
+          options={{ headerTitle: 'Préférences' }}
+        />
+      </>
+    }
     </Stack.Navigator>
-
   );
 };
 

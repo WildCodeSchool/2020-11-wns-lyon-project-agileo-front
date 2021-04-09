@@ -10,7 +10,7 @@ const AUTHENTICATE = gql`
       }
     }
   }
-`
+`;
 
 const Login = () => {
   const [authenticate, { loading }] = useMutation(AUTHENTICATE, { refetchQueries: ['authenticatedUser'] })

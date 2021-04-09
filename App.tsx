@@ -6,8 +6,6 @@ import { DefaultTheme, DarkTheme, Provider as PaperProvider } from "react-native
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import DrawerContent from "./components/DrawerContent";
 import Navigation from './components/Navigation';
-import Login from './components/Login';
-
 
 const link = createHttpLink({ uri: 'http://192.168.43.159:4000/admin/api',
 credentials: 'include' }); 
@@ -28,13 +26,13 @@ export default function App() {
 
   return (
     <ApolloProvider client= { client } >
-    <PaperProvider theme={ navigationTheme }>
-      <NavigationContainer>
-      <Drawer.Navigator drawerContent={ props => <DrawerContent { ...props } />}>
-        <Drawer.Screen name="Home" component = { Navigation } />
+      <PaperProvider theme={ navigationTheme }>
+        <NavigationContainer>
+        <Drawer.Navigator drawerContent={ props => <DrawerContent { ...props } />}>
+          <Drawer.Screen name="Home" component = { Navigation } />
           </Drawer.Navigator>
-          < /NavigationContainer>
-          < /PaperProvider>
-          < /ApolloProvider>
+        </NavigationContainer>
+      </PaperProvider>
+    </ApolloProvider>
   )
 }
