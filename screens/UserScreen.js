@@ -1,13 +1,16 @@
 import React from "react";
-import { StyleSheet, Dimensions } from "react-native";
-import { TabView, TabBar, SceneMap } from "react-native-tab-view";
+import color from 'color';
+import { Dimensions } from "react-native";
+import { useTheme } from 'react-native-paper';
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import overlay from '../scripts/overlay';
 import UserProfile from "../components/user/UserProfile";
 import UserClassroom from "../components/user/UserClassroom";
 
-const UserProfileRoute = () => <UserProfile style={[styles.scene]} />;
-const UserClassroomRoute = () => <UserClassroom style={[styles.scene]} />;
-
 const initialLayout = { width: Dimensions.get("window").width };
+
+const UserProfileRoute = () => <UserProfile />;
+const UserClassroomRoute = () => <UserClassroom />;
 
 const UserScreen = () => {
   const [index, setIndex] = React.useState(0);
@@ -21,29 +24,35 @@ const UserScreen = () => {
     userClassroom: UserClassroomRoute,
   });
 
+  const theme = useTheme();
+  
+  const tabBarColor = theme.dark
+    ? (overlay(4, theme.colors.surface))
+    : theme.colors.primary;
+
+  const rippleColor = theme.dark
+    ? color(tabBarColor).lighten(0.5)
+    : color(tabBarColor).darken(0.2);
+
   const renderTabBar = (props) => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: "#92dedb" }}
-      style={{ backgroundColor: "#0cada6" }}
+      indicatorStyle={{ backgroundColor: theme.colors.primary }}
+      style={{ backgroundColor: tabBarColor, shadowColor: theme.colors.text }}
+      labelStyle={{ color: theme.colors.primary }}
+      pressColor={rippleColor}
     />
   );
 
   return (
     <TabView
-      renderTabBar={renderTabBar}
       navigationState={{ index, routes }}
       renderScene={renderScene}
       onIndexChange={setIndex}
       initialLayout={initialLayout}
+      renderTabBar={renderTabBar}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-  },
-});
 
 export default UserScreen;

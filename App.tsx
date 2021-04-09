@@ -7,8 +7,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import DrawerContent from "./components/DrawerContent";
 import Navigation from './components/Navigation';
 
-const link = createHttpLink({ uri: 'http://192.168.43.159:4000/admin/api',
-credentials: 'include' }); 
+const link = createHttpLink({ uri: 'http://192.168.43.159:4000/admin/api', credentials: 'include' }); 
 const client = new ApolloClient({ cache: new InMemoryCache(), link, });
 
 const Drawer = createDrawerNavigator();
@@ -28,8 +27,8 @@ export default function App() {
     <ApolloProvider client= { client } >
       <PaperProvider theme={ navigationTheme }>
         <NavigationContainer>
-        <Drawer.Navigator drawerContent={ props => <DrawerContent { ...props } />}>
-          <Drawer.Screen name="Home" component = { Navigation } />
+          <Drawer.Navigator drawerContent={ props => <DrawerContent { ...props } />}>
+            <Drawer.Screen name="Home" component = { Navigation } />
           </Drawer.Navigator>
         </NavigationContainer>
       </PaperProvider>

@@ -4,17 +4,17 @@ import { useTheme } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { gql, useQuery } from '@apollo/client';
 import overlay from '../scripts/overlay';
-import Header from '../components/Header';
 
-import HomeScreen from '../screens/HomeScreen';
+import DashboardScreen from '../screens/DashboardScreen';
 import CoursesScreen from '../screens/CoursesScreen';
 import MessageScreen from '../screens/MessagesScreen';
 import ProfileScreen from '../screens/UserScreen';
 import CourseScreen from '../screens/CourseScreen';
 import CalendarScreen from '../screens/CalendarScreen';
 import ParametersScreen from '../screens/ParametersScreen';
-import { gql, useQuery } from '@apollo/client'
+import Header from '../components/Header';
 import Login from '../components/Login';
 
 const AUTHENTICATED_USER = gql`
@@ -34,8 +34,8 @@ const BottomTabs = () => {
     : theme.colors.surface;
 
   return (
-    <Tab.Navigator
-      initialRouteName="Feed"
+    <Tab.Navigator 
+      initialRouteName="Dashboard"
       backBehavior="initialRoute"
       shifting={true}
       activeColor={theme.colors.primary}
@@ -44,13 +44,13 @@ const BottomTabs = () => {
         .rgb()
         .string()}
     >
-      <Tab.Screen
-        name="Accueil"
-        component={HomeScreen}
+      <Tab.Screen 
+        name="Dashboard" 
+        component={DashboardScreen} 
         options={{
-          tabBarIcon: 'home-account',
+          tabBarIcon: 'view-dashboard',
           tabBarColor,
-        }}
+        }} 
       />
       <Tab.Screen
         name="Cours"
@@ -68,6 +68,14 @@ const BottomTabs = () => {
           tabBarColor,
         }}
       />
+      <Tab.Screen 
+        name="Calendrier" 
+        component={CalendarScreen} 
+        options={{
+          tabBarIcon: 'calendar',
+          tabBarColor,
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -80,15 +88,15 @@ const Navigation = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName="FeedList"
+      initialRouteName="Dashboard"
       headerMode="screen"
-      screenOptions={{ 
+      screenOptions={{
         header: ({ scene, previous, navigation }) => (
-            <Header scene={scene} previous={previous} navigation={navigation} /> 
-        ) 
+          <Header scene={scene} previous={previous} navigation={navigation} />
+        ),
       }}
     >
-    {(data === undefined || data.authenticatedUser === null )  
+    {/* {(data === undefined || data.authenticatedUser === null )  
     ? <Stack.Screen
         name="Login"
         component={Login}
@@ -97,12 +105,12 @@ const Navigation = () => {
           return { headerTitle: routeName };
         }}
       />
-    : <>
+    : <> */}
         <Stack.Screen
-          name="FeedList"
+          name="Dashboard"
           component={BottomTabs}
           options={({ route }) => {
-            const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+            const routeName = getFocusedRouteNameFromRoute(route) ?? 'Dashboard';
             return { headerTitle: routeName };
           }}
         />
@@ -117,17 +125,12 @@ const Navigation = () => {
           options={{ headerTitle: 'Parcours' }}
         />
         <Stack.Screen
-          name="Calendar"
-          component={CalendarScreen}
-          options={{ headerTitle: 'Calendrier' }}
-        />
-        <Stack.Screen
           name="Parameters"
           component={ParametersScreen}
           options={{ headerTitle: 'Préférences' }}
         />
-      </>
-    }
+      {/* </>
+    } */}
     </Stack.Navigator>
   );
 };

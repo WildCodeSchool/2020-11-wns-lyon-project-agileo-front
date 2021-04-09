@@ -17,6 +17,8 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const DrawerContent = (props) => {
+  const [showDarkMode, setShowDarkMode] = React.useState(false);
+
   return (
     <DrawerContentScrollView {...props}>
       <View
@@ -27,7 +29,7 @@ const DrawerContent = (props) => {
         <View style={styles.userInfoSection}>
           <Avatar.Image
             size={50}
-            source={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrmfbI1rQtzAgFe7h7G3vjSDyvZuGRsp-DxxtPd1cw_n0EP3Qd4koC_rUccNM_2O55ZYU&usqp=CAU"} />
+            source={require("./../assets/lucas.jpeg")} />
 
           <Title style={styles.title}>Lucas Charnay</Title>
           <Caption style={styles.caption}>@lcharnay</Caption>
@@ -67,13 +69,6 @@ const DrawerContent = (props) => {
           />
           <DrawerItem
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="calendar" color={color} size={size} />
-            )}
-            label="Calendrier"
-            onPress={() => { props.navigation.navigate('Calendar') }}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
               <MaterialCommunityIcons name="tune" color={color} size={size} />
             )}
             label="Paramètres"
@@ -92,23 +87,28 @@ const DrawerContent = (props) => {
           />
         </Drawer.Section>
         <Drawer.Section title="Préférences">
-          <TouchableRipple onPress={() => { }}>
+          <TouchableRipple onPress={() => {setShowDarkMode(!showDarkMode)}}>
             <View style={styles.preference}>
               <Text>Thème Sombre</Text>
               <View pointerEvents="none">
-                <Switch value={false} />
-              </View>
-            </View>
-          </TouchableRipple>
-          <TouchableRipple onPress={() => { }}>
-            <View style={styles.preference}>
-              <Text>RTL</Text>
-              <View pointerEvents="none">
-                <Switch value={false} />
+                <Switch value={showDarkMode} />
               </View>
             </View>
           </TouchableRipple>
         </Drawer.Section>
+        <Drawer.Section style={styles.drawerSection}>
+          <DrawerItem
+            icon={({ color, size }) => (
+              <MaterialCommunityIcons
+                name="logout"
+                color={color}
+                size={size}
+              />
+            )}
+            label="Se déconnecter"
+            onPress={() => {}}
+          />
+          </Drawer.Section>
       </View>
     </DrawerContentScrollView>
   );

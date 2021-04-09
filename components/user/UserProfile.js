@@ -16,7 +16,7 @@ const UserProfile = () => {
   } = useTheme();
 
   const LeftContent = (props) => (
-    <Avatar.Image {...props} source={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrmfbI1rQtzAgFe7h7G3vjSDyvZuGRsp-DxxtPd1cw_n0EP3Qd4koC_rUccNM_2O55ZYU&usqp=CAU"}/>
+    <Avatar.Image {...props} source={require("./../../assets/lucas.jpeg")}/>
   );
 
   return (
