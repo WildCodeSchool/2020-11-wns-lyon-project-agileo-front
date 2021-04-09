@@ -78,9 +78,7 @@ const Stack = createStackNavigator();
 const Navigation = () => {
   const {token} = useAuth();
   useEffect(() => {
-
   }, [token])
-
 
 
   return (

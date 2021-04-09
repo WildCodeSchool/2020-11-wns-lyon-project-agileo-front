@@ -16,17 +16,21 @@ import {
 } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAuth } from "../contexts/AuthContext";
+import PreferencesContext from './../contexts/PreferencesContext';
+
+
+  
 
 
 const DrawerContent = (props) => {
-  const [showDarkMode, setShowDarkMode] = React.useState(false);
+
+  const { theme, toggleTheme } = React.useContext(PreferencesContext);
   const { signout } = useAuth();
 
   const onLogout = async () => {
     await signout();
     props.navigation.navigate("Login")
   }
-
 
 
   return (
@@ -97,11 +101,11 @@ const DrawerContent = (props) => {
           />
         </Drawer.Section>
         <Drawer.Section title="Préférences">
-          <TouchableRipple onPress={() => { setShowDarkMode(!showDarkMode) }}>
+          <TouchableRipple onPress={() => {toggleTheme}}>
             <View style={styles.preference}>
               <Text>Thème Sombre</Text>
               <View pointerEvents="none">
-                <Switch value={showDarkMode} />
+                <Switch value={theme === 'dark'} />
               </View>
             </View>
           </TouchableRipple>
