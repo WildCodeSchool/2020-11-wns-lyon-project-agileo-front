@@ -9,14 +9,17 @@ import {
   Divider,
   List,
 } from "react-native-paper";
+import { useAuth } from "../../contexts/AuthContext";
 
 const UserProfile = () => {
   const {
     colors: { background },
   } = useTheme();
+  const {currentUser} = useAuth();
+
 
   const LeftContent = (props) => (
-    <Avatar.Image {...props} source={require("./../../assets/lucas.jpeg")}/>
+    <Avatar.Image {...props} source={currentUser.avatar}/>
   );
 
   return (
@@ -26,7 +29,7 @@ const UserProfile = () => {
     >
       <Card style={styles.card}>
         <Card.Title
-          title="Lucas Charnay"
+          title={currentUser.firstName}
           subtitle="Développeur web"
           left={LeftContent}
         />
@@ -38,7 +41,7 @@ const UserProfile = () => {
             />
             <List.Item
               left={(props) => <List.Icon {...props} icon="email" />}
-              title="lucas.charnay@gmail.com"
+              title={currentUser.email}
             />
           </List.Section>
           <Divider />

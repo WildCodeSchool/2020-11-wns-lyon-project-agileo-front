@@ -4,7 +4,7 @@ import { useTheme } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { gql, useQuery } from '@apollo/client';
+
 import overlay from '../scripts/overlay';
 
 import DashboardScreen from '../screens/DashboardScreen';
@@ -77,8 +77,7 @@ const Stack = createStackNavigator();
 
 const Navigation = () => {
   const {token} = useAuth();
-  useEffect(() => {
-  }, [token])
+  
 
 
   return (

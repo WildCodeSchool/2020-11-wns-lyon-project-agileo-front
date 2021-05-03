@@ -20,11 +20,11 @@ import { ProvideAuth } from "./contexts/AuthContext";
 import PreferencesContext from './contexts/PreferencesContext';
 
 const httpLink = createHttpLink({
-  uri: 'http://192.168.43.159:4000/admin/api',
+  uri:'http://localhost:4000/admin/api',
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = window.localStorage.getItem("auth-token");
+  const token = window.localStorage.getItem("auth_token");
   return {
     headers: {
       ...headers,
@@ -66,31 +66,31 @@ export default function App() {
     [rtl, theme, toggleRTL]
   );
 
-  return (
-    <ApolloProvider client={client} >
-      <ProvideAuth>
-        <PreferencesContext.Provider value={preferences}>
-          <PaperProvider 
-            theme={
-              theme === 'light'
-                ? {
-                    ...PaperDefaultTheme,
-                    colors: { ...PaperDefaultTheme.colors, primary: "#0cada6", accent: "#92dedb" },
-                  }
-                : {
-                    ...PaperDarkTheme,
-                    colors: { ...PaperDarkTheme.colors, primary: '#0cada6' },
-                  }
-            }
-          >
-            <NavigationContainer>
-              <Drawer.Navigator drawerContent={ props => <DrawerContent { ...props } />}>
-                <Drawer.Screen name="Home" component = { Navigation } />
-              </Drawer.Navigator>
-            </NavigationContainer>
-          </PaperProvider>
-        </PreferencesContext.Provider>
-      </ProvideAuth>
-    </ApolloProvider>
-  )
-}
+    return (
+      <ApolloProvider client={client} >
+        <ProvideAuth>
+          <PreferencesContext.Provider value={preferences}>
+            <PaperProvider 
+              theme={
+                theme === 'light'
+                  ? {
+                      ...PaperDefaultTheme,
+                      colors: { ...PaperDefaultTheme.colors, primary: "#0cada6", accent: "#92dedb" },
+                    }
+                  : {
+                      ...PaperDarkTheme,
+                      colors: { ...PaperDarkTheme.colors, primary: '#0cada6' },
+                    }
+              }
+            >
+              <NavigationContainer>
+                <Drawer.Navigator drawerContent={ props => <DrawerContent { ...props } />}>
+                  <Drawer.Screen name="Home" component = { Navigation } />
+                </Drawer.Navigator>
+              </NavigationContainer>
+            </PaperProvider>
+          </PreferencesContext.Provider>
+        </ProvideAuth>
+      </ApolloProvider>
+    )
+  }

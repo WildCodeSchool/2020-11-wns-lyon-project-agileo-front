@@ -4,12 +4,19 @@ const authContext = createContext();
 
 export const ProvideAuth = (props) => {
     const [token, setToken] = useState('');
+    const [currentUser, setcurrentUser] = useState({});
 
 
     const signin = (data) => {
-        window.localStorage.setItem("auth-token", data);
-        setToken("auth-token", data);
-    };
+        window.localStorage.setItem("auth_token", data.token);
+        setToken(data.token);
+        setcurrentUser({
+            firstName :data.item.firstName, 
+            avatar :data.item.pictureUrl,
+            email :data.item.email
+        })
+        }; 
+        
 
     const signout = async () => {
         window.localStorage.removeItem("auth-token");
@@ -20,10 +27,12 @@ export const ProvideAuth = (props) => {
     const providerValues = {
         signin,
         signout,
-        token
+        token,
+        currentUser,
     };
 
     return <authContext.Provider value={providerValues} {...props} />;
+    
 };
 
 export const useAuth = () => useContext(authContext);

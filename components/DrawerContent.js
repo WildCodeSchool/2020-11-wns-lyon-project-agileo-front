@@ -18,14 +18,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAuth } from "../contexts/AuthContext";
 import PreferencesContext from './../contexts/PreferencesContext';
 
-
-  
-
-
 const DrawerContent = (props) => {
 
   const { theme, toggleTheme } = React.useContext(PreferencesContext);
-  const { signout } = useAuth();
+  const { signout,currentUser } = useAuth();
 
   const onLogout = async () => {
     await signout();
@@ -43,10 +39,10 @@ const DrawerContent = (props) => {
         <View style={styles.userInfoSection}>
           <Avatar.Image
             size={50}
-            source={require("./../assets/lucas.jpeg")} />
+            source={currentUser.avatar} />
 
-          <Title style={styles.title}>Lucas Charnay</Title>
-          <Caption style={styles.caption}>@lcharnay</Caption>
+          <Title style={styles.title}>{currentUser.firstName}</Title>
+          <Caption style={styles.caption}>@{currentUser.firstName}</Caption>
           <View style={styles.row}>
             <View style={styles.section}>
               <Paragraph style={[styles.paragraph, styles.caption]}>

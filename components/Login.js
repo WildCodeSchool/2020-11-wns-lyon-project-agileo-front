@@ -1,64 +1,83 @@
-import React, { useState ,useEffect} from 'react'
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { gql, useMutation } from '@apollo/client'
+import React, { useState, useEffect } from 'react'
+import { Alert, StyleSheet, Text, TextInput, ActivityIndicator, TouchableOpacity, View } from 'react-native'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { useAuth } from "../contexts/AuthContext";
 
 const AUTHENTICATE = gql`
   mutation authenticate($email: String!, $password: String!) {
     authenticateUserWithPassword(email: $email, password: $password) {
       item {
-        id
+        id,
+        firstName,
+        pictureUrl,
+        email
       }
-        token
+      token
     }
   }
 `;
+
 
 const Login = () => {
   const [authenticate, { loading, data }] = useMutation(AUTHENTICATE, { refetchQueries: ['authenticatedUser'] })
   const [email, setEmail] = useState('abdel@agileo.com')
   const [password, setPassword] = useState('123456789')
+  const [loader, setLoader] = useState(false)
   const auth = useAuth();
-  
+
 
   useEffect(() => {
-  if(data?.authenticateUserWithPassword){
-    auth.signin(data.authenticateUserWithPassword.token);
-  }
+    if (data?.authenticateUserWithPassword) {
+      auth.signin(data.authenticateUserWithPassword);
+    } 
   }, [data])
 
+
   const handleSubmit = async () => {
+    setLoader(true)
     try {
       await authenticate({ variables: { email: email, password: password } })
     } catch (error) {
-      Alert.alert('Please check your email and password then try again.')
+      alert('Please check your email and password then try again.')
+      setLoader(false)
       setEmail('')
       setPassword('')
     }
   }
 
   return (
+
+
     <View style={styles.container}>
       <Text style={styles.logo}>Agileo</Text>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Email..."
-          placeholderTextColor="#003f5c"
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          secureTextEntry
-          style={styles.inputText}
-          placeholder="Mot de passe..."
-          placeholderTextColor="#003f5c"
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-        />
-      </View>
+      {loader ?
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <ActivityIndicator color={"#fff"} />
+        </View>
+
+        : <>
+          <View style={styles.inputView}>
+            <TextInput
+              style={styles.inputText}
+              placeholder="Email..."
+              placeholderTextColor="#003f5c"
+              onChangeText={(text) => setEmail(text)}
+              value={email}
+            />
+          </View>
+          <View style={styles.inputView}>
+            <TextInput
+              secureTextEntry
+              style={styles.inputText}
+              placeholder="Mot de passe..."
+              placeholderTextColor="#003f5c"
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+            />
+          </View>
+
+        </>
+      }
 
       <TouchableOpacity>
         <Text style={styles.forgot}>Mot de passe oublié ?</Text>
@@ -66,11 +85,12 @@ const Login = () => {
       <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmit()} >
         <Text style={styles.loginText}>{loading ? 'CHARGEMENT...' : 'SE CONNECTER'}</Text>
       </TouchableOpacity>
-      
+
       <TouchableOpacity>
         <Text style={styles.loginText}>S'inscrire</Text>
       </TouchableOpacity>
     </View>
+
   )
 }
 

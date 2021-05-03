@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Appbar, Avatar, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import { useAuth } from "../contexts/AuthContext";
 
 const Header = ({ scene, previous, navigation }) => {
   const theme = useTheme();
@@ -13,7 +13,7 @@ const Header = ({ scene, previous, navigation }) => {
       : options.title !== undefined
       ? options.title
       : scene.route.name;
-
+      const {currentUser} = useAuth();
   return (
     <Appbar.Header
       theme={{ colors: { primary: theme.colors.surface } }}
@@ -32,7 +32,7 @@ const Header = ({ scene, previous, navigation }) => {
       >
         <Avatar.Image
           size={40}
-          source={require("./../assets/lucas.jpeg")}
+          source={currentUser.avatar}
         />
       </TouchableOpacity>
     )}
