@@ -33,7 +33,12 @@ export class App {
     console.log('🚀 Server is running on port 4000')
     io.on('connection', (socket) => {
       console.log('🧦 Socket is running on port 4000')
-      socket.on('add-message', (message) => console.log(message))
+      socket.on("chat message", msg => {
+        console.log("on",msg);
+        io.emit("chat message", msg);
+        console.log("emit",msg);
+      });
+    
     })
   }
 }
