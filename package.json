@@ -2,11 +2,12 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "chat": "node node_modules/react-native/local-cli/cli.js start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "api": "cd api && ts-node index.ts"
+    "api": "cd api && nodemon index.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.3.14",
@@ -35,7 +36,9 @@
     "expo-status-bar": "~1.0.3",
     "graphql": "^15.5.0",
     "moment": "^2.29.1",
+    "mongojs": "^3.1.0",
     "native-base": "^2.15.2",
+    "nodemon": "^2.0.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
@@ -54,6 +57,7 @@
     "react-navigation": "^4.4.4",
     "react-navigation-material-bottom-tabs": "^2.3.4",
     "react-router": "^5.2.0",
+    "react-web-gifted-chat": "^0.6.7",
     "socket.io": "^3.1.2",
     "socket.io-client": "^4.0.1",
     "tailwind-rn": "^3.0.1",
