@@ -13,50 +13,50 @@ const Messages = (props) => {
   const theme = useTheme();
   const { currentUser } = useAuth();
   const [messages, setMessages] = useState([])
+  const [refresh, setrefresh] = useState(0)
+
   const [msg, setMsg] = useState('')
   const backgroundColor = overlay(2, theme.colors.surface);
   const socket = SocketIOClient('http://localhost:4000');
 
   /**
-   * Récuperer les messages
+   * Récuperer les messages et envoyer le user en cours
    */
-  useEffect(() => {
-    socket.on('chat-message', newMessages => {
-console.log("eofk")
-      let newArray = [...messages]
-      newArray = [...newArray.reverse(), newMessages[0]]
-      setMessages(newArray)
-    });
 
-  }, [])
+  useEffect(() => {
+    socket.emit('userJoined', currentUser)
+    socket.on("chat_message", msg => {
+      if (msg && msg.length > 0) {
+        setMessages(msg)
+      }
+
+    })
+  }, [refresh])
+
+
 
   /**
    * envoyer un message
    */
 
-  /* const onSend = async (message = []) => {
-    const newMessages = await GiftedChat.append(messages, message)
-    socket.on('chat message', newMessages => { setMessages(newMessages) }); 
-    socket.emit('chat message', newMessages);
-  } */
   const _sendMessage = async (message) => {
-    const newMessages = await GiftedChat.append(messages, message)
-    socket.emit('chat-message', newMessages);
-    /* let newArray = [...messages]
-  newArray = [...newArray.reverse(), newMessages[0]]
-  setMessages(newArray) */
-    setMsg('')
+    if (message[0].text !== '') {
+      socket.emit('chat_message', message[0]);
+      setrefresh(refresh + 1)
+      setMsg('')
+    } else return
   }
 
 
   return (
 
     <GiftedChat
+      key={messages._id}
       bottomOffset={100}
       messages={messages}
       onSend={messages => _sendMessage(messages)}
       onChangeText={(msg) => setMsg(msg)}
-      user={currentUser}
+      user={{ name: currentUser.firstName, chatId: 1, avatar: currentUser.avatar }}
       alignTop
       alwaysShowSend
       scrollToBottom
@@ -72,34 +72,5 @@ console.log("eofk")
   );
 };
 
-const styles = StyleSheet.create({
-  scrollViewContent: {
-    flex: 1,
-    paddingHorizontal: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  centerText: {
-    textAlign: 'center',
-  },
-  container: {
-    flex: 1,
-  },
-  button: {
-    marginTop: 20,
-  },
-  mainContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  sendBtn: {
-    width: '100%',
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#2f73e0',
-  }
-});
 
 export default Messages;

@@ -42,18 +42,30 @@ export class App {
     console.log('---------------------------------')
     io.on('connection', (socket) => {
       socket.on('userJoined', (userId) => onUserJoined(userId, socket));
-      socket.on('chat-message', (message) => onMessageReceived(message, socket));
-      console.log("oh yeah your are Connected 😀 with ID" + socket.id)
+      socket.on('chat_message', (message) => onMessageReceived(message, socket));
+
     })
   }
 }
 
+// Event listeners.
+// When a user joins the chatroom.
 function onUserJoined(userId, socket) {
   try {
+    // The userId is null for new users.
+
+    console.log("oh yeah your are Connected 😀" + ' ' + userId.firstName)
+    if (!userId) {
+      var user = db.collection('users').insert({}, (err, user) => {
+        socket.emit('userJoined', user._id);
+        users[socket.id] = user._id;
+        _sendExistingMessages(socket, userId);
+      });
+    } else {
       users[socket.id] = userId;
-      _sendExistingMessages(socket);
-    
-  } catch(err) {
+      _sendExistingMessages(socket, userId);
+    }
+  } catch (err) {
     console.log(err);
   }
 }
@@ -65,30 +77,29 @@ function onMessageReceived(message, senderSocket) {
   _sendAndSaveMessage(message, senderSocket, true);
 }
 
-// Helper functions.
-// Send the pre-existing messages to the user that just joined.
-function _sendExistingMessages(socket) {
-  var messages = db.collection('messages')
-    .find({ chatId })
-    .sort({ createdAt: 1 })
-    .toArray((err, messages) => {
-      // If there aren't any messages, then return.
-      if (!messages.length) return;
-      socket.emit('chat-message', messages.reverse());
-    });
+
+// Récuperer les messages du user en cours sil y en a...
+const _sendExistingMessages = async (socket, userId) => {
+  const msg = await db.collection('messages').find({ chatId }).sort({ "createdAt": 1 }).toArray((err, text) => {
+    if (!text.length) return;
+    socket.emit('chat_message', text);
+  });
+
 }
 
 // Save the message to the db and send all sockets but the sender.
 function _sendAndSaveMessage(message, socket, fromServer) {
-
-  db.collection('messages').insert(message, (err, message) => {
+  var messageData = {
+    text: message.text,
+    user: message.user,
+    createdAt: new Date(message.createdAt),
+    chatId: chatId
+  };
+  db.collection('messages').insert(messageData, (err, message) => {
     // If the message is from the server, then send to everyone.
     var emitter = fromServer ? socket : socket.broadcast;
 
-    console.log("message")
-    console.log(message)
-    
-    emitter.emit('chat-message', [message]);
+    emitter.emit('chat_message', message);
   });
 }
 
