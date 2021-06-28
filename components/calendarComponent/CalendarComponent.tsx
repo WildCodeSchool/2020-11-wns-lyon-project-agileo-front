@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, SafeAreaView } from 'react-native';
 import { LocaleConfig, Calendar } from 'react-native-calendars';
+import { gql, useQuery, useMutation } from '@apollo/client';
+import moment from 'moment';
 
 LocaleConfig.locales['fr'] = {
     monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
@@ -19,8 +21,56 @@ interface DateModel {
     year: number;
 }
 
+interface EventModel {
+    endingDay: string,
+    startingDay: string,
+    note: string,
+}
+
 
 export default function CalendarComponent() {
+    const FETCH_ALLEVENTS = gql`
+        query allEvents {
+            allEvents{
+            notes,
+            startingDay,
+            endingDay
+        }
+    }
+`;
+
+    const CREATE_EVENT = gql`
+        mutation createEvent(
+            $endingDay: String!
+            $startingDay: String!
+            $notes: String!
+        ) {
+        createEvent(
+            data: { endingDay: $endingDay, startingDay: $startingDay, notes: $notes }
+        ) {
+            endingDay
+            startingDay
+            notes
+        }
+    }
+`;
+
+const DELETE_EVENT = gql`
+mutation deleteEvent($id: ID!) {
+    deleteEvent(id: $id) {
+      id
+    }
+  }
+`;
+
+    const [dataSubmit] = useMutation(CREATE_EVENT);
+    const [dataDelete] = useMutation(DELETE_EVENT);
+    const { data }: { data: { allEvents: EventModel[] } } = useQuery(FETCH_ALLEVENTS);
+    const [text, onChangeText] = useState("");
+    const [starting, onChangeStarting] = useState("");
+    const [ending, onChangeEnding] = useState("");
+    //const [dataSubmit, setDataSubmit] = useState({});
+
     const [selected, setSelected] = useState<DateModel | null>(null);
     const [month, setMonth] = useState(new Date())
     const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
@@ -33,9 +83,60 @@ export default function CalendarComponent() {
         setMonth(newDate)
     };
 
+    const onSubmit = async () => {
+        const variables = {
+            notes: text,
+            startingDay: starting,
+            endingDay: ending,
+        }
+        
+        await dataSubmit({
+            variables: variables
+        });
+        console.log(variables)
+    }
+
+    const onDelete = async (id) => {
+        const variables = {
+            id: id,
+        }
+        await dataDelete({
+            variables: variables
+        });
+        console.log(variables)
+        // const result = window.confirm('Veux tu supprimer l\'évent?');
+        // if (result) {
+        //     alert("404 fonction delete not found");
+        // } else {
+        //     alert("Suppression de la suppression de l\'évent");
+        // }
+    }
+
+    const getBetweenDays = (startingDay: string, endingDay: string): { [key: string]: { color: string, textColor: string } } => {
+        const result = {}
+        const tempDate = moment(startingDay);
+        tempDate.add(1, 'day');
+        while (tempDate.format('YYYY-MM-DD') < endingDay) {
+            result[tempDate.format('YYYY-MM-DD')] = { color: '#0CADA6', textColor: 'gray' };
+            tempDate.add(1, 'day');
+        }
+        //data.allEvents.map((item, index) => {
+            
+            // let retour;
+            // let sliceOfDays = item.startingDay.charAt(item.startingDay.length - 2) + item.startingDay.charAt(item.startingDay.length - 1); //19
+            // let afterSlice = item.startingDay.slice(0, -2); //2021-05-
+            // let incrementSliceOfDays = Number(sliceOfDays)
+            // while (item.endingDay !== retour) { //2021-05-26 !== 2021-05-19
+            //     incrementSliceOfDays++; //20
+            //     retour = afterSlice + incrementSliceOfDays.toString(); //2021-05 + 20
+            //     [retour]: {color: '#0CADA6', textColor: 'gray'};
+            // break;
+        return result;
+    }
+
     return (
         <View style={{ paddingTop: 50, flex: 1 }}>
-            <Calendar
+            {data && <Calendar
                 // Initially visible month. Default = Date()
                 current={new Date()}
                 // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
@@ -62,27 +163,18 @@ export default function CalendarComponent() {
                 firstDay={1}
                 enableSwipeMonths={true}
 
+                // destructuration de l'objet data pour récupéré une à une les sorties de reduce (reduce qui renvoie d'abord l'objet dates vide et ensuite
+                // donne un objet avec une startingday et un endingday, puis 2, puis 3 etc à chaque occurence) puis destructuration de selected date pour
+                // créer un objet unique. Le [currente.starting etc] c'est une clé dynamique qui permet dynamiquement de créer un objet avec une valeur
                 markedDates={{
-                    '2021-04-16': { startingDay: true, color: '#0CADA6' },
-                    '2021-04-17': { color: '#9BDDDB' },
-                    '2021-04-18': { color: '#9BDDDB' },
-                    '2021-04-19': { selected: true, endingDay: true, color: '#0CADA6', textColor: 'gray' },
-                    '2021-04-24': { marked: true, dotColor: 'blue' },
-                    '2021-04-25': { marked: true, dotColor: 'green' },
-
-                    '2021-05-16': { startingDay: true, color: '#0CADA6' },
-                    '2021-05-17': { color: '#9BDDDB' },
-                    '2021-05-18': { color: '#9BDDDB' },
-                    '2021-05-19': { selected: true, endingDay: true, color: '#0CADA6', textColor: 'gray' },
-
-                    '2021-02-16': { startingDay: true, color: '#0CADA6' },
-                    '2021-02-17': { color: '#9BDDDB' },
-                    '2021-02-18': { color: '#9BDDDB' },
-                    '2021-02-19': { selected: true, endingDay: true, color: '#0CADA6', textColor: 'gray' },
-
-                    '2021-05-24': { marked: true, dotColor: 'blue' },
-                    '2021-05-25': { marked: true, dotColor: 'green' },
-
+                    ...data.allEvents.reduce((dates, currentItem: EventModel) => {
+                        return {
+                            ...dates,
+                            [currentItem.startingDay]: { startingDay: true, color: '#0CADA6', textColor: 'gray' },
+                            [currentItem.endingDay]: { endingDay: true, color: '#0CADA6', textColor: 'gray' },
+                            ...getBetweenDays(currentItem.startingDay, currentItem.endingDay)
+                        };
+                    }, {}),
                     ...(selected ? {
                         [selected.dateString as string]: {
                             selected: true,
@@ -91,7 +183,32 @@ export default function CalendarComponent() {
                             selectedTextColor: 'red'
                         },
                     } : {}),
-                }}
+                }
+                    // data.map((item, index) => ({
+                    //     [item.startingDay]: {startingDay: true, color: '#0CADA6', textColor: 'gray'},
+                    //     [item.endingDay]: {endingDay: true, color: '#0CADA6', textColor: 'gray'}
+                    // }))
+                    // '2021-04-16': { startingDay: true, color: '#0CADA6' },
+                    // '2021-04-17': { color: '#9BDDDB' },
+                    // '2021-04-18': { color: '#9BDDDB' },
+                    // '2021-04-19': { selected: true, endingDay: true, color: '#0CADA6', textColor: 'gray' },
+                    // '2021-04-24': { marked: true, dotColor: 'blue' },
+                    // '2021-04-25': { marked: true, dotColor: 'green' },
+
+                    // '2021-05-16': { startingDay: true, color: '#0CADA6' },
+                    // '2021-05-17': { color: '#9BDDDB' },
+                    // '2021-05-18': { color: '#9BDDDB' },
+                    // '2021-05-19': { selected: true, endingDay: true, color: '#0CADA6', textColor: 'gray' },
+
+                    // '2021-02-16': { startingDay: true, color: '#0CADA6' },
+                    // '2021-02-17': { color: '#9BDDDB' },
+                    // '2021-02-18': { color: '#9BDDDB' },
+                    // '2021-02-19': { selected: true, endingDay: true, color: '#0CADA6', textColor: 'gray' },
+
+                    // '2021-05-24': { marked: true, dotColor: 'blue' },
+                    // '2021-05-25': { marked: true, dotColor: 'green' },
+                    // '2021-05-26': { marked: true, color: '#870cad' },
+                }
                 markingType={'period'}
 
                 style={{
@@ -129,15 +246,44 @@ export default function CalendarComponent() {
                     textDayHeaderFontSize: 12,
                 }}
 
-            />
+            />}
             {selected ?
                 <View style={{ padding: 20, marginTop: 15 }}>
+                    <Text onPress={() => onDelete('i')} style={styles.delete}>Supprimer l'événement</Text>
                     <Text style={styles.displayDate}>{`Le ${selected.day} ${monthNames[month.getMonth()]} ${selected.year} `}</Text>
                     <Text style={styles.displayInfos}>{`il fait bon le ${selected.day}`}</Text>
                     <Text onPress={() => setSelected(null)} style={styles.delete}>Déséléctionner</Text>
                 </View>
                 : null
             }
+            <View>
+                <SafeAreaView>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={onChangeText}
+                        value={text}
+                        placeholder="create note"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={onChangeStarting}
+                        value={starting}
+                        placeholder="starting date"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={onChangeEnding}
+                        value={ending}
+                        placeholder="ending date"
+                    />
+                    <Button
+                        onPress={onSubmit}
+                        title="submit"
+                        color="#841584"
+                        accessibilityLabel="Learn more about this purple button"
+                    />
+                </SafeAreaView>
+            </View>
         </View>
     );
 }
@@ -149,6 +295,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#d1d1d1',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
     },
     displayDate: {
         margin: "auto",
