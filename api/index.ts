@@ -11,10 +11,12 @@ const http = require('http')
 var mongojs = require('mongojs');
 
 var ObjectID = mongojs.ObjectID;
-var db = mongojs(process.env.MONGO_URI || 'mongodb://localhost:27017/local');
+var db = mongojs(process.env.MONGO_URI || 'mongodb://192.168.1.11:27017/local');
 var clients = {};
 var users = {};
 var chatId = 1;
+
+let websocket;
 export class App {
   public static keystone
   public static express
@@ -32,15 +34,16 @@ export class App {
     const authStrategy = this.keystone.createAuthStrategy({ type: PasswordAuthStrategy, list: 'User' })
     const apps = [new GraphQLApp(), new AdminUIApp({ authStrategy })]
     const { middlewares } = await this.keystone.prepare({ apps: apps, dev: true })
-    const server = http.Server(this.express)
-    const io = require('socket.io')(server, { cors: { origin: '*' } })
+    let server = http.Server(this.express)
+    websocket = require('socket.io')(server, { cors: { origin: '*' } })
     this.keystone.connect()
     this.express.use(middlewares)
+    let port = 4000
     server.listen(4000)
-    console.log('🧦 Socket is running on port 4000')
-    console.log('---------------------------------')
-    console.log('---------------------------------')
-    io.on('connection', (socket) => {
+    console.log('port listen on ',port)
+    
+    websocket.on('connection', (socket) => {
+
       socket.on('userJoined', (userId) => onUserJoined(userId, socket));
       socket.on('chat_message', (message) => onMessageReceived(message, socket));
 
@@ -70,8 +73,6 @@ function onUserJoined(userId, socket) {
   }
 }
 
-/****************** */
-
 /* When a user sends a message in the chatroom.*/
 function onMessageReceived(message, senderSocket) {
   _sendAndSaveMessage(message, senderSocket, true);
@@ -80,7 +81,11 @@ function onMessageReceived(message, senderSocket) {
 
 // Récuperer les messages du user en cours sil y en a...
 const _sendExistingMessages = async (socket, userId) => {
-  const msg = await db.collection('messages').find({ chatId }).sort({ "createdAt": 1 }).toArray((err, text) => {
+  
+  const msg = await db.collection('messages')
+  .find({ chatId })
+  .sort({ "createdAt": 1 })
+  .toArray((err, text) => {
     if (!text.length) return;
     socket.emit('chat_message', text);
   });
@@ -97,7 +102,7 @@ function _sendAndSaveMessage(message, socket, fromServer) {
   };
   db.collection('messages').insert(messageData, (err, message) => {
     // If the message is from the server, then send to everyone.
-    var emitter = fromServer ? socket : socket.broadcast;
+    var emitter = fromServer ?socket.broadcast : websocket ;
 
     emitter.emit('chat_message', message);
   });
@@ -109,7 +114,9 @@ stdin.addListener('data', function (d) {
   _sendAndSaveMessage({
     text: d.toString().trim(),
     createdAt: new Date(),
-    user: { _id: 'Aurelien' }
+    user: { _id: 'Robot',
+    chatId :1,
+    avatar:"https://i.pinimg.com/736x/67/b5/51/67b55118c1cb58ada2aac3b99c0b800a.jpg" }
   }, null /* no socket */, true /* send from server */);
 });
 

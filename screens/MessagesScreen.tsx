@@ -4,19 +4,16 @@ import { Headline, Caption, useTheme, Button } from 'react-native-paper';
 import SocketIOClient from 'socket.io-client';
 import { useAuth } from "../contexts/AuthContext";
 import moment from 'moment';
-import { GiftedChat } from "react-web-gifted-chat";
-import overlay from '../scripts/overlay';
+import { GiftedChat } from 'react-native-gifted-chat' 
+
 
 
 const Messages = (props) => {
-
   const theme = useTheme();
   const { currentUser } = useAuth();
-  const [messages, setMessages] = useState([])
-  const [refresh, setrefresh] = useState(0)
-
-  const [msg, setMsg] = useState('')
-  const backgroundColor = overlay(2, theme.colors.surface);
+  const [messages, setMessages] = useState<any[]>([])
+  const [refresh, setrefresh] = useState<number>(0)
+  const [msg, setMsg] = useState<string>('')
   const socket = SocketIOClient('http://localhost:4000');
 
   /**
@@ -33,8 +30,6 @@ const Messages = (props) => {
     })
   }, [refresh])
 
-
-
   /**
    * envoyer un message
    */
@@ -50,13 +45,11 @@ const Messages = (props) => {
 
   return (
 
-    <GiftedChat
-      key={messages._id}
-      bottomOffset={100}
+    <GiftedChat 
       messages={messages}
       onSend={messages => _sendMessage(messages)}
-      onChangeText={(msg) => setMsg(msg)}
-      user={{ name: currentUser.firstName, chatId: 1, avatar: currentUser.avatar }}
+      onInputTextChanged={(msg) => setMsg(msg)}
+      user={{ name: currentUser.firstName, _id: currentUser._id, avatar: currentUser.avatar }}
       alignTop
       alwaysShowSend
       scrollToBottom
@@ -64,7 +57,6 @@ const Messages = (props) => {
       inverted={false}
       renderUsernameOnMessage
       bottomOffset={26}
-      onPressAvatar={console.log}
       isCustomViewBottom
       messagesContainerStyle={{ backgroundColor: 'indigo' }}
     />

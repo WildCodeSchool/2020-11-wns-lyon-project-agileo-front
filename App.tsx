@@ -20,7 +20,7 @@ import { ProvideAuth } from "./contexts/AuthContext";
 import PreferencesContext from './contexts/PreferencesContext';
 
 const httpLink = createHttpLink({
-  uri:'http://localhost:4000/admin/api',
+  uri:'http://192.168.43.159:4000/admin/api',
 });
 
 const authLink = setContext((_, { headers }) => {

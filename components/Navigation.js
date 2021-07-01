@@ -27,7 +27,7 @@ const BottomTabs = () => {
     : theme.colors.surface;
 
   return (
-    <Tab.Navigator 
+    <Tab.Navigator
       initialRouteName="Dashboard"
       backBehavior="initialRoute"
       shifting={true}
@@ -37,13 +37,13 @@ const BottomTabs = () => {
         .rgb()
         .string()}
     >
-      <Tab.Screen 
-        name="Dashboard" 
-        component={DashboardScreen} 
+      <Tab.Screen
+        name="Dashboard"
+        component={DashboardScreen}
         options={{
           tabBarIcon: 'view-dashboard',
           tabBarColor,
-        }} 
+        }}
       />
       <Tab.Screen
         name="Cours"
@@ -61,9 +61,9 @@ const BottomTabs = () => {
           tabBarColor,
         }}
       />
-      <Tab.Screen 
-        name="Calendrier" 
-        component={CalendarScreen} 
+      <Tab.Screen
+        name="Calendrier"
+        component={CalendarScreen}
         options={{
           tabBarIcon: 'calendar',
           tabBarColor,
@@ -76,8 +76,7 @@ const BottomTabs = () => {
 const Stack = createStackNavigator();
 
 const Navigation = () => {
-  const {token} = useAuth();
-  
+  const { token } = useAuth();
 
 
   return (
@@ -85,7 +84,7 @@ const Navigation = () => {
       initialRouteName="Dashboard"
       headerMode="screen"
       screenOptions={{
-        header: ({ scene, previous, navigation }) => (token === undefined || token === null || token === "" ) ? null : (
+        header: ({ scene, previous, navigation }) => (token === undefined || token === null || token === "") ? null : (
           <Header scene={scene} previous={previous} navigation={navigation} />
         )
       }}
@@ -102,7 +101,7 @@ const Navigation = () => {
           }}
         />
         :
-        
+
         <>
           <Stack.Screen
             name="FeedList"

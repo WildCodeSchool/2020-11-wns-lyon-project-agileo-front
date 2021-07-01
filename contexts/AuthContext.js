@@ -3,13 +3,14 @@ import React, { createContext, useContext, useState } from "react";
 const authContext = createContext();
 
 export const ProvideAuth = (props) => {
-    const [token, setToken] = useState('');
+    const [token, setToken] = useState();
     const [currentUser, setcurrentUser] = useState({});
 
 
     const signin = (data) => {
         window.localStorage.setItem("auth_token", data.token);
         setToken(data.token);
+        console.log(data)
         setcurrentUser({
             firstName :data.item.firstName, 
             avatar :data.item.pictureUrl,
