@@ -32,7 +32,7 @@ const Header = ({ scene, previous, navigation }) => {
       >
         <Avatar.Image
           size={40}
-          source={currentUser.avatar}
+         // source={currentUser && currentUser.avatar}
         />
       </TouchableOpacity>
     )}

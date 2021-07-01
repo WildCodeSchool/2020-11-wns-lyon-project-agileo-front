@@ -43,7 +43,6 @@ export class App {
     console.log('port listen on ',port)
     
     websocket.on('connection', (socket) => {
-
       socket.on('userJoined', (userId) => onUserJoined(userId, socket));
       socket.on('chat_message', (message) => onMessageReceived(message, socket));
 
@@ -110,14 +109,14 @@ function _sendAndSaveMessage(message, socket, fromServer) {
 
 // Permettre l'acces au chat via la CLI en mode stdin.
 var stdin = process.openStdin();
-stdin.addListener('data', function (d) {
+stdin.addListener('data', (d) => {
   _sendAndSaveMessage({
     text: d.toString().trim(),
     createdAt: new Date(),
     user: { _id: 'Robot',
     chatId :1,
     avatar:"https://i.pinimg.com/736x/67/b5/51/67b55118c1cb58ada2aac3b99c0b800a.jpg" }
-  }, null /* no socket */, true /* send from server */);
+  }, null /* no socket */, true /* envoi depuis la cli */);
 });
 
 App.initialize().then(async () => {

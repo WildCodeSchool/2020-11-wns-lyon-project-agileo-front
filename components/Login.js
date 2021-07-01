@@ -6,12 +6,6 @@ import { useAuth } from "../contexts/AuthContext";
 const AUTHENTICATE = gql`
   mutation authenticate($email: String!, $password: String!) {
     authenticateUserWithPassword(email: $email, password: $password) {
-      item {
-        id,
-        firstName,
-        pictureUrl,
-        email
-      }
       token
     }
   }
@@ -29,6 +23,7 @@ const Login = () => {
   useEffect(() => {
     if (data?.authenticateUserWithPassword) {
       auth.signin(data.authenticateUserWithPassword);
+      
     } 
   }, [data])
 

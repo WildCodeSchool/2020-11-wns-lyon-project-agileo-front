@@ -19,7 +19,7 @@ const UserProfile = () => {
 
 
   const LeftContent = (props) => (
-    <Avatar.Image {...props} source={currentUser.avatar}/>
+    <Avatar.Image {...props} source={currentUser && currentUser.avatar}/>
   );
 
   return (
@@ -29,7 +29,7 @@ const UserProfile = () => {
     >
       <Card style={styles.card}>
         <Card.Title
-          title={currentUser.firstName}
+          title={currentUser && currentUser.firstName}
           subtitle="Développeur web"
           left={LeftContent}
         />
@@ -41,7 +41,7 @@ const UserProfile = () => {
             />
             <List.Item
               left={(props) => <List.Icon {...props} icon="email" />}
-              title={currentUser.email}
+              title={currentUser && currentUser.email}
             />
           </List.Section>
           <Divider />

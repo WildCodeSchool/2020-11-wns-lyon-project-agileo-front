@@ -39,10 +39,10 @@ const DrawerContent = (props) => {
         <View style={styles.userInfoSection}>
           <Avatar.Image
             size={50}
-            source={currentUser.avatar} />
+            source={currentUser && currentUser.avatar} />
 
-          <Title style={styles.title}>{currentUser.firstName}</Title>
-          <Caption style={styles.caption}>@{currentUser.firstName}</Caption>
+          <Title style={styles.title}>{currentUser && currentUser.firstName}</Title>
+          <Caption style={styles.caption}>@{currentUser && currentUser.firstName}</Caption>
           <View style={styles.row}>
             <View style={styles.section}>
               <Paragraph style={[styles.paragraph, styles.caption]}>
