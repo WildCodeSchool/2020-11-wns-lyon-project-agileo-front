@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, View, TextInput, Text, AsyncStorage } from 'react-native';
-import { Headline, Caption, useTheme, Button } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import {  useTheme } from 'react-native-paper';
 import SocketIOClient from 'socket.io-client';
 import { useAuth } from "../contexts/AuthContext";
 import moment from 'moment';
-import { GiftedChat } from 'react-native-gifted-chat' 
+import { GiftedChat } from 'react-native-gifted-chat'
 
 
 
@@ -39,11 +39,11 @@ const Messages = (props) => {
     socket.emit('chat message', newMessages);
   } */
   const _sendMessage = async (message) => {
-    const newMessages = await GiftedChat.append(messages, message)
-    socket.emit('chat-message', newMessages);
-    /* let newArray = [...messages]
-  newArray = [...newArray.reverse(), newMessages[0]]
-  setMessages(newArray) */
+
+    const newMessages = await GiftedChat.append(messages, message[0])
+    console.log(newMessages)
+    socket.emit('chat_message', message[0]);
+    setrefresh(refresh + 1)
     setMsg('')
   }
 
@@ -51,20 +51,20 @@ const Messages = (props) => {
   return (
 
     <GiftedChat 
-      messages={messages}
-      onSend={messages => _sendMessage(messages)}
-      onInputTextChanged={(msg) => setMsg(msg)}
-      user={{ name: currentUser && currentUser.firstName, _id: currentUser && currentUser._id, avatar: currentUser && currentUser.avatar }}
+      messages= { messages }
+      onSend = { messages => _sendMessage(messages)}
+      onInputTextChanged = {(msg) => setMsg(msg)}
+      user = {{ name: currentUser && currentUser.firstName, _id: currentUser && currentUser.id, avatar: currentUser && currentUser.avatar }}
       alignTop
       alwaysShowSend
       scrollToBottom
       showUserAvatar
-      inverted={false}
+      inverted = { false}
       renderUsernameOnMessage
-      bottomOffset={26}
+      bottomOffset = {26}
       isCustomViewBottom
-      messagesContainerStyle={{ backgroundColor: 'indigo' }}
-    />
+      messagesContainerStyle = {{ backgroundColor: 'indigo' }}
+/>
 
   );
 };

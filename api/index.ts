@@ -11,7 +11,7 @@ const http = require('http')
 var mongojs = require('mongojs');
 
 var ObjectID = mongojs.ObjectID;
-var db = mongojs(process.env.MONGO_URI || 'mongodb://192.168.1.11:27017/local');
+var db = mongojs(process.env.MONGO_URI || 'localhost:27017/local');
 var clients = {};
 var users = {};
 var chatId = 1;
@@ -43,7 +43,12 @@ export class App {
     console.log('port listen on ',port)
     
     websocket.on('connection', (socket) => {
+
+      console.log("oh yeah your are Connected");
+      //l'utilisateur qui rejoins l'appli
       socket.on('userJoined', (userId) => onUserJoined(userId, socket));
+
+      // message recu 
       socket.on('chat_message', (message) => onMessageReceived(message, socket));
 
     })
@@ -53,24 +58,24 @@ export class App {
 // Event listeners.
 // When a user joins the chatroom.
 function onUserJoined(userId, socket) {
-  try {
-    // The userId is null for new users.
 
-    console.log("oh yeah your are Connected 😀" + ' ' + userId.firstName)
-    if (!userId) {
-      var user = db.collection('users').insert({}, (err, user) => {
-        socket.emit('userJoined', user._id);
-        users[socket.id] = user._id;
-        _sendExistingMessages(socket, userId);
-      });
-    } else {
+  console.log('utilisateur en cours' + ' ' + userId.firstName)
+  try {
       users[socket.id] = userId;
       _sendExistingMessages(socket, userId);
-    }
+
   } catch (err) {
     console.log(err);
   }
 }
+
+const getOnlineUsers = () => {
+  let clients = websocket.sockets.clients().connected;
+  let sockets = Object.values(clients);
+  let users = sockets.map(s => s);
+  return users.filter(u => u != undefined);
+};
+
 
 /* When a user sends a message in the chatroom.*/
 function onMessageReceived(message, senderSocket) {
