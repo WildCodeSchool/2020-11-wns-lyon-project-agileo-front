@@ -9,7 +9,7 @@ import overlay from '../scripts/overlay';
 
 import DashboardScreen from '../screens/DashboardScreen';
 import CoursesScreen from '../screens/CoursesScreen';
-import MessageScreen from '../screens/MessagesScreen';
+import ListUsers from '../components/chat/ListUsers';
 import ProfileScreen from '../screens/UserScreen';
 import CourseScreen from '../screens/CourseScreen';
 import CalendarScreen from '../screens/CalendarScreen';
@@ -55,7 +55,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="Messages"
-        component={MessageScreen}
+        component={ListUsers}
         options={{
           tabBarIcon: 'message-text-outline',
           tabBarColor,

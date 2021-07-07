@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import {  useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import SocketIOClient from 'socket.io-client';
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import moment from 'moment';
 import { GiftedChat } from 'react-native-gifted-chat'
 
@@ -51,6 +51,7 @@ const Messages = (props) => {
   return (
 
     <GiftedChat 
+    
       messages= { messages }
       onSend = { messages => _sendMessage(messages)}
       onInputTextChanged = {(msg) => setMsg(msg)}
@@ -61,7 +62,7 @@ const Messages = (props) => {
       showUserAvatar
       inverted = { false}
       renderUsernameOnMessage
-      bottomOffset = {26}
+      bottomOffset = { 26}
       isCustomViewBottom
       messagesContainerStyle = {{ backgroundColor: 'indigo' }}
 />

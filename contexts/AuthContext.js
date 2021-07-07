@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { gql, useApolloClient } from '@apollo/client'
 const authContext = createContext();
 
-const GET_USER = gql`
+const GET_USER_CONNECTED = gql`
         query {
             authenticatedUser {
             id
@@ -10,8 +10,11 @@ const GET_USER = gql`
             lastName
             pictureUrl
             }
+
         }
 `;
+
+
 
 
 export const ProvideAuth = (props) => {
@@ -24,9 +27,8 @@ export const ProvideAuth = (props) => {
     useEffect(() => {
         (async () => {
             if (token) {
-                const result = await apolloClient.query({ query: GET_USER })
-                console.log('result', result)
-                if (result?.data?.authenticatedUser) {
+                const result = await apolloClient.query({ query: GET_USER_CONNECTED,fetchPolicy:"network-only" })
+                if (result?.data?.authenticatedUser ) {
                     setcurrentUser({
                         firstName: result.data.authenticatedUser.firstName,
                         avatar: result.data.authenticatedUser.pictureUrl,
@@ -55,7 +57,7 @@ export const ProvideAuth = (props) => {
         signin,
         signout,
         token,
-        currentUser,
+        currentUser
     };
 
     return <authContext.Provider value={providerValues} {...props} />;

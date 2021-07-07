@@ -19,8 +19,10 @@ import { setContext } from '@apollo/client/link/context';
 import { ProvideAuth } from "./contexts/AuthContext";
 import PreferencesContext from './contexts/PreferencesContext';
 
+
 const httpLink = createHttpLink({
-  uri:'http://192.168.1.11:4000/admin/api',
+  uri:'http://192.168.1.109:4000/admin/api',
+
 });
 
 const authLink = setContext((_, { headers }) => {

@@ -106,7 +106,7 @@ function _sendAndSaveMessage(message, socket, fromServer) {
   };
   db.collection('messages').insert(messageData, (err, message) => {
     // If the message is from the server, then send to everyone.
-    var emitter = fromServer ?socket.broadcast : websocket ;
+    var emitter = fromServer ? socket.broadcast : websocket ;
 
     emitter.emit('chat_message', message);
   });
