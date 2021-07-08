@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import color from 'color';
 import { useTheme } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-
 import overlay from '../scripts/overlay';
-
 import DashboardScreen from '../screens/DashboardScreen';
 import CoursesScreen from '../screens/CoursesScreen';
 import ListUsers from '../components/chat/ListUsers';

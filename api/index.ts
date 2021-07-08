@@ -10,9 +10,8 @@ import fs from 'fs'
 const http = require('http')
 var mongojs = require('mongojs');
 
-var ObjectID = mongojs.ObjectID;
 var db = mongojs(process.env.MONGO_URI || 'localhost:27017/local');
-var clients = {};
+
 var users = {};
 var chatId = 1;
 
@@ -46,7 +45,7 @@ export class App {
 
       console.log("oh yeah your are Connected");
       //l'utilisateur qui rejoins l'appli
-      socket.on('userJoined', (userId) => onUserJoined(userId, socket));
+      socket.on('current_user', (userId) => onUserJoined(userId, socket));
 
       // message recu 
       socket.on('chat_message', (message) => onMessageReceived(message, socket));
@@ -59,9 +58,11 @@ export class App {
 // When a user joins the chatroom.
 function onUserJoined(userId, socket) {
 
-  console.log('utilisateur en cours' + ' ' + userId.firstName)
+  console.log('HELLO' + ' == > ' + "  ;)"+ userId.firstName)
   try {
       users[socket.id] = userId;
+      console.log("users online : ",users)
+      websocket.emit('onlineUsers',users)
       _sendExistingMessages(socket, userId);
 
   } catch (err) {
@@ -69,17 +70,12 @@ function onUserJoined(userId, socket) {
   }
 }
 
-const getOnlineUsers = () => {
-  let clients = websocket.sockets.clients().connected;
-  let sockets = Object.values(clients);
-  let users = sockets.map(s => s);
-  return users.filter(u => u != undefined);
-};
 
 
 /* When a user sends a message in the chatroom.*/
 function onMessageReceived(message, senderSocket) {
   _sendAndSaveMessage(message, senderSocket, true);
+  
 }
 
 

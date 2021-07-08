@@ -23,7 +23,6 @@ const Login = () => {
   useEffect(() => {
     if (data?.authenticateUserWithPassword) {
       auth.signin(data.authenticateUserWithPassword);
-      
     } 
   }, [data])
 
@@ -35,8 +34,6 @@ const Login = () => {
     } catch (error) {
       alert('Please check your email and password then try again.')
       setLoader(false)
-      setEmail('')
-      setPassword('')
     }
   }
 

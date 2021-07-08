@@ -20,39 +20,41 @@ const Messages = (props) => {
    * Récuperer les messages
    */
   useEffect(() => {
-    socket.emit('userJoined', currentUser)
+    socket.emit('current_user', currentUser)
     socket.on("chat_message", msg => {
       if (msg && msg.length > 0) {
         setMessages(msg)
       }
 
     })
-  }, [refresh])
+  }, [refresh, props.user])
+
+
 
   /**
    * envoyer un message
    */
 
-  /* const onSend = async (message = []) => {
-    const newMessages = await GiftedChat.append(messages, message)
-    socket.on('chat message', newMessages => { setMessages(newMessages) }); 
-    socket.emit('chat message', newMessages);
-  } */
+
   const _sendMessage = async (message) => {
 
     const newMessages = await GiftedChat.append(messages, message[0])
-    console.log(newMessages)
     socket.emit('chat_message', message[0]);
     setrefresh(refresh + 1)
     setMsg('')
   }
 
+const goBack =()=>{
+  props.setOpenChat({...props.openChat,open:false,user:null})
+}
+
 
   return (
+    <div>
+    <button onClick={goBack}>Click</button>
 
-    <GiftedChat 
-    
-      messages= { messages }
+      <GiftedChat
+      messages = { messages }
       onSend = { messages => _sendMessage(messages)}
       onInputTextChanged = {(msg) => setMsg(msg)}
       user = {{ name: currentUser && currentUser.firstName, _id: currentUser && currentUser.id, avatar: currentUser && currentUser.avatar }}
@@ -65,8 +67,8 @@ const Messages = (props) => {
       bottomOffset = { 26}
       isCustomViewBottom
       messagesContainerStyle = {{ backgroundColor: 'indigo' }}
-/>
-
+      />
+  </div>
   );
 };
 

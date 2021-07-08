@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { gql, useApolloClient } from '@apollo/client'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const authContext = createContext();
 
 const GET_USER_CONNECTED = gql`
@@ -14,26 +15,26 @@ const GET_USER_CONNECTED = gql`
         }
 `;
 
-
-
-
 export const ProvideAuth = (props) => {
-    const [token, setToken] = useState(window.localStorage.getItem("auth_token", token));
+    const [token, setToken] = useState(AsyncStorage.getItem("auth_token", token));
     const [currentUser, setcurrentUser] = useState();
     const apolloClient = useApolloClient()
 
 
 
+
     useEffect(() => {
         (async () => {
-            if (token) {
-                const result = await apolloClient.query({ query: GET_USER_CONNECTED,fetchPolicy:"network-only" })
-                if (result?.data?.authenticatedUser ) {
+            const value = await AsyncStorage.getItem("auth_token")
+            if (value) {
+            const result = await apolloClient.query({ query: GET_USER_CONNECTED, fetchPolicy: "network-only" })
+                if (result?.data?.authenticatedUser) {
                     setcurrentUser({
                         firstName: result.data.authenticatedUser.firstName,
                         avatar: result.data.authenticatedUser.pictureUrl,
                         email: result.data.authenticatedUser.email
                     })
+
                 }
             }
         })()

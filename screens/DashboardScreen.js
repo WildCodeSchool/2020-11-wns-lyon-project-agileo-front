@@ -3,13 +3,12 @@ import React from "react";
 import { ImageBackground, StyleSheet, View, Text } from 'react-native';
 
 
-const image = { uri: "https://i.pinimg.com/originals/15/77/82/15778268d5f682aebf53702548833526.jpg" };
+const image =  require('../assets/dexempleDashboard.png') ;
 const DashboardScreen = () => {
   return (
     <View style={styles.container}>
-    <ImageBackground source={image} style={styles.image}>
-      <Text style={styles.text}>Dashboard</Text>
-    </ImageBackground>
+    <ImageBackground source={image} style={styles.image} resizeMode="contain" />
+    
   </View>
   );
 };
@@ -21,8 +20,9 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center"
+    resizeMode: "contain",
+    justifyContent: "center",
+
   },
   text: {
     color: "white",

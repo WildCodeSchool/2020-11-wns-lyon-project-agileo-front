@@ -19,6 +19,8 @@
     "@keystonejs/auth-password": "^6.0.0",
     "@keystonejs/fields": "^22.1.0",
     "@keystonejs/keystone": "^19.3.0",
+    "@react-native-async-storage/async-storage": "^1.15.5",
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/material-bottom-tabs": "^5.3.14",
