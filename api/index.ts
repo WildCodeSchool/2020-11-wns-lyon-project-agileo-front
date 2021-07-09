@@ -50,11 +50,26 @@ export class App {
       // message recu 
       socket.on('chat_message', (message) => onMessageReceived(message, socket));
 
+
+      socket.on('disconnect', reason => {
+        console.log('socket connection disconnected', reason);
+      });
     })
   }
 }
 
-// Event listeners.
+
+
+
+/****************************************************************** */
+/****************************************************************** */
+/*************************FUNCTIONS******************************** */
+/****************************************************************** */
+/****************************************************************** */
+
+
+
+
 // When a user joins the chatroom.
 function onUserJoined(userId, socket) {
 
@@ -91,6 +106,8 @@ const _sendExistingMessages = async (socket, userId) => {
   });
 
 }
+
+
 
 // Save the message to the db and send all sockets but the sender.
 function _sendAndSaveMessage(message, socket, fromServer) {

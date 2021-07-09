@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import SocketIOClient from 'socket.io-client';
 import { useAuth } from "../../contexts/AuthContext";
 import moment from 'moment';
 import { GiftedChat } from 'react-native-gifted-chat'
@@ -10,11 +9,11 @@ import { GiftedChat } from 'react-native-gifted-chat'
 
 const Messages = (props) => {
   const theme = useTheme();
-  const { currentUser } = useAuth();
+  const { currentUser ,socket} = useAuth();
   const [messages, setMessages] = useState<any[]>([])
   const [refresh, setrefresh] = useState<number>(0)
   const [msg, setMsg] = useState<string>('')
-  const socket = SocketIOClient('http://localhost:4000');
+
 
   /**
    * Récuperer les messages

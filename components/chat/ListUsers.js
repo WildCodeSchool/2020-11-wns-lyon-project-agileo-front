@@ -29,12 +29,11 @@ const GET_ALLUSERS = gql`
 `;
 
 const ListUsers = (props) => {
-    const socket = SocketIOClient('http://localhost:4000');
     const [allUsers, setAllUsers] = useState();
     const [openChat, setOpenChat] = useState({ open: false, user: null });
     const [onlineUsers, setonlineUsers] = useState();
     const { loading, error, data } = useQuery(GET_ALLUSERS);
-    const { currentUser } = useAuth();
+    const { currentUser ,socket} = useAuth();
 
     useEffect(() => {
         if (data?.allUsers && currentUser) {
@@ -43,14 +42,13 @@ const ListUsers = (props) => {
     }, [data,openChat])
 
     useEffect(() => {
+        (async () => {
         socket.on('onlineUsers', users =>{
             setonlineUsers(users)
             console.log(users)
         })
-    }, [props.user])
-
-console.log(onlineUsers)
-
+    })()
+    }, [props.user,onlineUsers])
 
 
     const handleOnPress = (user) => {
