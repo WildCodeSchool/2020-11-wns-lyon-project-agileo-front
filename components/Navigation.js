@@ -76,7 +76,7 @@ const Stack = createStackNavigator();
 const Navigation = () => {
   const { token } = useAuth();
 
-console.log(token)
+
     return (
     <Stack.Navigator
       initialRouteName="Dashboard"

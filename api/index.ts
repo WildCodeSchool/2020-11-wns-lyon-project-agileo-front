@@ -1,10 +1,12 @@
 require('dotenv').config()
+const _ = require("lodash");
 import { Keystone } from '@keystonejs/keystone'
 import { PasswordAuthStrategy } from '@keystonejs/auth-password'
 import { GraphQLApp } from '@keystonejs/app-graphql'
 import { AdminUIApp } from '@keystonejs/app-admin-ui'
 import { MongooseAdapter } from '@keystonejs/adapter-mongoose'
 import { Router } from './routes'
+import chalk from 'chalk';
 import express from 'express'
 import fs from 'fs'
 const http = require('http')
@@ -39,26 +41,33 @@ export class App {
     this.express.use(middlewares)
     let port = 4000
     server.listen(4000)
-    console.log('port listen on ',port)
-    
-    websocket.on('connection', (socket) => {
+    console.log('port listen on ', port)
 
-      console.log("oh yeah your are Connected");
+    websocket.on('connection', (socket) => {
+      
+      console.log("Connexion Websocket established ");
       //l'utilisateur qui rejoins l'appli
-      socket.on('current_user', (userId) => onUserJoined(userId, socket));
+      socket.on('current_user', function (user) {
+        console.log(chalk.green('User ' + user.email + ' connected'));
+        //update user list with current user
+        users[socket.id] = user.email;
+        socket.emit("onlineUsers", users);
+      });
+      console.log(chalk.magenta('Users ' + JSON.stringify(users) ))
 
       // message recu 
       socket.on('chat_message', (message) => onMessageReceived(message, socket));
 
-
-      socket.on('disconnect', reason => {
-        console.log('socket connection disconnected', reason);
+      //disconnect and remove currentuser from users list
+      socket.on('disconnected', function (user) {
+        console.log(chalk.red('User ' + user.email + ' disconnected'))
+        delete users[user.email]
+        websocket.emit("onlineUsers", users);
       });
+
     })
   }
 }
-
-
 
 
 /****************************************************************** */
@@ -73,37 +82,40 @@ export class App {
 // When a user joins the chatroom.
 function onUserJoined(userId, socket) {
 
-  console.log('HELLO' + ' == > ' + "  ;)"+ userId.firstName)
+  console.log('HELLO' + ' == > ' + "  ;)" + userId)
   try {
-      users[socket.id] = userId;
-      console.log("users online : ",users)
-      websocket.emit('onlineUsers',users)
-      _sendExistingMessages(socket, userId);
+    users[socket.id] = userId;
+    console.log("users online : ", users)
+    //websocket.emit('onlineUsers',users)
+    //_sendExistingMessages(socket, userId);
 
   } catch (err) {
     console.log(err);
   }
 }
 
+function onUserLeave() {
 
+  //todo when user left remove his ID
+}
 
 /* When a user sends a message in the chatroom.*/
 function onMessageReceived(message, senderSocket) {
   _sendAndSaveMessage(message, senderSocket, true);
-  
+
 }
 
 
 // Récuperer les messages du user en cours sil y en a...
 const _sendExistingMessages = async (socket, userId) => {
-  
+
   const msg = await db.collection('messages')
-  .find({ chatId })
-  .sort({ "createdAt": 1 })
-  .toArray((err, text) => {
-    if (!text.length) return;
-    socket.emit('chat_message', text);
-  });
+    .find({ chatId })
+    .sort({ "createdAt": 1 })
+    .toArray((err, text) => {
+      if (!text.length) return;
+      socket.emit('chat_message', text);
+    });
 
 }
 
@@ -119,7 +131,7 @@ function _sendAndSaveMessage(message, socket, fromServer) {
   };
   db.collection('messages').insert(messageData, (err, message) => {
     // If the message is from the server, then send to everyone.
-    var emitter = fromServer ? socket.broadcast : websocket ;
+    var emitter = fromServer ? socket.broadcast : websocket;
 
     emitter.emit('chat_message', message);
   });
@@ -131,9 +143,11 @@ stdin.addListener('data', (d) => {
   _sendAndSaveMessage({
     text: d.toString().trim(),
     createdAt: new Date(),
-    user: { _id: 'Robot',
-    chatId :1,
-    avatar:"https://i.pinimg.com/736x/67/b5/51/67b55118c1cb58ada2aac3b99c0b800a.jpg" }
+    user: {
+      _id: 'Robot',
+      chatId: 1,
+      avatar: "https://i.pinimg.com/736x/67/b5/51/67b55118c1cb58ada2aac3b99c0b800a.jpg"
+    }
   }, null /* no socket */, true /* envoi depuis la cli */);
 });
 

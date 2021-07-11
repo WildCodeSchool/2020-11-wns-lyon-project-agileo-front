@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Alert, StyleSheet, Text, TextInput, ActivityIndicator, TouchableOpacity, View } from 'react-native'
-import { gql, useMutation, useQuery } from '@apollo/client'
+import {StyleSheet, Text, TextInput, ActivityIndicator, TouchableOpacity, View } from 'react-native'
+import { gql, useMutation } from '@apollo/client'
 import { useAuth } from "../contexts/AuthContext";
 
 const AUTHENTICATE = gql`

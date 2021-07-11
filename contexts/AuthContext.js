@@ -11,6 +11,7 @@ const GET_USER_CONNECTED = gql`
             firstName
             lastName
             pictureUrl
+            email
             }
         }
 `;
@@ -18,9 +19,9 @@ const GET_USER_CONNECTED = gql`
 export const ProvideAuth = (props) => {
     const [token, setToken] = useState();
     const [currentUser, setcurrentUser] = useState();
+    const [onlineUsers, setonlineUsers] = useState();
     const apolloClient = useApolloClient()
     const socket = SocketIOClient('http://localhost:4000');
-
 
 
 
@@ -32,12 +33,15 @@ export const ProvideAuth = (props) => {
                 const result = await apolloClient.query({ query: GET_USER_CONNECTED, fetchPolicy: "network-only" })
                 if (result?.data?.authenticatedUser) {
                     setcurrentUser({
+                        id: result.data.authenticatedUser.id,
                         firstName: result.data.authenticatedUser.firstName,
                         avatar: result.data.authenticatedUser.pictureUrl,
                         email: result.data.authenticatedUser.email
                     })
+                    socket.emit('current_user', result.data.authenticatedUser)
                 }
-            } else{
+            } else {
+
                 setcurrentUser(null)
             }
         })()
@@ -45,25 +49,35 @@ export const ProvideAuth = (props) => {
 
 
     useEffect(() => {
+        socket.on('onlineUsers', (users) => {
+            setonlineUsers(users)
+        })
+    }, [token])
 
-        if ((currentUser === undefined) || (currentUser === null)) {
-            socket.on("disconnect", user => {
-                console.log(user,"userrrrrrrrrr")
-            });
-        }
-    }, [currentUser])
 
-    const signin = (data) => {
-        window.localStorage.setItem("auth_token", data.token);
+   
+    console.log('onlineUsers', onlineUsers)
+
+    /**
+     * object data with token email password...
+     * @param {*} data 
+     */
+
+    const signin = async (data) => {
+        await AsyncStorage.setItem("auth_token", data.token);
         setToken(data.token);
-
     };
 
 
-    const signout = async () => {
-        window.localStorage.removeItem("auth_token");
-        setToken(null);
 
+    /**
+     * just remove token to signout
+     */
+    const signout = async () => {
+        socket.emit("disconnected", Object.keys(onlineUsers))
+        await AsyncStorage.removeItem("auth_token");
+        setToken(null);
+        console.log('je me dééconnecte wss')
     };
 
     const providerValues = {

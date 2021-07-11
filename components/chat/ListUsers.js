@@ -3,17 +3,14 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
     Image,
-    Alert,
     ScrollView,
     FlatList,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+
 import { gql, useQuery } from '@apollo/client'
 import { useAuth } from "../../contexts/AuthContext";
 import MessagesScreen from './MessagesScreen'
-import SocketIOClient from 'socket.io-client';
 
 
 const GET_ALLUSERS = gql`
@@ -31,25 +28,17 @@ const GET_ALLUSERS = gql`
 const ListUsers = (props) => {
     const [allUsers, setAllUsers] = useState();
     const [openChat, setOpenChat] = useState({ open: false, user: null });
-    const [onlineUsers, setonlineUsers] = useState();
     const { loading, error, data } = useQuery(GET_ALLUSERS);
-    const { currentUser ,socket} = useAuth();
+    const { currentUser, socket } = useAuth();
+
 
     useEffect(() => {
         if (data?.allUsers && currentUser) {
             setAllUsers(data.allUsers.filter((u) => u.firstName !== currentUser.firstName))
         }
-    }, [data,openChat])
+    }, [data, openChat])
 
-    useEffect(() => {
-        (async () => {
-        socket.on('onlineUsers', users =>{
-            setonlineUsers(users)
-            console.log(users)
-        })
-    })()
-    }, [props.user,onlineUsers])
-
+   
 
     const handleOnPress = (user) => {
         setOpenChat({ open: true, user })
@@ -76,7 +65,7 @@ const ListUsers = (props) => {
             {openChat && (openChat && openChat.open) ?
                 (<MessagesScreen user={openChat.user}
                     open={openChat.open}
-                    setOpenChat={()=>setOpenChat()}
+                    setOpenChat={() => setOpenChat()}
                 />
                 ) : (
                     <FlatList

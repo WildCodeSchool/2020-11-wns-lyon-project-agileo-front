@@ -19,7 +19,6 @@ const Messages = (props) => {
    * Récuperer les messages
    */
   useEffect(() => {
-    socket.emit('current_user', currentUser)
     socket.on("chat_message", msg => {
       if (msg && msg.length > 0) {
         setMessages(msg)
