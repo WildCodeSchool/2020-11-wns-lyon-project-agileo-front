@@ -61,7 +61,7 @@ export class App {
       //disconnect and remove currentuser from users list
       socket.on('disconnected', function (user) {
         console.log(chalk.red('User ' + user.email + ' disconnected'))
-        delete users[user.email]
+        delete users[user]
         websocket.emit("onlineUsers", users);
       });
 

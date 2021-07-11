@@ -74,10 +74,12 @@ export const ProvideAuth = (props) => {
      * just remove token to signout
      */
     const signout = async () => {
+        console.log(Object.keys(onlineUsers))
+
         socket.emit("disconnected", Object.keys(onlineUsers))
         await AsyncStorage.removeItem("auth_token");
         setToken(null);
-        console.log('je me dééconnecte wss')
+        console.log('je me dééconnecte wss') 
     };
 
     const providerValues = {
