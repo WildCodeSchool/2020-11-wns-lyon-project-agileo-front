@@ -78,9 +78,10 @@ const ListUsers = (props) => {
     return (
         <ScrollView style={styles.itemWapper}>
             {openChat && (openChat && openChat.open) ?
-                (<MessagesScreen user={openChat.user}
+                (<MessagesScreen
+                    user={openChat.user}
                     open={openChat.open}
-                    setOpenChat={() => setOpenChat()}
+                    setOpenChat={setOpenChat}
                 />
                 ) : (
                     <FlatList

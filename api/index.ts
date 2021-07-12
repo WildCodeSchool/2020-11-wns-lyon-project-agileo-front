@@ -45,44 +45,28 @@ export class App {
 
 
     websocket.on('connection', (socket) => {
-      
-      console.log("Connexion Websocket established ");
-      //l'utilisateur qui rejoins l'appli
 
+      socket.on('current_user', (user) => onUserConnect(user, socket));
 
-      socket.on('current_user', function (user) {
-        console.log(chalk.green('User ' + user.email + ' connected'));
-        //update user list with current user
-        users[user.id] = user.email;
-        socket.emit("onlineUsers", users);
-        
-      });
+      console.log(chalk.magenta('Users connected' + JSON.stringify(Object.values(users))))
 
-
-      console.log(chalk.magenta('Users ' + JSON.stringify(users) ))
-
-      // message recu 
       socket.on('chat_message', (message) => onMessageReceived(message, socket));
-      //recupere les messages
-      socket.emit('chat_message', (message) => _sendExistingMessages(socket, message));
+    socket.on("get_message",(messages)=> _sendExistingMessages(messages,socket))
 
+
+      /****************************/
       //disconnect and remove currentuser from users list
       socket.on('disconnected', function (user) {
         console.log(chalk.red('User ' + user.id + ' disconnected'))
         delete users[user.id]
         websocket.emit("onlineUsers", users);
-    
       });
-
     })
   }
 }
 
-
-/****************************************************************** */
 /****************************************************************** */
 /*************************FUNCTIONS******************************** */
-/****************************************************************** */
 /****************************************************************** */
 
 
@@ -93,15 +77,26 @@ function onMessageReceived(message, senderSocket) {
 
 }
 
-// Récuperer les messages du user en cours sil y en a...
-function _sendExistingMessages (socket, userId)  {
 
-  const msg =  db.collection('messages')
+function onUserConnect(user, socket) {
+  try {
+    users[user.id] = user.email;
+    socket.emit("onlineUsers", users);
+  } catch (err) {
+    console.error({message :'erreur coté back', err});
+  }
+}
+
+
+// Récuperer les messages du user en cours sil y en a...
+const _sendExistingMessages = async (messages,socket)=> {
+
+  const msg = await db.collection('messages')
     .find({ chatId })
     .sort({ "createdAt": 1 })
     .toArray((err, text) => {
-      if (!text.length) return;
-      socket.emit('chat_message', text);
+      
+      socket.emit('get_message',text );
     });
 
 }
