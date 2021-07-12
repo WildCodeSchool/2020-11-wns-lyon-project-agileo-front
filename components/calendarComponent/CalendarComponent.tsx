@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TextInput, Button, SafeAreaView, TouchableOpacity } from 'react-native';
 import { LocaleConfig, Calendar } from 'react-native-calendars';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import moment from 'moment';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 LocaleConfig.locales['fr'] = {
     monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
@@ -69,7 +70,7 @@ mutation deleteEvent($id: ID!) {
     const [text, onChangeText] = useState("");
     const [starting, onChangeStarting] = useState("");
     const [ending, onChangeEnding] = useState("");
-    //const [dataSubmit, setDataSubmit] = useState({});
+    let setDataSubmita =[];
 
     const [selected, setSelected] = useState<DateModel | null>(null);
     const [month, setMonth] = useState(new Date())
@@ -77,10 +78,42 @@ mutation deleteEvent($id: ID!) {
         "July", "August", "September", "October", "November", "December"
     ];
 
+    const [date, setDate] = useState(new Date(1598051730000));
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+
+    const [toDel, setToDel] = useState("")
+  
+    const onChange = (event, selectedDate) => {
+      const currentDate = selectedDate || date;
+      setShow(Platform.OS === 'ios');
+      setDate(currentDate);
+    };
+  
+    const showMode = (currentMode) => {
+      setShow(true);
+      setMode(currentMode);
+    };
+  
+    const showDatepicker = () => {
+      showMode('date');
+    };
+  
+    const showTimepicker = () => {
+      showMode('time');
+    };
+
     const onDayPress = (day: DateModel) => {
+        console.log(day)
         setSelected(day);
         let newDate = new Date(day.timestamp)
         setMonth(newDate)
+        const chose = Object.keys(setDataSubmita[setDataSubmita.length-1]).find((item) => {
+            console.log(item, day.dateString, item === day.dateString)
+            return item === day.dateString
+        })
+        console.log("sdfhbizsbfuihbvfui", chose, setDataSubmita[setDataSubmita.length-1])
+        setToDel(chose)
     };
 
     const onSubmit = async () => {
@@ -94,9 +127,15 @@ mutation deleteEvent($id: ID!) {
             variables: variables
         });
         console.log(variables)
+        onChangeStarting('')
+        onChangeEnding('')
     }
 
     const onDelete = async (id) => {
+        console.log(toDel)
+        delete setDataSubmita[setDataSubmita.length-1][toDel]
+        setDataSubmita = setDataSubmita[setDataSubmita.length-1]
+        console.log("after del", setDataSubmita)
         const variables = {
             id: id,
         }
@@ -131,8 +170,12 @@ mutation deleteEvent($id: ID!) {
             //     retour = afterSlice + incrementSliceOfDays.toString(); //2021-05 + 20
             //     [retour]: {color: '#0CADA6', textColor: 'gray'};
             // break;
+            
         return result;
     }
+    useEffect(() => {
+        console.log('arr', setDataSubmita)
+    }, [setDataSubmita])
 
     return (
         <View style={{ paddingTop: 50, flex: 1 }}>
@@ -168,12 +211,15 @@ mutation deleteEvent($id: ID!) {
                 // créer un objet unique. Le [currente.starting etc] c'est une clé dynamique qui permet dynamiquement de créer un objet avec une valeur
                 markedDates={{
                     ...data.allEvents.reduce((dates, currentItem: EventModel) => {
-                        return {
+                        const machin = {
                             ...dates,
                             [currentItem.startingDay]: { startingDay: true, color: '#0CADA6', textColor: 'gray' },
                             [currentItem.endingDay]: { endingDay: true, color: '#0CADA6', textColor: 'gray' },
                             ...getBetweenDays(currentItem.startingDay, currentItem.endingDay)
                         };
+                        setDataSubmita = [...setDataSubmita, machin]
+                        console.log("datas", setDataSubmita)
+                        return machin;
                     }, {}),
                     ...(selected ? {
                         [selected.dateString as string]: {
@@ -257,31 +303,41 @@ mutation deleteEvent($id: ID!) {
                 : null
             }
             <View>
-                <SafeAreaView>
+                <SafeAreaView style={{margin: "auto", width: "80vw", marginBottom: 15}}>
                     <TextInput
                         style={styles.input}
                         onChangeText={onChangeText}
                         value={text}
-                        placeholder="create note"
+                        placeholder="Note"
                     />
                     <TextInput
                         style={styles.input}
                         onChangeText={onChangeStarting}
                         value={starting}
-                        placeholder="starting date"
+                        placeholder="2021-07-07"
                     />
                     <TextInput
                         style={styles.input}
                         onChangeText={onChangeEnding}
                         value={ending}
-                        placeholder="ending date"
+                        placeholder="2021-07-11"
                     />
-                    <Button
+                    <TouchableOpacity
                         onPress={onSubmit}
-                        title="submit"
-                        color="#841584"
-                        accessibilityLabel="Learn more about this purple button"
-                    />
+                        style={{borderRadius: 22, backgroundColor: "#0CADA6", padding: 15, width: "80vw"}}
+                    >
+                        <Text style={{textAlign: "center"}}>Soumettre</Text>
+                    </TouchableOpacity>
+                    {show && (
+                        <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode={mode}
+                        is24Hour={true}
+                        display="default"
+                        onChange={onChange}
+                        />
+                    )}
                 </SafeAreaView>
             </View>
         </View>
@@ -299,7 +355,9 @@ const styles = StyleSheet.create({
     input: {
         height: 40,
         margin: 12,
+        borderRadius: 20,
         borderWidth: 1,
+        padding: 15,
     },
     displayDate: {
         margin: "auto",
