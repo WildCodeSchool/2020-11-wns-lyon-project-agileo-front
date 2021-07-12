@@ -21,15 +21,17 @@ const GET_ALLUSERS = gql`
                 lastName
                 role
                 pictureUrl
+                email
                 }
         }
 `;
 
 const ListUsers = (props) => {
     const [allUsers, setAllUsers] = useState();
+    const [online, setOnline] = useState();
     const [openChat, setOpenChat] = useState({ open: false, user: null });
     const { loading, error, data } = useQuery(GET_ALLUSERS);
-    const { currentUser, socket } = useAuth();
+    const { currentUser, onlineUsers } = useAuth();
 
 
     useEffect(() => {
@@ -38,14 +40,23 @@ const ListUsers = (props) => {
         }
     }, [data, openChat])
 
-   
+
+    useEffect(() => {
+        if(onlineUsers){
+            const online = Object.values(onlineUsers).map((e)=>e)
+            setOnline(online)
+        }
+    }, [onlineUsers])
+
 
     const handleOnPress = (user) => {
         setOpenChat({ open: true, user })
     }
-    const renderUserInfo = (user) => {
+    
+
+    const renderUserInfo = (user,index) => {
         return (
-            <View style={styles.list} onClick={() => handleOnPress(user)}>
+            <View key={index} style={styles.list} onClick={() => handleOnPress(user)}>
                 <Image
                     source={{ uri: user.pictureUrl }}
                     style={styles.avatar}
@@ -55,11 +66,15 @@ const ListUsers = (props) => {
                     <Text> {user.firstName} </Text>
                     <Text>{user.email}</Text>
                 </View>
+                <View style={{ flex: 1, marginLeft: 10 }} >
+                    <Text style={user && (online.some(v => v.includes(user.email)))  ? styles.online : styles.offline}></Text>
+
+                </View>
             </View>
         );
     };
 
-
+    { loading && <Text>Loading..</Text> }
     return (
         <ScrollView style={styles.itemWapper}>
             {openChat && (openChat && openChat.open) ?
@@ -69,8 +84,9 @@ const ListUsers = (props) => {
                 />
                 ) : (
                     <FlatList
+
                         data={allUsers}
-                        renderItem={({ item }) => renderUserInfo(item)}
+                        renderItem={({ item,index}) => renderUserInfo(item,index)}
                         keyExtractor={item => item.id.toString()}
                     />)
             }
@@ -102,6 +118,21 @@ const styles = StyleSheet.create({
     avatar: {
         width: 50,
         height: 50
+    },
+    online: {
+        backgroundColor: "#aed581",
+        borderRadius: "50%",
+        width: "8px",
+        height: "8px",
+        marginRight: "6px"
+
+    },
+    offline: {
+        backgroundColor: "#f4511e",
+        borderRadius: "50%",
+        width: "8px",
+        height: "8px",
+        marginRight: "6px"
     }
 
 });

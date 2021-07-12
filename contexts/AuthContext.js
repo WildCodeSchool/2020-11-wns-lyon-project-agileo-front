@@ -55,9 +55,6 @@ export const ProvideAuth = (props) => {
     }, [token])
 
 
-   
-    console.log('onlineUsers', onlineUsers)
-
     /**
      * object data with token email password...
      * @param {*} data 
@@ -74,12 +71,9 @@ export const ProvideAuth = (props) => {
      * just remove token to signout
      */
     const signout = async () => {
-        console.log(Object.keys(onlineUsers))
-
-        socket.emit("disconnected", Object.keys(onlineUsers))
+        socket.emit("disconnected", currentUser)
         await AsyncStorage.removeItem("auth_token");
         setToken(null);
-        console.log('je me dééconnecte wss') 
     };
 
     const providerValues = {
@@ -87,7 +81,8 @@ export const ProvideAuth = (props) => {
         signout,
         token,
         currentUser,
-        socket
+        socket,
+        onlineUsers
     };
 
     return <authContext.Provider value={providerValues} {...props} />;

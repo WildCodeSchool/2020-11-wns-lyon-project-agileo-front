@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  FlatList,
+} from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useAuth } from "../../contexts/AuthContext";
 import moment from 'moment';
@@ -15,6 +22,7 @@ const Messages = (props) => {
   const [msg, setMsg] = useState<string>('')
 
 
+  
   /**
    * Récuperer les messages
    */
@@ -26,6 +34,17 @@ const Messages = (props) => {
 
     })
   }, [refresh, props.user])
+
+ /**
+   * Récuperer les messages
+   */
+  useEffect(() => {
+    socket.on("chat_message", (msg) => {
+      
+        setMessages(msg)
+    })
+
+  }, [messages])
 
 
 
@@ -45,13 +64,11 @@ const Messages = (props) => {
 const goBack =()=>{
   props.setOpenChat({...props.openChat,open:false,user:null})
 }
-
-
+console.log("kedal",messages)
+//<button onClick={goBack}>Click</button>
   return (
-    <div>
-    <button onClick={goBack}>Click</button>
-
-      <GiftedChat
+  <>
+    <GiftedChat
       messages = { messages }
       onSend = { messages => _sendMessage(messages)}
       onInputTextChanged = {(msg) => setMsg(msg)}
@@ -66,7 +83,12 @@ const goBack =()=>{
       isCustomViewBottom
       messagesContainerStyle = {{ backgroundColor: 'indigo' }}
       />
-  </div>
+
+  <View>
+    
+  </View>
+  </>
+
   );
 };
 
