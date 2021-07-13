@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, SafeAreaView, TouchableOpacity } from 'react-native';
 import { LocaleConfig, Calendar } from 'react-native-calendars';
-import { gql, useQuery, useMutation } from '@apollo/client';
+import { gql, useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import moment from 'moment';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -25,7 +25,8 @@ interface DateModel {
 interface EventModel {
     endingDay: string,
     startingDay: string,
-    note: string,
+    notes: string,
+    id: number;
 }
 
 
@@ -35,7 +36,8 @@ export default function CalendarComponent() {
             allEvents{
             notes,
             startingDay,
-            endingDay
+            endingDay,
+            id
         }
     }
 `;
@@ -64,13 +66,26 @@ mutation deleteEvent($id: ID!) {
   }
 `;
 
-    const [dataSubmit] = useMutation(CREATE_EVENT);
-    const [dataDelete] = useMutation(DELETE_EVENT);
+    const [dataSubmit] = useMutation(CREATE_EVENT, {
+        // Then re-run 
+        refetchQueries: [
+          { query: FETCH_ALLEVENTS }
+        ]
+      });
+    const [dataDelete] = useMutation(DELETE_EVENT, {
+        // Then re-run 
+        refetchQueries: [
+          { query: FETCH_ALLEVENTS }
+        ]
+      });
+    
     const { data }: { data: { allEvents: EventModel[] } } = useQuery(FETCH_ALLEVENTS);
     const [text, onChangeText] = useState("");
     const [starting, onChangeStarting] = useState("");
     const [ending, onChangeEnding] = useState("");
+    const [load, setLoad] = useState(false);
     let setDataSubmita =[];
+    //console.log(data)
 
     const [selected, setSelected] = useState<DateModel | null>(null);
     const [month, setMonth] = useState(new Date())
@@ -82,7 +97,7 @@ mutation deleteEvent($id: ID!) {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
-    const [toDel, setToDel] = useState("")
+    const [toDel, setToDel] = useState({})
   
     const onChange = (event, selectedDate) => {
       const currentDate = selectedDate || date;
@@ -104,16 +119,22 @@ mutation deleteEvent($id: ID!) {
     };
 
     const onDayPress = (day: DateModel) => {
-        console.log(day)
         setSelected(day);
         let newDate = new Date(day.timestamp)
         setMonth(newDate)
-        const chose = Object.keys(setDataSubmita[setDataSubmita.length-1]).find((item) => {
-            console.log(item, day.dateString, item === day.dateString)
-            return item === day.dateString
+
+
+
+        
+        const chose = setDataSubmita.map((item) => {
+            return item
         })
-        console.log("sdfhbizsbfuihbvfui", chose, setDataSubmita[setDataSubmita.length-1])
-        setToDel(chose)
+        const newObject = Object.entries(chose[0]).filter((d, index)=> d[0] === day.dateString)
+        if (newObject.length) {
+            setToDel(newObject[0][1])
+        }
+        if (newObject === [])
+            setToDel([])
     };
 
     const onSubmit = async () => {
@@ -126,23 +147,22 @@ mutation deleteEvent($id: ID!) {
         await dataSubmit({
             variables: variables
         });
-        console.log(variables)
         onChangeStarting('')
         onChangeEnding('')
+        onChangeText('')
+        setLoad(true)
+        //window.location.reload(false);
     }
 
     const onDelete = async (id) => {
-        console.log(toDel)
-        delete setDataSubmita[setDataSubmita.length-1][toDel]
-        setDataSubmita = setDataSubmita[setDataSubmita.length-1]
-        console.log("after del", setDataSubmita)
         const variables = {
-            id: id,
+            id: toDel.id,
         }
         await dataDelete({
             variables: variables
         });
-        console.log(variables)
+        setLoad(true)
+        //window.location.reload(false);
         // const result = window.confirm('Veux tu supprimer l\'évent?');
         // if (result) {
         //     alert("404 fonction delete not found");
@@ -151,12 +171,12 @@ mutation deleteEvent($id: ID!) {
         // }
     }
 
-    const getBetweenDays = (startingDay: string, endingDay: string): { [key: string]: { color: string, textColor: string } } => {
+    const getBetweenDays = (startingDay: string, endingDay: string, notes: string, id: number): { [key: string]: { color: string, textColor: string, notes: string, id: number } } => {
         const result = {}
         const tempDate = moment(startingDay);
         tempDate.add(1, 'day');
         while (tempDate.format('YYYY-MM-DD') < endingDay) {
-            result[tempDate.format('YYYY-MM-DD')] = { color: '#0CADA6', textColor: 'gray' };
+            result[tempDate.format('YYYY-MM-DD')] = { color: '#0CADA6', textColor: 'gray', notes, id};
             tempDate.add(1, 'day');
         }
         //data.allEvents.map((item, index) => {
@@ -173,9 +193,14 @@ mutation deleteEvent($id: ID!) {
             
         return result;
     }
-    useEffect(() => {
-        console.log('arr', setDataSubmita)
-    }, [setDataSubmita])
+
+    // useEffect(() => {
+    //     if (load)
+    //      {
+    //         setLoad(false)
+    //         const { data }: { data: { allEvents: EventModel[] } } = useQuery(FETCH_ALLEVENTS);
+    //      }
+    // }, [load])
 
     return (
         <View style={{ paddingTop: 50, flex: 1 }}>
@@ -213,12 +238,11 @@ mutation deleteEvent($id: ID!) {
                     ...data.allEvents.reduce((dates, currentItem: EventModel) => {
                         const machin = {
                             ...dates,
-                            [currentItem.startingDay]: { startingDay: true, color: '#0CADA6', textColor: 'gray' },
-                            [currentItem.endingDay]: { endingDay: true, color: '#0CADA6', textColor: 'gray' },
-                            ...getBetweenDays(currentItem.startingDay, currentItem.endingDay)
+                            [currentItem.startingDay]: { startingDay: true, color: '#0CADA6', textColor: 'gray', notes: currentItem.notes, id: currentItem.id },
+                            [currentItem.endingDay]: { endingDay: true, color: '#0CADA6', textColor: 'gray', notes: currentItem.notes, id: currentItem.id},
+                            ...getBetweenDays(currentItem.startingDay, currentItem.endingDay, currentItem.notes, currentItem.id)
                         };
-                        setDataSubmita = [...setDataSubmita, machin]
-                        console.log("datas", setDataSubmita)
+                        setDataSubmita = [machin]
                         return machin;
                     }, {}),
                     ...(selected ? {
@@ -297,7 +321,7 @@ mutation deleteEvent($id: ID!) {
                 <View style={{ padding: 20, marginTop: 15 }}>
                     <Text onPress={() => onDelete('i')} style={styles.delete}>Supprimer l'événement</Text>
                     <Text style={styles.displayDate}>{`Le ${selected.day} ${monthNames[month.getMonth()]} ${selected.year} `}</Text>
-                    <Text style={styles.displayInfos}>{`il fait bon le ${selected.day}`}</Text>
+                    <Text style={styles.displayInfos}>{toDel.notes}</Text>
                     <Text onPress={() => setSelected(null)} style={styles.delete}>Déséléctionner</Text>
                 </View>
                 : null

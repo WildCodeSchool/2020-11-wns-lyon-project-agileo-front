@@ -1,8 +1,8 @@
 Arguments: 
-  /snap/node/4927/bin/node /snap/node/4927/bin/yarn.js add @react-native-community/datetimepicker@3.0.4
+  /snap/node/4927/bin/node /snap/node/4927/bin/yarn.js global dir
 
 PATH: 
-  /home/camillelinux/.local/bin:/home/camillelinux/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/camillelinux/Android/Sdk/tools:/home/camillelinux/Android/Sdk/platform-tools:/home/camillelinux/Android/Sdk/tools:/home/camillelinux/Android/Sdk/platform-tools
+  /snap/node/4927/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/home/camillelinux/Bureau/wild project/trois/2020-11-wns-lyon-project-agileo-front/node_modules/.bin:/home/camillelinux/.local/bin:/home/camillelinux/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/camillelinux/Android/Sdk/tools:/home/camillelinux/Android/Sdk/platform-tools:/home/camillelinux/Android/Sdk/tools:/home/camillelinux/Android/Sdk/platform-tools
 
 Yarn version: 
   1.22.5
@@ -20,10 +20,10 @@ Trace:
       at doWrite (_stream_writable.js:403:12)
       at writeOrBuffer (_stream_writable.js:387:5)
       at SyncWriteStream.Writable.write (_stream_writable.js:318:11)
-      at Object.clearLine (readline.js:1251:17)
-      at clearLine (/snap/node/4927/lib/cli.js:49658:12)
-      at ConsoleReporter.warn (/snap/node/4927/lib/cli.js:96791:43)
-      at Add.<anonymous> (/snap/node/4927/lib/cli.js:7266:23)
+      at ConsoleReporter._log (/snap/node/4927/lib/cli.js:96770:17)
+      at ConsoleReporter.log (/snap/node/4927/lib/cli.js:96758:10)
+      at dir (/snap/node/4927/lib/cli.js:36256:14)
+      at Object.<anonymous> (/snap/node/4927/lib/cli.js:25940:25)
       at Generator.next (<anonymous>)
 
 npm manifest: 
