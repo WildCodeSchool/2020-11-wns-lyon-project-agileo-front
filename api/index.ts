@@ -10,12 +10,12 @@ import chalk from 'chalk';
 import express from 'express'
 import fs from 'fs'
 const http = require('http')
-var mongojs = require('mongojs');
+let mongojs = require('mongojs');
 
-var db = mongojs(process.env.MONGO_URI || 'localhost:27017/local');
+let db = mongojs(process.env.MONGO_URI || 'localhost:27017/local');
 
-var users = {};
-var chatId = 1;
+let users = {};
+
 
 let websocket;
 export class App {
@@ -47,12 +47,10 @@ export class App {
     websocket.on('connection', (socket) => {
 
       socket.on('current_user', (user) => onUserConnect(user, socket));
+      socket.on('send_message', (message) => onMessageReceived(message, socket));
+      socket.on("get_messages", (messages) => getExistingMessages(messages, socket))
 
       console.log(chalk.magenta('Users connected' + JSON.stringify(Object.values(users))))
-
-      socket.on('chat_message', (message) => onMessageReceived(message, socket));
-      socket.emit("get_messages", (messages) => _sendExistingMessages(messages, socket))
-
 
       /****************************/
       //disconnect and remove currentuser from users list
@@ -65,20 +63,15 @@ export class App {
   }
 }
 
-/****************************************************************** */
-/*************************FUNCTIONS******************************** */
-/****************************************************************** */
-
 
 
 /* When a user sends a message in the chatroom.*/
-function onMessageReceived(message, senderSocket) {
-  _sendAndSaveMessage(message, senderSocket, true);
+const onMessageReceived = (message, senderSocket) => {
+  _sendAndSaveMessage(message, senderSocket);
 
 }
 
-
-function onUserConnect(user, socket) {
+const onUserConnect = async (user, socket) => {
   try {
     users[user.id] = user.email;
     socket.emit("onlineUsers", users);
@@ -87,51 +80,57 @@ function onUserConnect(user, socket) {
   }
 }
 
+const getExistingMessages = async (message, socket) => {
+  console.log(message)
+  /* let query = {
+    $or: [
+      {$or:[
+        {"receiver.email":message.receiver},
+        {"sender.email":message.sender}
+    ]},
+    {$or:[
+      {"receiver.email":message.sender},
+      {"sender.email":message.receiver}
+    ]}
+    ]
+  } */
+  let query = {
+    
+    $or: [{
+      "sender.email": message.sender,
+      "receiver.email": message.receiver
+    }, {
+      "sender.email": message.receiver,
+      "receiver.email": message.sender
+    }]
+  }
 
-// Récuperer les messages du user en cours sil y en a...
-const _sendExistingMessages = async (messages, socket) => {
 
   const msg = await db.collection('messages')
-    .find({ chatId })
-    .sort({ "createdAt": 1 })
+    .find(query)
     .toArray((err, text) => {
-
       socket.emit('get_messages', text);
+      console.log(text)
     });
-
 }
 
 
+function _sendAndSaveMessage(message, socket) {
 
-
-// Save the message to the db and send all sockets but the sender.
-function _sendAndSaveMessage(message, socket, fromServer) {
-  var messageData = {
+  let messageData = {
     text: message.text,
-    user: message.user,
-    createdAt: new Date(message.createdAt),
-    chatId: chatId
+    sender: message.from,
+    receiver: message.to,
+    createdAt: new Date(),
+    user: message.from
   };
+
   db.collection('messages').insert(messageData, (err, message) => {
-    // If the message is from the server, then send to everyone.
-    var emitter = fromServer ? socket.broadcast : websocket;
-    emitter.emit('chat_message', message);
+    socket.emit('send_message', message);
   });
 }
 
-// Permettre l'acces au chat via la CLI en mode stdin.
-var stdin = process.openStdin();
-stdin.addListener('data', (d) => {
-  _sendAndSaveMessage({
-    text: d.toString().trim(),
-    createdAt: new Date(),
-    user: {
-      _id: 'Robot',
-      chatId: 1,
-      avatar: "https://i.pinimg.com/736x/67/b5/51/67b55118c1cb58ada2aac3b99c0b800a.jpg"
-    }
-  }, null /* no socket */, true /* envoi depuis la cli */);
-});
+
 
 App.initialize().then(async () => {
   const models = fs.readdirSync('./models')

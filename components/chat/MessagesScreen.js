@@ -10,9 +10,10 @@ import {
 import { useTheme } from 'react-native-paper';
 import { useAuth } from "../../contexts/AuthContext";
 import moment from 'moment';
-import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat } from 'react-web-gifted-chat'
 import SocketIOClient from 'socket.io-client';
-
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Messages = (props) => {
   const theme = useTheme();
@@ -21,7 +22,7 @@ const Messages = (props) => {
   const [refresh, setrefresh] = useState(0)
   const [msg, setMsg] = useState('')
   const socket = SocketIOClient('http://localhost:4000');
-
+  const userChatting = { receiver: props.user.email, sender: currentUser.email }
 
 
   /**
@@ -29,16 +30,20 @@ const Messages = (props) => {
    */
   useEffect(() => {
 
-    async function doesSocketAgree() {
+    async function awaitSocket() {
+
       await new Promise(resolve => {
-        socket.on("get_messages", msg => {
+        socket.emit("get_messages", userChatting)
+        socket.on("get_messages", (msg) => {
+          
           setMessages(msg)
         })
         resolve(msg);
       });
     }
-    doesSocketAgree();
+    awaitSocket();
   }, [props, currentUser])
+
 
 
 
@@ -48,46 +53,48 @@ const Messages = (props) => {
 
 
   const _sendMessage = async (message) => {
-
-    const newMessages = await GiftedChat.append(messages, message[0])
-    socket.emit('chat_message', message[0]);
+    const messageToSend = { from: currentUser, to: props.user, text: message[0].text, user: currentUser }
+    socket.emit('send_message', messageToSend);
+    
     setrefresh(refresh + 1)
     setMsg('')
   }
 
-  console.log("messages", messages)
-  const renderMessage = (user) => {
-    return (
-      <View  style={styles.list}>
-        <View style={{ flex: 1, marginLeft: 10 }} >
-          <Text> {user && user.user.firstName} </Text>
-          <Text>{user.text}</Text>
-        </View>
-      </View>
-    );
-  };
 
-
-  /**<GiftedChat
-      messages={messages || []}
-      onSend={messages => onSend(messages)}
-      user={{ _id: currentUser._id, name:currentUser.firstName,avatar:currentUser.pictureUrl}}
-    /> */
   const goBack = () => {
     props.setOpenChat({ ...props.openChat, open: false, user: null })
   }
 
   return (
     <View style={styles.container}>
-      <Text>hello</Text>
-      <FlatList
-
-        data={messages}
-        renderItem={({ item }) => renderMessage(item)}
-        keyExtractor={item => item._id.toString()}
+      <Button
+        style={{ width: '100px' }}
+        onPress={goBack}
+        icon={
+          <Icon
+            name="arrow-left"
+            size={15}
+            color="white"
+            onClick={goBack}
+          />
+        }
+        title="Return"
       />
-
-      <button onClick={goBack}>Return</button>
+      <GiftedChat
+        id={currentUser.id + "id"}
+        messages={messages}
+        onSend={messages => _sendMessage(messages)}
+        onInputTextChanged={(msg) => setMsg(msg)}
+        user={{ name: currentUser && currentUser.firstName, _id: currentUser && currentUser.id, avatar: currentUser && currentUser.avatar }}
+        alignTop
+        alwaysShowSend
+        scrollToBottom
+        showUserAvatar
+        inverted={false}
+        renderUsernameOnMessage
+        isCustomViewBottom
+        messagesContainerStyle={{ backgroundColor: 'indigo' }}
+      />
     </View>
   )
 };
@@ -104,6 +111,9 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    height: "100%",
+    position: "absolute",
+    width: "100%",
   },
   button: {
     marginTop: 20,

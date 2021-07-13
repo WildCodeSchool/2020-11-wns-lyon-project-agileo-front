@@ -46,12 +46,15 @@ const ListUsers = (props) => {
             const online = Object.values(onlineUsers).map((e)=>e)
             setOnline(online)
         }
-    }, [onlineUsers])
+    }, [onlineUsers,currentUser])
 
 
     const handleOnPress = (user) => {
         setOpenChat({ open: true, user })
     }
+    
+
+
     
 
     const renderUserInfo = (user,index) => {
@@ -76,22 +79,25 @@ const ListUsers = (props) => {
 
     { loading && <Text>Loading..</Text> }
     return (
-        <ScrollView style={styles.itemWapper}>
+        <ScrollView style={styles.itemWapper} key={currentUser.firstName + "id"}>
             {openChat && (openChat && openChat.open) ?
-                (<MessagesScreen
+                (
+                    <View style={styles.test}  >
+                    <MessagesScreen
                     user={openChat.user}
                     open={openChat.open}
                     setOpenChat={setOpenChat}
                 />
+                    </View>
                 ) : (
                     <FlatList
-
                         data={allUsers}
                         renderItem={({ item,index}) => renderUserInfo(item,index)}
                         keyExtractor={item => item.id.toString()}
                     />)
             }
         </ScrollView>
+        
     );
 };
 
@@ -115,6 +121,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "row"
+    },
+    test:{
+        height: "500px",
+        position: "absolute",
+        width: "100%"
     },
     avatar: {
         width: 50,

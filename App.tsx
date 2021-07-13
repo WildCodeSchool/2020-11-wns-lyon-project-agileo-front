@@ -22,7 +22,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const httpLink = createHttpLink({
   uri:'http://192.168.1.109:4000/admin/api',
-
 });
 
 
