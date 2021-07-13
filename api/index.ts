@@ -81,19 +81,7 @@ const onUserConnect = async (user, socket) => {
 }
 
 const getExistingMessages = async (message, socket) => {
-  console.log(message)
-  /* let query = {
-    $or: [
-      {$or:[
-        {"receiver.email":message.receiver},
-        {"sender.email":message.sender}
-    ]},
-    {$or:[
-      {"receiver.email":message.sender},
-      {"sender.email":message.receiver}
-    ]}
-    ]
-  } */
+ 
   let query = {
     
     $or: [{
@@ -110,7 +98,7 @@ const getExistingMessages = async (message, socket) => {
     .find(query)
     .toArray((err, text) => {
       socket.emit('get_messages', text);
-      console.log(text)
+    
     });
 }
 
