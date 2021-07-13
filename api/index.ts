@@ -51,7 +51,7 @@ export class App {
       console.log(chalk.magenta('Users connected' + JSON.stringify(Object.values(users))))
 
       socket.on('chat_message', (message) => onMessageReceived(message, socket));
-    socket.on("get_message",(messages)=> _sendExistingMessages(messages,socket))
+      socket.emit("get_messages", (messages) => _sendExistingMessages(messages, socket))
 
 
       /****************************/
@@ -83,20 +83,20 @@ function onUserConnect(user, socket) {
     users[user.id] = user.email;
     socket.emit("onlineUsers", users);
   } catch (err) {
-    console.error({message :'erreur coté back', err});
+    console.error({ message: 'erreur coté back', err });
   }
 }
 
 
 // Récuperer les messages du user en cours sil y en a...
-const _sendExistingMessages = async (messages,socket)=> {
+const _sendExistingMessages = async (messages, socket) => {
 
   const msg = await db.collection('messages')
     .find({ chatId })
     .sort({ "createdAt": 1 })
     .toArray((err, text) => {
-      
-      socket.emit('get_message',text );
+
+      socket.emit('get_messages', text);
     });
 
 }

@@ -17,32 +17,28 @@ import SocketIOClient from 'socket.io-client';
 const Messages = (props) => {
   const theme = useTheme();
   const { currentUser } = useAuth();
-  const [messages, setMessages] = useState<any[]>([])
-  const [refresh, setrefresh] = useState<number>(0)
-  const [msg, setMsg] = useState<string>('')
+  const [messages, setMessages] = useState()
+  const [refresh, setrefresh] = useState(0)
+  const [msg, setMsg] = useState('')
   const socket = SocketIOClient('http://localhost:4000');
 
-  
+
+
   /**
    * Récuperer les messages
    */
-  /* useEffect(() => {
-    socket.on("chat_message", msg => {
-      if (msg && msg.length > 0) {
-        setMessages(msg)
-      }
-
-    })
-  }, [refresh, props.user]) */
-
- /**
-   * Récuperer les messages
-   */
   useEffect(() => {
-    socket.on("get_message", msg => {
-      setMessages(msg)
-    })
-  }, [props])
+
+    async function doesSocketAgree() {
+      await new Promise(resolve => {
+        socket.on("get_messages", msg => {
+          setMessages(msg)
+        })
+        resolve(msg);
+      });
+    }
+    doesSocketAgree();
+  }, [props, currentUser])
 
 
 
@@ -59,34 +55,41 @@ const Messages = (props) => {
     setMsg('')
   }
 
-const renderData = (u) =>{
-  return(
-    <View style={{ flex: 1, marginLeft: 10 }} >
-    <Text> {u && u.user.name} </Text>
-    <Text> {u.text} </Text>
-    
-</View>
-  )
-}
+  console.log("messages", messages)
+  const renderMessage = (user) => {
+    return (
+      <View  style={styles.list}>
+        <View style={{ flex: 1, marginLeft: 10 }} >
+          <Text> {user && user.user.firstName} </Text>
+          <Text>{user.text}</Text>
+        </View>
+      </View>
+    );
+  };
 
-const goBack =()=>{
-  props.setOpenChat({...props.openChat,open:false,user:null})
-}
+
+  /**<GiftedChat
+      messages={messages || []}
+      onSend={messages => onSend(messages)}
+      user={{ _id: currentUser._id, name:currentUser.firstName,avatar:currentUser.pictureUrl}}
+    /> */
+  const goBack = () => {
+    props.setOpenChat({ ...props.openChat, open: false, user: null })
+  }
 
   return (
-  <View>
-  
-    <FlatList
-      data = { messages}
-      renderItem={({item} ) => renderData(item)}
+    <View style={styles.container}>
+      <Text>hello</Text>
+      <FlatList
+
+        data={messages}
+        renderItem={({ item }) => renderMessage(item)}
+        keyExtractor={item => item._id.toString()}
       />
 
-  
-    <button onClick={goBack}>Click</button>
-  
-  </View>
-
-  );
+      <button onClick={goBack}>Return</button>
+    </View>
+  )
 };
 
 const styles = StyleSheet.create({
