@@ -6,6 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 const Header = ({ scene, previous, navigation }) => {
   const theme = useTheme();
+  const {currentUser} = useAuth();
   const { options } = scene.descriptor;
   const title =
     options.headerTitle !== undefined
@@ -13,7 +14,7 @@ const Header = ({ scene, previous, navigation }) => {
       : options.title !== undefined
       ? options.title
       : scene.route.name;
-      const {currentUser} = useAuth();
+      
   return (
     <Appbar.Header
       theme={{ colors: { primary: theme.colors.surface } }}
@@ -32,23 +33,12 @@ const Header = ({ scene, previous, navigation }) => {
       >
         <Avatar.Image
           size={40}
-          source={currentUser.avatar}
+         source={currentUser && currentUser.avatar}
         />
       </TouchableOpacity>
     )}
     <Appbar.Content
-      title={
-        title === 'Dashboard' ? (
-          <MaterialCommunityIcons
-            style={{ marginRight: 10 }}
-            name="bell"
-            size={30}
-            color={theme.colors.primary}
-          />
-        ) : (
-          title
-        )
-      }
+      title={"Agileo"}
       titleStyle={{
         fontSize: 18,
         fontWeight: 'bold',

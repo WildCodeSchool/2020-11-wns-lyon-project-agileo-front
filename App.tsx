@@ -18,20 +18,26 @@ import Navigation from './components/Navigation';
 import { setContext } from '@apollo/client/link/context';
 import { ProvideAuth } from "./contexts/AuthContext";
 import PreferencesContext from './contexts/PreferencesContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const httpLink = createHttpLink({
-  uri:'http://localhost:4000/admin/api',
+  uri:'http://192.168.0.29:4000/admin/api',
 });
 
-const authLink = setContext((_, { headers }) => {
-  const token = window.localStorage.getItem("auth_token");
+
+
+const authLink = setContext(async (_, { headers }) => {
+  const token = await AsyncStorage.getItem('auth_token');
   return {
+    
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : "",
-    }
-  }
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
 });
+
+
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),

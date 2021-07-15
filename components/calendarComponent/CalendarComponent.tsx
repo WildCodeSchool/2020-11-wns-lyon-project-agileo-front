@@ -179,28 +179,11 @@ mutation deleteEvent($id: ID!) {
             result[tempDate.format('YYYY-MM-DD')] = { color: '#0CADA6', textColor: 'gray', notes, id};
             tempDate.add(1, 'day');
         }
-        //data.allEvents.map((item, index) => {
-            
-            // let retour;
-            // let sliceOfDays = item.startingDay.charAt(item.startingDay.length - 2) + item.startingDay.charAt(item.startingDay.length - 1); //19
-            // let afterSlice = item.startingDay.slice(0, -2); //2021-05-
-            // let incrementSliceOfDays = Number(sliceOfDays)
-            // while (item.endingDay !== retour) { //2021-05-26 !== 2021-05-19
-            //     incrementSliceOfDays++; //20
-            //     retour = afterSlice + incrementSliceOfDays.toString(); //2021-05 + 20
-            //     [retour]: {color: '#0CADA6', textColor: 'gray'};
-            // break;
+
             
         return result;
     }
 
-    // useEffect(() => {
-    //     if (load)
-    //      {
-    //         setLoad(false)
-    //         const { data }: { data: { allEvents: EventModel[] } } = useQuery(FETCH_ALLEVENTS);
-    //      }
-    // }, [load])
 
     return (
         <View style={{ paddingTop: 50, flex: 1 }}>
@@ -254,30 +237,7 @@ mutation deleteEvent($id: ID!) {
                         },
                     } : {}),
                 }
-                    // data.map((item, index) => ({
-                    //     [item.startingDay]: {startingDay: true, color: '#0CADA6', textColor: 'gray'},
-                    //     [item.endingDay]: {endingDay: true, color: '#0CADA6', textColor: 'gray'}
-                    // }))
-                    // '2021-04-16': { startingDay: true, color: '#0CADA6' },
-                    // '2021-04-17': { color: '#9BDDDB' },
-                    // '2021-04-18': { color: '#9BDDDB' },
-                    // '2021-04-19': { selected: true, endingDay: true, color: '#0CADA6', textColor: 'gray' },
-                    // '2021-04-24': { marked: true, dotColor: 'blue' },
-                    // '2021-04-25': { marked: true, dotColor: 'green' },
-
-                    // '2021-05-16': { startingDay: true, color: '#0CADA6' },
-                    // '2021-05-17': { color: '#9BDDDB' },
-                    // '2021-05-18': { color: '#9BDDDB' },
-                    // '2021-05-19': { selected: true, endingDay: true, color: '#0CADA6', textColor: 'gray' },
-
-                    // '2021-02-16': { startingDay: true, color: '#0CADA6' },
-                    // '2021-02-17': { color: '#9BDDDB' },
-                    // '2021-02-18': { color: '#9BDDDB' },
-                    // '2021-02-19': { selected: true, endingDay: true, color: '#0CADA6', textColor: 'gray' },
-
-                    // '2021-05-24': { marked: true, dotColor: 'blue' },
-                    // '2021-05-25': { marked: true, dotColor: 'green' },
-                    // '2021-05-26': { marked: true, color: '#870cad' },
+               
                 }
                 markingType={'period'}
 

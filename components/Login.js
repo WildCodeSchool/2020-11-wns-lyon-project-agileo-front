@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Alert, StyleSheet, Text, TextInput, ActivityIndicator, TouchableOpacity, View } from 'react-native'
-import { gql, useMutation, useQuery } from '@apollo/client'
+import {StyleSheet, Text, TextInput, ActivityIndicator, TouchableOpacity, View } from 'react-native'
+import { gql, useMutation } from '@apollo/client'
 import { useAuth } from "../contexts/AuthContext";
 
 const AUTHENTICATE = gql`
   mutation authenticate($email: String!, $password: String!) {
     authenticateUserWithPassword(email: $email, password: $password) {
-      item {
-        id,
-        firstName,
-        pictureUrl,
-        email
-      }
       token
     }
   }
@@ -40,8 +34,6 @@ const Login = () => {
     } catch (error) {
       alert('Please check your email and password then try again.')
       setLoader(false)
-      setEmail('')
-      setPassword('')
     }
   }
 

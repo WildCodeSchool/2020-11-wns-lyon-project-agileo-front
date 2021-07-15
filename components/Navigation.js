@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import color from 'color';
 import { useTheme } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-
 import overlay from '../scripts/overlay';
-
 import DashboardScreen from '../screens/DashboardScreen';
 import CoursesScreen from '../screens/CoursesScreen';
-import MessageScreen from '../screens/MessagesScreen';
+import ListUsers from '../components/chat/ListUsers';
 import ProfileScreen from '../screens/UserScreen';
 import CourseScreen from '../screens/CourseScreen';
 import CalendarScreen from '../screens/CalendarScreen';
@@ -27,7 +25,7 @@ const BottomTabs = () => {
     : theme.colors.surface;
 
   return (
-    <Tab.Navigator 
+    <Tab.Navigator
       initialRouteName="Dashboard"
       backBehavior="initialRoute"
       shifting={true}
@@ -37,13 +35,13 @@ const BottomTabs = () => {
         .rgb()
         .string()}
     >
-      <Tab.Screen 
-        name="Dashboard" 
-        component={DashboardScreen} 
+      <Tab.Screen
+        name="Dashboard"
+        component={DashboardScreen}
         options={{
           tabBarIcon: 'view-dashboard',
           tabBarColor,
-        }} 
+        }}
       />
       <Tab.Screen
         name="Cours"
@@ -55,15 +53,15 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="Messages"
-        component={MessageScreen}
+        component={ListUsers}
         options={{
           tabBarIcon: 'message-text-outline',
           tabBarColor,
         }}
       />
-      <Tab.Screen 
-        name="Calendrier" 
-        component={CalendarScreen} 
+      <Tab.Screen
+        name="Calendrier"
+        component={CalendarScreen}
         options={{
           tabBarIcon: 'calendar',
           tabBarColor,
@@ -76,22 +74,21 @@ const BottomTabs = () => {
 const Stack = createStackNavigator();
 
 const Navigation = () => {
-  const {token} = useAuth();
-  
+  const { token ,currentUser} = useAuth();
 
 
-  return (
+    return (
     <Stack.Navigator
       initialRouteName="Dashboard"
       headerMode="screen"
       screenOptions={{
-        header: ({ scene, previous, navigation }) => (token === undefined || token === null || token === "" ) ? null : (
+        header: ({ scene, previous, navigation }) => (currentUser === undefined || currentUser === null || currentUser === "") ? null : (
           <Header scene={scene} previous={previous} navigation={navigation} />
         )
       }}
     >
 
-      {(token === undefined || token === null || token === "")
+      {(currentUser === null || currentUser === "")
         ?
         <Stack.Screen
           name="Login"
@@ -102,7 +99,7 @@ const Navigation = () => {
           }}
         />
         :
-        
+
         <>
           <Stack.Screen
             name="FeedList"

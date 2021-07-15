@@ -1,12 +1,19 @@
 require('dotenv').config()
-import {Keystone} from '@keystonejs/keystone'
-import {PasswordAuthStrategy} from '@keystonejs/auth-password'
-import {GraphQLApp} from '@keystonejs/app-graphql'
-import {AdminUIApp} from '@keystonejs/app-admin-ui'
-import {MongooseAdapter} from '@keystonejs/adapter-mongoose'
+const _ = require("lodash");
+import { Keystone } from '@keystonejs/keystone'
+import { PasswordAuthStrategy } from '@keystonejs/auth-password'
+import { GraphQLApp } from '@keystonejs/app-graphql'
+import { AdminUIApp } from '@keystonejs/app-admin-ui'
+import { MongooseAdapter } from '@keystonejs/adapter-mongoose'
+import chalk from 'chalk';
 import express from 'express'
 import fs from 'fs'
+const { users, onUserConnect, getExistingMessages, onChatReceived } =require('./socket')
 const http = require('http')
+
+
+
+let websocket;
 
 export class App {
     public static keystone
@@ -19,22 +26,38 @@ export class App {
         this.keystone = keystone
     }
 
-    public static async start() {
-        const authStrategy = this.keystone.createAuthStrategy({type: PasswordAuthStrategy, list: 'User'})
-        const apps = [new GraphQLApp(), new AdminUIApp({authStrategy})]
-        const {middlewares} = await this.keystone.prepare({apps: apps, dev: true})
-        const server = http.Server(this.express)
-        const io = require('socket.io')(server, {cors: {origin: '*'}})
-        this.keystone.connect()
-        this.express.use(middlewares)
-        server.listen(4000)
-        console.log('🚀 Server is running on port 4000')
-        io.on('connection', (socket) => {
-            console.log('🧦 Socket is running on port 4000')
-            socket.on('add-message', (message) => console.log(message))
-        })
-    }
+
+
+  public static async start() {
+    const authStrategy = this.keystone.createAuthStrategy({ type: PasswordAuthStrategy, list: 'User' })
+    const apps = [new GraphQLApp(), new AdminUIApp({ authStrategy })]
+    const { middlewares } = await this.keystone.prepare({ apps: apps, dev: true })
+    let server = http.Server(this.express)
+    websocket = require('socket.io')(server, { cors: { origin: '*' } })
+    this.keystone.connect()
+    this.express.use(middlewares)
+    let port = 4000
+    server.listen(4000)
+    console.log('port listen on ', port)
+
+
+    websocket.on('connection', (socket) => {
+
+      socket.on('current_user', async (user) => await onUserConnect(user, socket));
+      socket.on("get_messages", (messages) => getExistingMessages(messages, socket))
+      socket.on('send_message', (message) => onChatReceived(message, socket));
+
+      console.log(chalk.magenta('Users connected' + JSON.stringify(Object.values(users))))
+
+      socket.on('disconnected', function (user) {
+        console.log(chalk.red('User ' + user.id + ' disconnected'))
+        delete users[user.id]
+        websocket.emit("onlineUsers", users);
+      });
+    })
+  }
 }
+
 
 App.initialize().then(async () => {
     const models = fs.readdirSync('./models')
