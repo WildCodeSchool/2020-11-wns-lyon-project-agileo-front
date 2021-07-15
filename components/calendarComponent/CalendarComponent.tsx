@@ -152,7 +152,7 @@ mutation deleteEvent($id: ID!) {
         onChangeEnding('')
         onChangeText('')
         setLoad(true)
-        //window.location.reload(false);
+        ;
     }
 
     const onDelete = async (id) => {
@@ -163,13 +163,7 @@ mutation deleteEvent($id: ID!) {
             variables: variables
         });
         setLoad(true)
-        //window.location.reload(false);
-        // const result = window.confirm('Veux tu supprimer l\'évent?');
-        // if (result) {
-        //     alert("404 fonction delete not found");
-        // } else {
-        //     alert("Suppression de la suppression de l\'évent");
-        // }
+        
     }
 
     const getBetweenDays = (startingDay: string, endingDay: string, notes: string, id: number): { [key: string]: { color: string, textColor: string, notes: string, id: number } } => {

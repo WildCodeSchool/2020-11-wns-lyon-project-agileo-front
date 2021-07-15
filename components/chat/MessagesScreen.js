@@ -37,14 +37,21 @@ const Messages = (props) => {
         socket.on("get_messages", (msg) => {
           setMessages(msg)
         })
-        socket.on("send_message", (msg) => {
-          setMessages([...messages,msg])
-        })
         resolve(msg);
       });
     }
     awaitSocket();
-  }, [])
+  }, [refresh])
+
+useEffect(()=>{
+  socket.on("send_message", (msg) => {
+      setMessages([...messages,msg])
+    })
+
+},[refresh])
+
+
+
 
 
   /**
@@ -53,6 +60,8 @@ const Messages = (props) => {
 
   
   const _sendMessage = async (message) => {
+    if(msg === '')
+    return
     const messageToSend = { from: currentUser, to: props.user, text: message[0].text, user: currentUser }
     socket.emit('send_message', messageToSend);
     setrefresh(refresh + 1)

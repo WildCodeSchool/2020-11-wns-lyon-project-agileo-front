@@ -2,6 +2,7 @@ let mongojs = require('mongojs');
 let db = mongojs(process.env.MONGO_URI || 'localhost:27017/local');
 
 let users = {};
+let socketId = {};
 
 /**
  * 
@@ -27,8 +28,9 @@ const onChatReceived = (message, senderSocket) => {
 const onUserConnect = async (user, socket) => {
     try {
         users[user.id] = user.email;
+        socketId[socket.id] = user.email;
         socket.emit("onlineUsers", users);
-        
+
     } catch (err) {
         console.error({ message: 'erreur coté back lors de la récuperation des messages', err });
     }
@@ -69,14 +71,19 @@ function SaveReceivedChat(message, socket) {
     };
 
     db.collection('messages').insert(messageData, (err, message) => {
-        socket.emit('send_message', message);
-        
+        socketId[message.receiver.email] = message.receiver.email
+        let newmessage = message
+        socket.emit('send_message', newmessage);
+        console.log(newmessage)
     });
 }
 
-module.exports ={
+
+
+module.exports = {
     onUserConnect,
     getExistingMessages,
     users,
+    socketId,
     onChatReceived
 }

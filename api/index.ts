@@ -8,7 +8,7 @@ import { MongooseAdapter } from '@keystonejs/adapter-mongoose'
 import chalk from 'chalk';
 import express from 'express'
 import fs from 'fs'
-const { users, onUserConnect, getExistingMessages, onChatReceived } =require('./socket')
+const { users, onUserConnect, getExistingMessages, onChatReceived,socketId } =require('./socket')
 const http = require('http')
 
 
@@ -48,6 +48,7 @@ export class App {
       socket.on('send_message', (message) => onChatReceived(message, socket));
 
       console.log(chalk.magenta('Users connected' + JSON.stringify(Object.values(users))))
+      console.log(chalk.magenta('Users by socket id' + JSON.stringify(Object.values(socketId))))
 
       socket.on('disconnected', function (user) {
         console.log(chalk.red('User ' + user.id + ' disconnected'))
