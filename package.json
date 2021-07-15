@@ -2,7 +2,6 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "chat": "node node_modules/react-native/local-cli/cli.js start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -21,6 +20,7 @@
     "@keystonejs/keystone": "^19.3.0",
     "@react-native-async-storage/async-storage": "^1.15.5",
     "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/material-bottom-tabs": "^5.3.14",
@@ -45,6 +45,7 @@
     "react-dom": "^16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
     "react-native-appearance": "^0.3.4",
+    "react-native-calendars": "^1.1264.0",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "~1.8.0",
     "react-native-loading-spinner-overlay": "^2.0.0",
