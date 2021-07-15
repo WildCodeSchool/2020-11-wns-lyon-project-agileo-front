@@ -70,6 +70,7 @@ function SaveReceivedChat(message, socket) {
 
     db.collection('messages').insert(messageData, (err, message) => {
         socket.emit('send_message', message);
+        
     });
 }
 

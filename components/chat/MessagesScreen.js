@@ -35,8 +35,10 @@ const Messages = (props) => {
       await new Promise(resolve => {
         socket.emit("get_messages", userChatting)
         socket.on("get_messages", (msg) => {
-
           setMessages(msg)
+        })
+        socket.on("send_message", (msg) => {
+          setMessages([...messages,msg])
         })
         resolve(msg);
       });
@@ -45,31 +47,9 @@ const Messages = (props) => {
   }, [])
 
 
-
-
-  /**
-  * Récuperer les messages
-  */
-  useEffect(() => {
-
-    async function awaitSocket() {
-
-      await new Promise(resolve => {
-        socket.emit("get_messages", userChatting)
-        socket.on("get_messages", (msg) => {
-          setMessages(msg)
-        })
-        resolve(msg);
-      });
-    }
-    awaitSocket();
-  }, [refresh])
-
   /**
    * envoyer un message
    */
-
-
 
   
   const _sendMessage = async (message) => {
