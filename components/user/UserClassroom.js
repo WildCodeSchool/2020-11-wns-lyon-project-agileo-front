@@ -7,11 +7,14 @@ import {
   Divider,
   List,
 } from "react-native-paper";
+import { useAuth } from "../../contexts/AuthContext";
 
 const UserClassroom = () => {
   const {
     colors: { background },
   } = useTheme();
+
+  const { allUsers } = useAuth();
 
   return (
     <ScrollView
@@ -19,52 +22,30 @@ const UserClassroom = () => {
       contentContainerStyle={styles.content}
     >
       <Card style={styles.card}>
-          <Card.Title
-            title="Développement web (Lyon)"
-            left={(props) => <Avatar.Icon {...props} icon="account-group" />}
-          />
+        <Card.Title
+          title="Développement web (Lyon)"
+          left={(props) => <Avatar.Icon {...props} icon="account-group" />}
+        />
         <Card.Content>
           <List.Section>
-            <List.Item
-              left={(props) => <List.Icon {...props} icon="account" />}
-              title="Marine Machin"
-            />
-            <List.Item
-              left={(props) => <List.Icon {...props} icon="account" />}
-              title="Valentin Bidule"
-            />
-            <List.Item
-              left={(props) => <List.Icon {...props} icon="account" />}
-              title="Marine Machin"
-            />
-            <List.Item
-              left={(props) => <List.Icon {...props} icon="account" />}
-              title="Valentin Bidule"
-            />
-            <List.Item
-              left={(props) => <List.Icon {...props} icon="account" />}
-              title="Marine Machin"
-            />
-            <List.Item
-              left={(props) => <List.Icon {...props} icon="account" />}
-              title="Valentin Bidule"
-            />
-            <List.Item
-              left={(props) => <List.Icon {...props} icon="account" />}
-              title="Marine Machin"
-            />
+
+            {allUsers && allUsers.map((u, i) =>
+              <List.Item
+                key={i}
+                left={(props) => <List.Icon {...props} icon="account" />}
+                title={u.firstName}
+              />
+            )}
+
           </List.Section>
           <Divider />
           <List.Section>
             <List.Subheader>Professeurs :</List.Subheader>
             <List.Item
               left={(props) => <List.Icon {...props} icon="account" />}
-              title="Lisa TrucMuche"
+              title="Aurélien Leygues"
             />
-            <List.Item
-              left={(props) => <List.Icon {...props} icon="account" />}
-              title="Renaud Dupont"
-            />
+
           </List.Section>
         </Card.Content>
       </Card>

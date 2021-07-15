@@ -55,7 +55,6 @@ const ListUsers = (props) => {
     
 
 
-    
 
     const renderUserInfo = (user,index) => {
         return (
@@ -67,7 +66,7 @@ const ListUsers = (props) => {
                 />
                 <View style={{ flex: 1, marginLeft: 10 }} >
                     <Text> {user.firstName} </Text>
-                    <Text>{user.email}</Text>
+                    
                 </View>
                 <View style={{ flex: 1, marginLeft: 10 }} >
                     <Text style={user && (online.some(v => v.includes(user.email)))  ? styles.online : styles.offline}></Text>
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     test:{
-        height: "500px",
+        height: "83vh",
         position: "absolute",
         width: "100%"
     },

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { gql, useApolloClient } from '@apollo/client'
+import { gql, useApolloClient, useQuery } from '@apollo/client'
 import SocketIOClient from 'socket.io-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const authContext = createContext();
@@ -16,11 +16,26 @@ const GET_USER_CONNECTED = gql`
         }
 `;
 
+const GET_ALLUSERS = gql`
+        query {
+            allUsers {
+                id
+                firstName
+                lastName
+                role
+                pictureUrl
+                email
+                }
+        }
+`;
+
 export const ProvideAuth = (props) => {
     const [token, setToken] = useState();
     const [currentUser, setcurrentUser] = useState();
     const [onlineUsers, setonlineUsers] = useState();
     const apolloClient = useApolloClient()
+    const { loading, error, data } = useQuery(GET_ALLUSERS);
+    const [allUsers, setAllUsers] = useState();
     const socket = SocketIOClient('http://localhost:4000');
 
 
@@ -41,7 +56,6 @@ export const ProvideAuth = (props) => {
                     socket.emit('current_user', result.data.authenticatedUser)
                 }
             } else {
-
                 setcurrentUser(null)
             }
         })()
@@ -49,11 +63,17 @@ export const ProvideAuth = (props) => {
 
 
     useEffect(() => {
+        if (data?.allUsers) {
+            setAllUsers(data.allUsers)
+        }
+    }, [data])
+
+
+    useEffect(() => {
         socket.on('onlineUsers', (users) => {
             setonlineUsers(users)
         })
     }, [token])
-
 
     /**
      * object data with token email password...
@@ -82,7 +102,7 @@ export const ProvideAuth = (props) => {
         token,
         currentUser,
         socket,
-        onlineUsers
+        onlineUsers, allUsers
     };
 
     return <authContext.Provider value={providerValues} {...props} />;

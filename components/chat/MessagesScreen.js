@@ -35,27 +35,46 @@ const Messages = (props) => {
       await new Promise(resolve => {
         socket.emit("get_messages", userChatting)
         socket.on("get_messages", (msg) => {
-          
+
           setMessages(msg)
         })
         resolve(msg);
       });
     }
     awaitSocket();
-  }, [props, currentUser])
+  }, [])
 
 
 
+
+  /**
+  * Récuperer les messages
+  */
+  useEffect(() => {
+
+    async function awaitSocket() {
+
+      await new Promise(resolve => {
+        socket.emit("get_messages", userChatting)
+        socket.on("get_messages", (msg) => {
+          setMessages(msg)
+        })
+        resolve(msg);
+      });
+    }
+    awaitSocket();
+  }, [refresh])
 
   /**
    * envoyer un message
    */
 
 
+
+  
   const _sendMessage = async (message) => {
     const messageToSend = { from: currentUser, to: props.user, text: message[0].text, user: currentUser }
     socket.emit('send_message', messageToSend);
-    
     setrefresh(refresh + 1)
     setMsg('')
   }
@@ -68,17 +87,17 @@ const Messages = (props) => {
   return (
     <View style={styles.container}>
       <Button
-        style={{ width: '100px' }}
+        style={{ width: '50px'}}
         onPress={goBack}
         icon={
           <Icon
             name="arrow-left"
-            size={15}
+            size={10}
             color="white"
             onClick={goBack}
           />
         }
-        title="Return"
+        title=""
       />
       <GiftedChat
         id={currentUser.id + "id"}
@@ -89,7 +108,7 @@ const Messages = (props) => {
         alignTop
         alwaysShowSend
         scrollToBottom
-        showUserAvatar
+        showUserAvatar={true}
         inverted={false}
         renderUsernameOnMessage
         isCustomViewBottom

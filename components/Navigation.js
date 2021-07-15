@@ -74,7 +74,7 @@ const BottomTabs = () => {
 const Stack = createStackNavigator();
 
 const Navigation = () => {
-  const { token } = useAuth();
+  const { token ,currentUser} = useAuth();
 
 
     return (
@@ -82,13 +82,13 @@ const Navigation = () => {
       initialRouteName="Dashboard"
       headerMode="screen"
       screenOptions={{
-        header: ({ scene, previous, navigation }) => (token === undefined || token === null || token === "") ? null : (
+        header: ({ scene, previous, navigation }) => (currentUser === undefined || currentUser === null || currentUser === "") ? null : (
           <Header scene={scene} previous={previous} navigation={navigation} />
         )
       }}
     >
 
-      {(token === undefined || token === null || token === "")
+      {(currentUser === null || currentUser === "")
         ?
         <Stack.Screen
           name="Login"
